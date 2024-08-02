@@ -26,6 +26,8 @@ export class ListUserComponent  implements OnInit{
   dataSource = new MatTableDataSource<User>();
   users: User[] = [];
   loading: boolean = true;
+  tempStatus!: boolean; // Variable temporaire pour stocker l'état
+
 
 
   constructor(private dialog: MatDialog , private cd: ChangeDetectorRef, private userService: UserService) { }
@@ -63,66 +65,100 @@ export class ListUserComponent  implements OnInit{
 
   
 
-   onDesActivate(element: User){
-    Swal.fire({
-      title: 'Êtes-vous sûr de vouloir desactiver cette personne?',
-      text: 'Il ne pourra plus acceder à la plateforme !',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Oui, desactive-le !',
-      cancelButtonText: 'Non, garde-le'
-    }).then((result) => {
-      if (result.value) {
-        this.userService.disableUtilisateur(element.idUser).subscribe();
-        console.log('Statut activer:', element.statut);
-        // this.adminService.disableAdmin(idAdmin).subscribe();
-         // Réalisez une action en cas de succès (rafraîchir la liste par exemple)
-        //  this.adminService.triggerUpdate();
-        //  this.chargerDonner();
-         Swal.fire(
-          'Desactivation!',
-        element.nomUser + ' a été desactivé.',
-       'success'
-     )
-    //  this.adminService.triggerUpdate();
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Annuler',
-          'Desactivation annuler ',
-          'error'
-        )
-      }
-    })
-  }
 
-   onActivate(element: User){
-    Swal.fire({
-      title: 'Êtes-vous sûr de vouloir activer cette personne?',
-      text: 'Il pourra  acceder à la plateforme !',
-      icon: 'success',
-      showCancelButton: true,
-      confirmButtonText: 'Oui, active-le !',
-      cancelButtonText: 'Non, garde-le'
-    }).then((result) => {
-      if (result.value) {
-        this.userService.enableUtilisateur(element.idUser).subscribe();
-        console.log('Statut activer:', element.statut);
-         this.chargerDonner();
-         Swal.fire(
-          'Activation!',
-        element.nomUser + ' a été activé.',
-       'success'
-     )
-    //  this.adminService.triggerUpdate();
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Annuler',
-          'Activation annuler ',
-          'error'
-        )
-      }
-    })
-  }
+  onDesActivate(element: User) {
+  // Sauvegardez l'état initial du switch
+  this.tempStatus = element.statut;
+  
+  Swal.fire({
+    title: 'Êtes-vous sûr de vouloir désactiver cette personne?',
+    text: 'Il ne pourra plus accéder à la plateforme!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Oui, désactive-le!',
+    cancelButtonText: 'Non, garde-le'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.userService.disableUtilisateur(element.idUser).subscribe(
+        () => {
+          Swal.fire(
+            'Désactivation!',
+            `${element.nomUser} a été désactivé.`,
+            'success'
+          );
+          // Mettre à jour l'état dans le composant ou le tableau
+          this.chargerDonner(); // Recharger les données si nécessaire
+        },
+        (error) => {
+          console.error('Erreur lors de la désactivation : ', error);
+          element.statut = this.tempStatus; // Réinitialiser l'état en cas d'erreur
+          Swal.fire(
+            'Erreur!',
+            'Une erreur est survenue lors de la désactivation.',
+            'error'
+          );
+          this.chargerDonner(); // Recharger les données si nécessaire
+        }
+      );
+    } else if (result.isDismissed) {
+      element.statut = this.tempStatus; // Réinitialisez l'état si l'action est annulée
+      Swal.fire(
+        'Annulé',
+        'Désactivation annulée',
+        'error'
+      );
+      this.chargerDonner(); // Recharger les données si nécessaire
+    }
+  });
+}
+
+onActivate(element: User) {
+  // Sauvegardez l'état initial du switch
+  this.tempStatus = element.statut;
+
+  Swal.fire({
+    title: 'Êtes-vous sûr de vouloir activer cette personne?',
+    text: 'Il pourra accéder à la plateforme!',
+    icon: 'success',
+    showCancelButton: true,
+    confirmButtonText: 'Oui, active-le!',
+    cancelButtonText: 'Non, garde-le'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.userService.enableUtilisateur(element.idUser).subscribe(
+        () => {
+          Swal.fire(
+            'Activation!',
+            `${element.nomUser} a été activé.`,
+            'success'
+          );
+          // Mettre à jour l'état dans le composant ou le tableau
+          this.chargerDonner(); // Recharger les données si nécessaire
+        },
+        (error) => {
+          console.error('Erreur lors de l\'activation : ', error);
+          element.statut = this.tempStatus; // Réinitialiser l'état en cas d'erreur
+          Swal.fire(
+            'Erreur!',
+            'Une erreur est survenue lors de l\'activation.',
+            'error'
+          );
+          this.chargerDonner(); // Recharger les données si nécessaire
+        }
+      );
+    } else if (result.isDismissed) {
+      element.statut = this.tempStatus; // Réinitialisez l'état si l'action est annulée
+      Swal.fire(
+        'Annulé',
+        'Activation annulée',
+        'error'
+      );
+      this.chargerDonner(); // Recharger les données si nécessaire
+
+    }
+  });
+}
+
 
 
   onDelete(element:User):void{
