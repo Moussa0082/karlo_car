@@ -175,20 +175,6 @@ export class ListUserComponent  implements OnInit{
       }
     });
   }
-  
-  // openDialog(user?: User): void {
-  //   const dialogRef = this.dialog.open(AddUpUserComponent, {
-  //     width: '500px',
-  //     data: { user }
-  //   });
-  
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result) {
-  //       this.chargerDonner();
-  //       this.cd.detectChanges(); // Force la détection des changements
-  //     }
-  //   });
-  // }
 
   editElement(user: User): void {
 

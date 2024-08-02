@@ -1,1 +1,21 @@
-<p>add-up-type-reservoir works!</p>
+<h2 mat-dialog-title>{{ isEditMode ? 'Modifier un type reservoir' : 'Ajouter un type reservoir' }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="typeReservoirForm">
+    <div class="row">
+      <div class="col">
+        <mat-form-field appearance="fill">
+          <mat-label>Nom Type Reservoir</mat-label>
+          <input matInput placeholder="Libelle" formControlName="nomTypeReservoir" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <input matInput placeholder="Description" formControlName="description" required>
+        </mat-form-field >
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button class="dialog-button" (click)="onNoClick()">Annuler</button>
+  <button mat-button color="primary" class="dialog-button" (click)="onSaves()">{{ isEditMode ? 'Modifier' : 'Ajouter' }}</button>
+</mat-dialog-actions>
