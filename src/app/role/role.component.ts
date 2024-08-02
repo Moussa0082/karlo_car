@@ -99,6 +99,7 @@ export class RoleComponent implements OnInit{
     });
   }
 
+  //Editer 
   editElement(role: Role): void {
     this.openDialog(role);
     console.log("role open dialog: ", role);
