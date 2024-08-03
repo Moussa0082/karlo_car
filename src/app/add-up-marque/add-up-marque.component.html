@@ -13,7 +13,7 @@
       <div class="col">
         <div class="file-upload-container">
           <label for="file-upload" class="file-upload-label">
-            <input type="file" id="file-upload" (change)="ImageChange($event)" formControlName="logo" style="display: none;" accept="image/*">
+            <input type="file" id="file-upload" (change)="onFileChange($event)" formControlName="logo" style="display: none;" accept="image/*">
             <span class="file-upload-text">Charger une image</span>
           </label>
         </div>

@@ -89,15 +89,12 @@ export class AddUpMarqueComponent implements OnInit{
       const file = input.files[0];
       const reader = new FileReader();
       
-      console.log("Image uploiarder ", this.logo);
       reader.onload = () => {
         this.imagePreview = reader.result;
       };
       
       reader.readAsDataURL(file);
-      this.marqueForm.patchValue({
-        logo: file
-      });
+      this.logo = file; // Mettre à jour la propriété locale
       // Reset the file input value to avoid issues
       input.value = '';
     }
@@ -126,16 +123,16 @@ export class AddUpMarqueComponent implements OnInit{
    
 
   onSaves(): void {
-    // if (this.logo == null ) {
-    //   Swal.fire({
-    //     title: 'Erreur!',
-    //     text: 'Une image est requise pour representer le logo de la marque',
-    //     icon: 'error',
-    //     confirmButtonText: 'OK'
-    //   })
-    //   return
+    if (this.logo == null ) {
+      Swal.fire({
+        title: 'Erreur!',
+        text: 'Une image est requise pour representer le logo de la marque',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      })
+      return
 
-    // }
+    }
     if (this.marqueForm.valid && this.logo) {
       const marque = this.marqueForm.value;
       if (this.isEditMode) {
