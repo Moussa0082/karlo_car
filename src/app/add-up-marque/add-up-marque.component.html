@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Modifier une marque' : 'Ajouter une marque' }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="marqueForm">
+    <div class="row">
+      <div class="col">
+        <mat-form-field appearance="fill">
+          <mat-label>Nom Marque</mat-label>
+          <input matInput placeholder="Nom marque" formControlName="nomMarque" required>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="file-upload-container">
+          <label for="file-upload" class="file-upload-label">
+            <input type="file" id="file-upload" (change)="ImageChange($event)" formControlName="logo" style="display: none;" accept="image/*">
+            <span class="file-upload-text">Charger une image</span>
+          </label>
+        </div>
+        <mat-card *ngIf="imagePreview" class="image-preview-card">
+          <img [src]="imagePreview" class="image-preview" alt="Image Preview">
+        </mat-card>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button class="dialog-button" (click)="onNoClick()">Annuler</button>
+  <button mat-button color="primary" class="dialog-button" (click)="onSaves()">{{ isEditMode ? 'Modifier' : 'Ajouter' }}</button>
+</mat-dialog-actions>

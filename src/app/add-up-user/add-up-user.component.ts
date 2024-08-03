@@ -2,9 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RoleService } from '../services/role.service';
-import { Role } from '../models/role';
+import { Role } from '../models/Role';
 import { UserService } from '../services/user.service';
-import { User } from '../models/user';
+import { User } from '../models/User';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 

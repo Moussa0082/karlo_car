@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { Role } from '../models/role';
+import { Role } from '../models/Role';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -20,7 +20,7 @@ export class AddUpRoleComponent  implements OnInit{
   isEditMode: boolean;
   
   constructor(
-    public dialogRef: MatDialogRef<AddUpUserComponent>,
+    public dialogRef: MatDialogRef<AddUpRoleComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private route:Router,
     private roleService:RoleService, private fb: FormBuilder
@@ -73,7 +73,7 @@ export class AddUpRoleComponent  implements OnInit{
     if (this.roleForm.valid) {
       const role = this.roleForm.value;
       if (this.isEditMode) {
-        // Modifier l'utilisateur
+        // Modifier role
         this.roleService.updateRole(role).subscribe(
           response => {
             Swal.fire('Succès !', 'Role modifié avec succès', 'success');

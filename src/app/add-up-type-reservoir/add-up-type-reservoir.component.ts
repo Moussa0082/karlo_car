@@ -19,7 +19,7 @@ export class AddUpTypeReservoirComponent implements OnInit {
   isEditMode: boolean;
   
   constructor(
-    public dialogRef: MatDialogRef<AddUpUserComponent>,
+    public dialogRef: MatDialogRef<AddUpTypeReservoirComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private route:Router,
     private typeReservoireService:ReservoirService, private fb: FormBuilder

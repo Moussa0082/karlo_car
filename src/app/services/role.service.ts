@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Role } from '../models/role';
+import { Role } from '../models/Role';
 import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from '@angular/common/http';
 import {  Subject, tap } from 'rxjs';
 import { apiUrl } from '../constant/constantes';
@@ -14,17 +14,9 @@ export class RoleService {
   private baseUrl = 'role';
   
   private role:Role|undefined;
-  public isAuthAg:boolean = false;
-   
-  private updateEvent = new Subject<void>();
-  update$ = this.updateEvent.asObservable();
 
 
   constructor(private http: HttpClient) { }
-
-  triggerUpdate() {
-    this.updateEvent.next();
-  }
 
 
   //Creer role
@@ -32,7 +24,7 @@ export class RoleService {
     return this.http.post(`${apiUrl}/${this.baseUrl}/addRole`, role);
   }
 
-  // Modifier une role
+  // Modifier un role
   updateRole(role: Role): Observable<any> {
     return this.http.put(`${apiUrl}/${this.baseUrl}/update/${role.idRole}`, role);
   }
@@ -41,17 +33,6 @@ export class RoleService {
 
   getAllRole(): Observable<any> {
     return this.http.get(`${apiUrl}/${this.baseUrl}/getAllRole`);
-  }
-
-
-  //Activer role 
-  enableRole(idRole: string) {
-    return this.http.put(`http://localhost:9000/user/activer/${idRole}`, {});
-  }
-
-  //Desactiver role 
-  disableRole(idRole: string) {
-    return this.http.put(`http://localhost:9000/user/desactiver/${idRole}`, {});
   }
 
   

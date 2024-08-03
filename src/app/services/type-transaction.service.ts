@@ -1,48 +1,48 @@
 import { Injectable } from '@angular/core';
-import { TypeReservoir } from '../models/TypeReservoir';
 import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from '@angular/common/http';
 import {  Subject, tap } from 'rxjs';
 import { apiUrl } from '../constant/constantes';
 import { catchError } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
-
+import { TypeTransaction } from '../models/TypeTransaction';
 @Injectable({
   providedIn: 'root'
 })
-export class ReservoirService {
+export class TypeTransactionService {
 
-  private baseUrl = 'typeReservoire';
-
+ 
+ 
+  private baseUrl = 'typeTransaction';
 
 
   constructor(private http: HttpClient) { }
 
 
-  //Creer typeReservoire
-  createTypeReservoire(typeReservoire: TypeReservoir) {
-    return this.http.post(`${apiUrl}/${this.baseUrl}/addTypeReservoir`, typeReservoire);
+  //Creer type transaction
+  createTypeTransaction(typeTransaction: TypeTransaction) {
+    return this.http.post(`${apiUrl}/${this.baseUrl}/addTypeTransaction`, typeTransaction);
   }
 
-  // Modifier  typeReservoire
-  updateTypeReservoire(typeReservoire: TypeReservoir): Observable<any> {
-    return this.http.put(`${apiUrl}/${this.baseUrl}/update/${typeReservoire.idTypeReservoir}`, typeReservoire);
+  // Modifier un typeTransaction
+  updateTypeTransaction(typeTransaction: TypeTransaction): Observable<any> {
+    return this.http.put(`${apiUrl}/${this.baseUrl}/update/${typeTransaction.idTypeTransaction}`, typeTransaction);
   }
     
   
 
-  getAllTypeReservoir(): Observable<any> {
-    return this.http.get(`${apiUrl}/${this.baseUrl}/getAllTypeReservoir`);
+  getAllTypeTransaction(): Observable<any> {
+    return this.http.get(`${apiUrl}/${this.baseUrl}/getAllTypeTransaction`);
   }
 
   
   
-   // Méthode pour supprimer type reservoir
-   deleteTypeReservoire(id: string): Observable<HttpResponse<void>> {
+   // Méthode pour supprimer un typeTransaction
+   deleteTypeTransaction(id: string): Observable<HttpResponse<void>> {
     return this.http.delete<void>(`${apiUrl}/${this.baseUrl}/delete/${id}`, { observe: 'response' })
       .pipe(
         tap((response: HttpResponse<void>) => {
           if (response.status === 200 || response.status === 201 || response.status === 202) {
-            console.log('type reservoir supprimé avec succès.');
+            console.log('type transaction supprimé avec succès.');
           } else {
             console.log('Statut de la réponse:', response.status);
           }
@@ -60,6 +60,4 @@ export class ReservoirService {
       }
       return throwError('Une erreur est survenue; veuillez réessayer plus tard.');
     }
-
- 
-}
+  }

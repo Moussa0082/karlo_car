@@ -21,6 +21,12 @@ import { AddUpRoleComponent } from './add-up-role/add-up-role.component';
 import { RoleComponent } from './role/role.component';
 import { AddUpTypeReservoirComponent } from './add-up-type-reservoir/add-up-type-reservoir.component';
 import { ListTypeReservoirComponent } from './list-type-reservoir/list-type-reservoir.component';
+import { ListTypeTransactionComponent } from './list-type-transaction/list-type-transaction.component';
+import { AddUpTypeTransactionComponent } from './add-up-type-transaction/add-up-type-transaction.component';
+import { AddUpTypeVoitureComponent } from './add-up-type-voiture/add-up-type-voiture.component';
+import { ListTypeVoitureComponent } from './list-type-voiture/list-type-voiture.component';
+import { AddUpMarqueComponent } from './add-up-marque/add-up-marque.component';
+import { ListMarqueComponent } from './list-marque/list-marque.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +38,13 @@ import { ListTypeReservoirComponent } from './list-type-reservoir/list-type-rese
     AddUpRoleComponent,
     RoleComponent,
     AddUpTypeReservoirComponent,
-    ListTypeReservoirComponent
+    ListTypeReservoirComponent,
+    ListTypeTransactionComponent,
+    AddUpTypeTransactionComponent,
+    AddUpTypeVoitureComponent,
+    ListTypeVoitureComponent,
+    AddUpMarqueComponent,
+    ListMarqueComponent
   ],
   imports: [
     BrowserModule,

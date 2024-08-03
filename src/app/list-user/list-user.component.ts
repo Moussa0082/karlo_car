@@ -4,10 +4,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Observable, of } from 'rxjs';
 import Swal from 'sweetalert2';
 import { UserService } from '../services/user.service';
-import { User } from '../models/user';
+import { User } from '../models/User';
 import { AddUpUserComponent } from '../add-up-user/add-up-user.component';
 import { RoleService } from '../services/role.service';
-import { Role } from '../models/role';
+import { Role } from '../models/Role';
 
 
 

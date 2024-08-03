@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from '../models/user';
+import { User } from '../models/User';
 import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from '@angular/common/http';
 import {  Subject, tap } from 'rxjs';
 import { apiUrl } from '../constant/constantes';
@@ -53,12 +53,12 @@ export class UserService {
 
   //Activer utilisateur 
   enableUtilisateur(idUser: string) {
-    return this.http.put(`http://localhost:9000/user/activer/${idUser}`, {});
+    return this.http.put(`${apiUrl}/${this.baseUrl}/activer/${idUser}`, {});
   }
 
   //Desactiver utilisateur 
   disableUtilisateur(idUser: string) {
-    return this.http.put(`http://localhost:9000/user/desactiver/${idUser}`, {});
+    return this.http.put(`${apiUrl}/${this.baseUrl}/desactiver/${idUser}`, {});
   }
 
   loginUtilisateur(email: string, motDePasse: string, userType: string): Observable<any> {

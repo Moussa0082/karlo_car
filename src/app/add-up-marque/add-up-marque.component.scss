@@ -1,0 +1,66 @@
+.mat-dialog-container {
+    max-width: 500px; /* Ajustez la largeur du dialogue ici */
+    padding: 20px; /* Espace autour du contenu du dialogue */
+  }
+  
+  .mat-dialog-content {
+    padding: 0; /* Réduit le padding dans le contenu du dialogue */
+  }
+  
+  .row {
+    display: flex;
+    justify-content: space-between;
+  }
+   
+  
+  
+  .col {
+    flex: 1;
+    margin: 0 10px;
+  }
+  
+  .dialog-button {
+    color: white;
+    border-radius: 20px;
+    background-color: blue;
+    border: none;
+    width: 120px;
+    margin: 0 8px; /* Espace entre les boutons */
+  }
+
+  .mat-dialog-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; /* Espace au-dessus des boutons */
+  }
+  
+  .dialog-button {
+    color: white;
+    border-radius: 20px;
+    background-color: blue;
+    border: none;
+    width: 120px;
+  }
+  
+
+  .file-upload-container {
+    margin-top: 16px;
+  }
+  
+  .image-preview-card {
+    object-fit: cover;
+    margin-top: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 50%;
+  }
+  
+  .image-preview {
+    width:150px;
+    height: 150px;
+  }
+  
+  

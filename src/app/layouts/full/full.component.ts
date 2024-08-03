@@ -52,6 +52,21 @@ export class FullComponent {
       icon: "layers",
       menu: "Listes reservoirs",
     },
+    {
+      link: "/typeTransactions",
+      icon: "layers",
+      menu: "Listes type transactions",
+    },
+    {
+      link: "/typeVoitures",
+      icon: "layers",
+      menu: "Listes type voitures",
+    },
+    {
+      link: "/marques",
+      icon: "layers",
+      menu: "Listes des marques",
+    },
   ]
 
 }

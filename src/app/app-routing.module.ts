@@ -21,6 +21,9 @@ import { FullComponent } from './layouts/full/full.component';
 import { ListUserComponent } from './list-user/list-user.component';
 import { RoleComponent } from './role/role.component';
 import { ListTypeReservoirComponent } from './list-type-reservoir/list-type-reservoir.component';
+import { ListTypeTransactionComponent } from './list-type-transaction/list-type-transaction.component';
+import { ListTypeVoitureComponent } from './list-type-voiture/list-type-voiture.component';
+import { ListMarqueComponent } from './list-marque/list-marque.component';
 
 const routes: Routes = [
   {
@@ -32,6 +35,9 @@ const routes: Routes = [
       {path:"users", component:ListUserComponent},
       {path:"roles", component:RoleComponent},
       {path:"reservoires", component:ListTypeReservoirComponent},
+      {path:"typeTransactions", component:ListTypeTransactionComponent},
+      {path:"typeVoitures", component:ListTypeVoitureComponent},
+      {path:"marques", component:ListMarqueComponent},
     ]
   },
 

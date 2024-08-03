@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RoleService } from '../services/role.service';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Role } from '../models/role';
+import { Role } from '../models/Role';
 import { MatTableDataSource } from '@angular/material/table';
 import { AddUpRoleComponent } from '../add-up-role/add-up-role.component';
 import Swal from 'sweetalert2';

@@ -1,0 +1,72 @@
+
+<div class="entete">
+    <h2 class="users">Liste des roles</h2>
+    <button mat-flat-button color="primary" id="btn-add" (click)="openDialog()">Ajouter</button>
+  </div>
+
+<mat-form-field  class="full-width">
+    <mat-label>Filter</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Search Columns"
+      #input
+    />
+  </mat-form-field>
+
+  
+<mat-card class="w-100">
+  <mat-card-content>
+   
+    <div class="table-responsive">
+
+      <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
+
+        <!-- Id Column -->
+
+
+        <!-- Assigned Column -->
+        <ng-container matColumnDef="nom">
+          <th mat-header-cell *matHeaderCellDef> Nom type voiture </th>
+          <td mat-cell *matCellDef="let element">
+            <p class="mb-0 fw-medium">{{ element.nomTypeVoiture }}</p>
+          </td>
+        </ng-container>
+
+        <!-- Project Column -->
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef> Description </th>
+          <td mat-cell *matCellDef="let element">
+            <p class="mb-0 fw-medium op-5">{{element.description}}</p>
+          </td>
+        </ng-container>
+
+       
+        <!-- Actions Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button color="primary" (click)="editElement(element)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="onDelete(element)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+         <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4" align="center">Aucun donné trouvé</td>
+      </tr>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20, 30]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>

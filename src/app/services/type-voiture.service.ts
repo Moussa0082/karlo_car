@@ -1,48 +1,52 @@
 import { Injectable } from '@angular/core';
-import { TypeReservoir } from '../models/TypeReservoir';
 import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from '@angular/common/http';
 import {  Subject, tap } from 'rxjs';
 import { apiUrl } from '../constant/constantes';
 import { catchError } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
-
+import { TypeVoiture } from '../models/TypeVoiture';
 @Injectable({
   providedIn: 'root'
 })
-export class ReservoirService {
+export class TypeVoitureService {
 
-  private baseUrl = 'typeReservoire';
+ 
+ 
+  private baseUrl = 'typeVoiture';
+  
+  private typeVoiture:TypeVoiture|undefined;
 
 
 
   constructor(private http: HttpClient) { }
 
 
-  //Creer typeReservoire
-  createTypeReservoire(typeReservoire: TypeReservoir) {
-    return this.http.post(`${apiUrl}/${this.baseUrl}/addTypeReservoir`, typeReservoire);
+
+  //Creer typeVoiture
+  createTypeVoiture(typeVoiture: TypeVoiture) {
+    return this.http.post(`${apiUrl}/${this.baseUrl}/addTypeVoiture`, typeVoiture);
   }
 
-  // Modifier  typeReservoire
-  updateTypeReservoire(typeReservoire: TypeReservoir): Observable<any> {
-    return this.http.put(`${apiUrl}/${this.baseUrl}/update/${typeReservoire.idTypeReservoir}`, typeReservoire);
+  // Modifier un typeVoiture
+  updateTypeVoiture(typeVoiture: TypeVoiture): Observable<any> {
+    return this.http.put(`${apiUrl}/${this.baseUrl}/update/${typeVoiture.idTypeVoiture}`, typeVoiture);
   }
     
   
 
-  getAllTypeReservoir(): Observable<any> {
-    return this.http.get(`${apiUrl}/${this.baseUrl}/getAllTypeReservoir`);
+  getAllTypeVoiture(): Observable<any> {
+    return this.http.get(`${apiUrl}/${this.baseUrl}/getAllTypeVoiture`);
   }
 
   
   
-   // Méthode pour supprimer type reservoir
-   deleteTypeReservoire(id: string): Observable<HttpResponse<void>> {
+   // Méthode pour supprimer un typeVoiture
+   deleteTypeVoiture(id: string): Observable<HttpResponse<void>> {
     return this.http.delete<void>(`${apiUrl}/${this.baseUrl}/delete/${id}`, { observe: 'response' })
       .pipe(
         tap((response: HttpResponse<void>) => {
           if (response.status === 200 || response.status === 201 || response.status === 202) {
-            console.log('type reservoir supprimé avec succès.');
+            console.log('typeVoiture supprimé avec succès.');
           } else {
             console.log('Statut de la réponse:', response.status);
           }
@@ -60,6 +64,4 @@ export class ReservoirService {
       }
       return throwError('Une erreur est survenue; veuillez réessayer plus tard.');
     }
-
- 
-}
+  }
