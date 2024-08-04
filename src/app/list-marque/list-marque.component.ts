@@ -59,7 +59,7 @@ export class ListMarqueComponent implements OnInit{
 
   onDelete(element:Marque):void{
     Swal.fire({
-      title: "Etes vous supprimer?",
+      title: "Etes vous sûr?",
       text: "Voulez - vous supprimer!",
       icon: "warning",
       showCancelButton: true,

@@ -24,29 +24,36 @@ import { ListTypeReservoirComponent } from './list-type-reservoir/list-type-rese
 import { ListTypeTransactionComponent } from './list-type-transaction/list-type-transaction.component';
 import { ListTypeVoitureComponent } from './list-type-voiture/list-type-voiture.component';
 import { ListMarqueComponent } from './list-marque/list-marque.component';
+import { ListTransactionComponent } from './list-transaction/list-transaction.component';
+import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
   {
     path:"",
     component:FullComponent,
     children: [
-      {path:"", redirectTo:"/home", pathMatch:"full"},
-      {path:"home", component:DashboardComponent},
-      {path:"users", component:ListUserComponent},
-      {path:"roles", component:RoleComponent},
-      {path:"reservoires", component:ListTypeReservoirComponent},
-      {path:"typeTransactions", component:ListTypeTransactionComponent},
-      {path:"typeVoitures", component:ListTypeVoitureComponent},
-      {path:"marques", component:ListMarqueComponent},
+      {path:"", redirectTo:"/login", pathMatch:"full"},
+      {path:"login", component:LoginComponent},
+      {path:"home", component:DashboardComponent,  canActivate: [AuthGuard]},
+      {path:"users", component:ListUserComponent , canActivate: [AuthGuard]},
+      {path:"roles", component:RoleComponent , canActivate: [AuthGuard]},
+      {path:"reservoires", component:ListTypeReservoirComponent , canActivate: [AuthGuard]},
+      {path:"typeTransactions", component:ListTypeTransactionComponent , canActivate: [AuthGuard]},
+      {path:"typeVoitures", component:ListTypeVoitureComponent , canActivate: [AuthGuard]},
+      {path:"marques", component:ListMarqueComponent , canActivate: [AuthGuard]},
+      {path:"transactions", component:ListTransactionComponent , canActivate: [AuthGuard]},
+      
     ]
   },
 
-  {path:"", redirectTo:"/home", pathMatch:"full"},
-  {path:"**", redirectTo:"/home", pathMatch:"full"},
+  {path:"", redirectTo:"/login", pathMatch:"full"},
+  {path:"**", redirectTo:"/login", pathMatch:"full"},
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
+  providers: [AuthGuard],  // Ensure AuthGuard is provided in your module
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

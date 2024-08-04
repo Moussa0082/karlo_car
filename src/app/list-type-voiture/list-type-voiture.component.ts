@@ -51,7 +51,7 @@ export class ListTypeVoitureComponent  implements OnInit{
 
   onDelete(element:TypeVoiture):void{
     Swal.fire({
-      title: "Etes vous supprimer?",
+      title: "Etes vous sûr?",
       text: "Voulez - vous supprimer!",
       icon: "warning",
       showCancelButton: true,

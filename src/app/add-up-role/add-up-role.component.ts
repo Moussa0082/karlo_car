@@ -28,7 +28,6 @@ export class AddUpRoleComponent  implements OnInit{
     this.isEditMode = !!data.role; // Si un role est passé, alors c'est le mode édition
     this.roleForm = this.fb.group({
       idRole: [this.isEditMode ? this.data.role?.idRole : '', this.isEditMode ? Validators.required : null],
-      // idRole: [data.role?.idRole || '', Validators.required],
       libelle: [data.role?.libelle || '', Validators.required],
       description: [data.role?.description || '', Validators.required],
     });

@@ -59,7 +59,7 @@ export class ListTypeReservoirComponent {
 
   onDelete(element:TypeReservoir):void{
     Swal.fire({
-      title: "Etes vous supprimer?",
+      title: "Etes vous sûr?",
       text: "Voulez - vous supprimer!",
       icon: "warning",
       showCancelButton: true,

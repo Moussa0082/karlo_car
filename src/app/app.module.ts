@@ -27,6 +27,9 @@ import { AddUpTypeVoitureComponent } from './add-up-type-voiture/add-up-type-voi
 import { ListTypeVoitureComponent } from './list-type-voiture/list-type-voiture.component';
 import { AddUpMarqueComponent } from './add-up-marque/add-up-marque.component';
 import { ListMarqueComponent } from './list-marque/list-marque.component';
+import { ListTransactionComponent } from './list-transaction/list-transaction.component';
+import { AddUpTransactionComponent } from './add-up-transaction/add-up-transaction.component';
+import { ForbiddenComponent } from './forbidden/forbidden.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +47,10 @@ import { ListMarqueComponent } from './list-marque/list-marque.component';
     AddUpTypeVoitureComponent,
     ListTypeVoitureComponent,
     AddUpMarqueComponent,
-    ListMarqueComponent
+    ListMarqueComponent,
+    ListTransactionComponent,
+    AddUpTransactionComponent,
+    ForbiddenComponent
   ],
   imports: [
     BrowserModule,

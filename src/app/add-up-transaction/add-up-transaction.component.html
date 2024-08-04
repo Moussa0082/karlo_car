@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Modifier une transaction' : 'Ajouter une transaction' }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="transactionForm">
+    <div class="row">
+      <div class="col">
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <textarea matInput placeholder="Description" formControlName="description" required>
+            </textarea>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Type Transaction</mat-label>
+          <mat-select formControlName="typeTransaction" required>
+            <mat-option *ngFor="let typeTransaction of typeTransactions" [value]="typeTransaction"> <!-- Utilisez l'objet complet -->
+              {{typeTransaction.libelle}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button class="dialog-button" (click)="onNoClick()">Annuler</button>
+  <button mat-button color="primary" class="dialog-button" (click)="onSaves()">{{ isEditMode ? 'Modifier' : 'Ajouter' }}</button>
+</mat-dialog-actions>
