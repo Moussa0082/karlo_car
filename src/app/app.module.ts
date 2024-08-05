@@ -30,6 +30,7 @@ import { ListMarqueComponent } from './list-marque/list-marque.component';
 import { ListTransactionComponent } from './list-transaction/list-transaction.component';
 import { AddUpTransactionComponent } from './add-up-transaction/add-up-transaction.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
+import { HistoriquesComponent } from './historiques/historiques.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { ForbiddenComponent } from './forbidden/forbidden.component';
     ListMarqueComponent,
     ListTransactionComponent,
     AddUpTransactionComponent,
-    ForbiddenComponent
+    ForbiddenComponent,
+    HistoriquesComponent
   ],
   imports: [
     BrowserModule,

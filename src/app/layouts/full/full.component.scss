@@ -15,3 +15,15 @@
   top: 0;
   z-index: 1;
 }
+
+
+
+.sidebar-menu.disabled {
+  pointer-events: none;
+  color: #aaa; /* Couleur des liens désactivés */
+  cursor: not-allowed;
+}
+
+.sidebar-menu.disabled:hover {
+  text-decoration: none;
+}

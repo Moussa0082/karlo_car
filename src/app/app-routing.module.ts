@@ -27,13 +27,15 @@ import { ListMarqueComponent } from './list-marque/list-marque.component';
 import { ListTransactionComponent } from './list-transaction/list-transaction.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './services/auth.guard';
+import { ForbiddenComponent } from './forbidden/forbidden.component';
+import { HistoriquesComponent } from './historiques/historiques.component';
 
 const routes: Routes = [
   {
     path:"",
     component:FullComponent,
     children: [
-      {path:"", redirectTo:"/login", pathMatch:"full"},
+      {path:"", redirectTo:"/forbidden", pathMatch:"full"},
       {path:"login", component:LoginComponent},
       {path:"home", component:DashboardComponent,  canActivate: [AuthGuard]},
       {path:"users", component:ListUserComponent , canActivate: [AuthGuard]},
@@ -43,12 +45,14 @@ const routes: Routes = [
       {path:"typeVoitures", component:ListTypeVoitureComponent , canActivate: [AuthGuard]},
       {path:"marques", component:ListMarqueComponent , canActivate: [AuthGuard]},
       {path:"transactions", component:ListTransactionComponent , canActivate: [AuthGuard]},
+      {path:"forbidden", component:ForbiddenComponent },
+      {path:"historiques", component:HistoriquesComponent , canActivate: [AuthGuard] },
       
     ]
   },
 
-  {path:"", redirectTo:"/login", pathMatch:"full"},
-  {path:"**", redirectTo:"/login", pathMatch:"full"},
+  {path:"", redirectTo:"/forbidden", pathMatch:"full"},
+  {path:"**", redirectTo:"/forbidden", pathMatch:"full"},
 ];
 
 @NgModule({

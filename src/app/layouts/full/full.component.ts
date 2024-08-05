@@ -22,6 +22,7 @@ export class FullComponent implements OnInit{
 
   search: boolean = false;
   isLoginPage:boolean=false;
+  isForbiddenPage:boolean=false;
   adminRecup!:User;
 
 
@@ -33,10 +34,13 @@ export class FullComponent implements OnInit{
 
   constructor(private breakpointObserver: BreakpointObserver, private router: Router, private userService:UserService) { 
     this.router.events.subscribe((event) => {
-    if (event instanceof NavigationEnd) {
-      this.isLoginPage = event.url.endsWith('login') || event.url === '/login';
-    }
-  });
+      if (event instanceof NavigationEnd) {
+        this.isLoginPage = event.url.endsWith('login') || event.url === '/login';
+      }
+      if (event instanceof NavigationEnd) {
+        this.isForbiddenPage = event.url.endsWith('forbidden') || event.url === '/forbidden';
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -45,10 +49,15 @@ export class FullComponent implements OnInit{
       if (event instanceof NavigationEnd) {
         this.isLoginPage = event.url.endsWith('login') || event.url === '/login';
       }
+      if (event instanceof NavigationEnd) {
+        this.isForbiddenPage = event.url.endsWith('forbidden') || event.url === '/forbidden';
+      }
     });
     
   }
 
+  // Get the user data from localStorage
+  
   
 
   logout(user:User):void{
@@ -121,6 +130,11 @@ export class FullComponent implements OnInit{
       link: "/transactions",
       icon: "layers",
       menu: "Listes des transactions",
+    },
+    {
+      link: "/historiques",
+      icon: "layers",
+      menu: "Listes des historiques",
     },
   ]
 

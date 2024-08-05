@@ -30,6 +30,7 @@ export class UserService {
     return localStorage.getItem(this.userKey) !== null;
   }
 
+  
   // Get the user data from localStorage
   getUser(): any {
     const userData = localStorage.getItem(this.userKey);
