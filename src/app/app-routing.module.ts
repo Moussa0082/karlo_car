@@ -29,6 +29,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './services/auth.guard';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { HistoriquesComponent } from './historiques/historiques.component';
+import { ListContactComponent } from './list-contact/list-contact.component';
 
 const routes: Routes = [
   {
@@ -47,6 +48,7 @@ const routes: Routes = [
       {path:"transactions", component:ListTransactionComponent , canActivate: [AuthGuard]},
       {path:"forbidden", component:ForbiddenComponent },
       {path:"historiques", component:HistoriquesComponent , canActivate: [AuthGuard] },
+      {path:"contact", component:ListContactComponent , canActivate: [AuthGuard] },
       
     ]
   },

@@ -1,10 +1,12 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Marque } from '../models/Marque';
 import { AddUpMarqueComponent } from '../add-up-marque/add-up-marque.component';
 import Swal from 'sweetalert2';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { MarqueService } from '../services/marque.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-list-marque',
@@ -19,6 +21,8 @@ export class ListMarqueComponent implements OnInit{
   dataSource = new MatTableDataSource<Marque>();
   marques: Marque[] = [];
   loading: boolean = true;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
 
   constructor(private dialog: MatDialog , private cd: ChangeDetectorRef, private marqueService: MarqueService) { }
@@ -31,6 +35,8 @@ export class ListMarqueComponent implements OnInit{
         this.marques = data;
         this.dataSource = new MatTableDataSource(this.marques);
         this.loading = false; // Fin du chargement
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
         console.log("liste marques: ", this.marques);
       },
       (error) => {
@@ -46,6 +52,8 @@ export class ListMarqueComponent implements OnInit{
     this.marqueService.getAllMarque().subscribe(data => {
       this.marques = data;
       this.dataSource.data = this.marques; // Assurez-vous que MatTableDataSource est mis à jour
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
       console.log("liste marques charger: ", this.marques);
     },
     (error) => {
@@ -119,6 +127,9 @@ export class ListMarqueComponent implements OnInit{
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
 

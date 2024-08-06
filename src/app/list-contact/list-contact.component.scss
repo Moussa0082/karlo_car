@@ -1,0 +1,103 @@
+.table-responsive {
+    overflow-x: auto;
+  }
+  
+  td.mat-cell {
+    padding: 16px;
+  }
+
+  .full-width {
+    font-size: 14px;
+    width: 100%;
+}
+
+
+.entete {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .users {
+    margin: 0;
+  }
+  
+  #btn-add {
+    color: white;
+    border-radius: 20px;
+    background-color: blue;
+    border: none;
+    width: 120px;
+  }
+  
+  .table-responsive {
+    margin-top: 16px;
+  }
+  
+  .mat-slide-toggle {
+    margin-right: 16px;
+  }
+  
+  .mat-card {
+    margin-top: 16px;
+  }
+  
+  .mat-form-field {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+ 
+
+  th.mat-header-cell:first-of-type,
+  td.mat-cell:first-of-type,
+  td.mat-footer-cell:first-of-type {
+    padding: 16px;
+  }
+  
+  th.mat-header-cell {
+    padding: 16px;
+  }
+  
+  .mat-header-cell {
+    font-size: 14px;
+  }
+  
+
+
+
+  // Shimmer effect
+  /* styles.css ou styles.scss */
+.shimmer {
+    position: relative;
+    overflow: hidden;
+    background: #f6f7f8;
+    border-radius: 4px;
+  }
+  
+  .shimmer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0) 40%);
+    animation: shimmer 1.5s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+  
+  .shimmer-table td, .shimmer-table th {
+    padding: 10px;
+    background: #f6f7f8;
+  }
+// end shimmer effect  

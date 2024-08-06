@@ -23,7 +23,7 @@ export class FullComponent implements OnInit{
   search: boolean = false;
   isLoginPage:boolean=false;
   isForbiddenPage:boolean=false;
-  adminRecup!:User;
+  adminRecup!:User | null;
 
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -34,6 +34,7 @@ export class FullComponent implements OnInit{
 
   constructor(private breakpointObserver: BreakpointObserver, private router: Router, private userService:UserService) { 
     this.router.events.subscribe((event) => {
+      this.adminRecup = this.userService.getUtilisateurConnect();
       if (event instanceof NavigationEnd) {
         this.isLoginPage = event.url.endsWith('login') || event.url === '/login';
       }
@@ -44,7 +45,8 @@ export class FullComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    
+    this.adminRecup = this.userService.getUtilisateurConnect();
+    console.log("user recup ", this.adminRecup);
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.isLoginPage = event.url.endsWith('login') || event.url === '/login';
@@ -60,7 +62,7 @@ export class FullComponent implements OnInit{
   
   
 
-  logout(user:User):void{
+  logout(user:User | null):void{
     Swal.fire({
       title: "Etes vous sûr?",
       text: "Voulez - vous , vous decconecter?",
@@ -72,11 +74,20 @@ export class FullComponent implements OnInit{
       confirmButtonText: "Oui, je veux!"
     }).then((result) => {
       if (result.isConfirmed) {
-        this.userService.logout().then(() => {
-          this.userService.disableUtilisateur(user.idUser);
+      
+        this.userService.disableUtilisateur(user!.idUser).subscribe(
+          () => {
+            // Handle success
+            this.userService.logout();
           console.log( "user deconnecter");
           this.router.navigate(['/login']);
-        });
+            console.log('User disabled successfully');
+          },
+          (error) => {
+            // Handle error
+            console.error('Error disabling user', error);
+          }
+        );
       }else{
         console.log( "deconnection annuler");
 
@@ -104,37 +115,42 @@ export class FullComponent implements OnInit{
     {
       link: "/roles",
       icon: "layers",
-      menu: "Listes rôles",
+      menu: "Liste rôles",
     },
     {
       link: "/reservoires",
       icon: "layers",
-      menu: "Listes reservoirs",
+      menu: "Liste reservoirs",
     },
     {
       link: "/typeTransactions",
       icon: "layers",
-      menu: "Listes type transactions",
+      menu: "Liste type transactions",
     },
     {
       link: "/typeVoitures",
       icon: "layers",
-      menu: "Listes type voitures",
+      menu: "Liste type voitures",
     },
     {
       link: "/marques",
       icon: "layers",
-      menu: "Listes des marques",
+      menu: "Liste des marques",
     },
     {
       link: "/transactions",
       icon: "layers",
-      menu: "Listes des transactions",
+      menu: "Liste des transactions",
     },
     {
       link: "/historiques",
       icon: "layers",
-      menu: "Listes des historiques",
+      menu: "Liste des historiques",
+    },
+    {
+      link: "/contact",
+      icon: "layers",
+      menu: "Liste des contact",
     },
   ]
 

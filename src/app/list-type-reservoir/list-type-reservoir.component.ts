@@ -1,10 +1,12 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { TypeReservoir } from '../models/TypeReservoir';
 import { AddUpTypeReservoirComponent } from '../add-up-type-reservoir/add-up-type-reservoir.component';
 import Swal from 'sweetalert2';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { ReservoirService } from '../services/reservoir.service';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-list-type-reservoir',
@@ -19,6 +21,8 @@ export class ListTypeReservoirComponent {
   dataSource = new MatTableDataSource<TypeReservoir>();
   typeReservoires: TypeReservoir[] = [];
   loading: boolean = true;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
 
   constructor(private dialog: MatDialog , private cd: ChangeDetectorRef, private typeReservoireService: ReservoirService) { }
@@ -31,6 +35,8 @@ export class ListTypeReservoirComponent {
         this.typeReservoires = data;
         this.dataSource = new MatTableDataSource(this.typeReservoires);
         this.loading = false; // Fin du chargement
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
         console.log("liste types reservoir: ", this.typeReservoires);
       },
       (error) => {
@@ -46,6 +52,8 @@ export class ListTypeReservoirComponent {
     this.typeReservoireService.getAllTypeReservoir().subscribe(data => {
       this.typeReservoires = data;
       this.dataSource.data = this.typeReservoires; // Assurez-vous que MatTableDataSource est mis à jour
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
       console.log("liste type reservoir charger: ", this.typeReservoires);
     },
     (error) => {
@@ -119,6 +127,9 @@ export class ListTypeReservoirComponent {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
 }

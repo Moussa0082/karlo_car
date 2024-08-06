@@ -88,8 +88,8 @@ export class UserService {
   }
 
   //Desactiver utilisateur 
-  disableUtilisateur(idUser: string) {
-    return this.http.put(`${apiUrl}/${this.baseUrl}/desactiver/${idUser}`, {});
+  disableUtilisateur(idUser: string | null) : Observable<any> {
+    return this.http.put<any>(`${apiUrl}/${this.baseUrl}/desactiver/${idUser}`, {});
   }
 
   loginUtilisateur(email: string, password: string): Observable<any> {

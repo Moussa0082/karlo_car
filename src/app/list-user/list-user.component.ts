@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, of } from 'rxjs';
@@ -8,6 +8,8 @@ import { User } from '../models/User';
 import { AddUpUserComponent } from '../add-up-user/add-up-user.component';
 import { RoleService } from '../services/role.service';
 import { Role } from '../models/Role';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 
 
@@ -27,7 +29,8 @@ export class ListUserComponent  implements OnInit{
   users: User[] = [];
   loading: boolean = true;
   tempStatus!: boolean; // Variable temporaire pour stocker l'état
-
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
 
   constructor(private dialog: MatDialog , private cd: ChangeDetectorRef, private userService: UserService) { }
@@ -40,6 +43,8 @@ export class ListUserComponent  implements OnInit{
         this.users = data;
         this.dataSource = new MatTableDataSource(this.users);
         this.loading = false; // Fin du chargement
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
         console.log("liste user: ", this.users);
       },
       (error) => {
@@ -55,6 +60,8 @@ export class ListUserComponent  implements OnInit{
     this.userService.getAllUsers().subscribe(data => {
       this.users = data;
       this.dataSource.data = this.users; // Assurez-vous que MatTableDataSource est mis à jour
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
       console.log("liste user charger: ", this.users);
     },
     (error) => {
@@ -224,6 +231,9 @@ onActivate(element: User) {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   getEnabledStatus(id: string): boolean {

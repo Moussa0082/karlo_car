@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TypeTransaction } from '../models/TypeTransaction';
 import { AddUpTypeTransactionComponent } from '../add-up-type-transaction/add-up-type-transaction.component';
 import Swal from 'sweetalert2';
@@ -6,6 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { TypeTransactionService } from '../services/type-transaction.service';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-list-type-transaction',
@@ -19,6 +21,8 @@ export class ListTypeTransactionComponent {
   dataSource = new MatTableDataSource<TypeTransaction>();
   typeTransactions: TypeTransaction[] = [];
   loading: boolean = true;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
   
   constructor(private typeTransactionService: TypeTransactionService, private fb: FormBuilder, private dialog: MatDialog){
 
@@ -28,6 +32,8 @@ export class ListTypeTransactionComponent {
     this.typeTransactionService.getAllTypeTransaction().subscribe(data => {
       this.typeTransactions = data;
       this.dataSource = new MatTableDataSource(this.typeTransactions);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
       console.log("liste typeTransaction: ", this.typeTransactions);
     },
     (error) => {
@@ -39,6 +45,8 @@ export class ListTypeTransactionComponent {
     this.typeTransactionService.getAllTypeTransaction().subscribe(data => {
       this.typeTransactions = data;
       this.dataSource.data = this.typeTransactions; // Assurez-vous que MatTableDataSource est mis à jour
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
       console.log("liste typeTransaction: ", this.typeTransactions);
     },
     (error) => {
@@ -108,6 +116,8 @@ export class ListTypeTransactionComponent {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
-
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RoleService } from '../services/role.service';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -6,6 +6,8 @@ import { Role } from '../models/Role';
 import { MatTableDataSource } from '@angular/material/table';
 import { AddUpRoleComponent } from '../add-up-role/add-up-role.component';
 import Swal from 'sweetalert2';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-role',
@@ -19,6 +21,8 @@ export class RoleComponent implements OnInit{
   dataSource = new MatTableDataSource<Role>();
   roles: Role[] = [];
   loading: boolean = true;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
   
   constructor(private roleService: RoleService, private fb: FormBuilder, private dialog: MatDialog){
 
@@ -28,6 +32,8 @@ export class RoleComponent implements OnInit{
     this.roleService.getAllRole().subscribe(data => {
       this.roles = data;
       this.dataSource = new MatTableDataSource(this.roles);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
       console.log("liste role: ", this.roles);
     },
     (error) => {
@@ -39,6 +45,8 @@ export class RoleComponent implements OnInit{
     this.roleService.getAllRole().subscribe(data => {
       this.roles = data;
       this.dataSource.data = this.roles; // Assurez-vous que MatTableDataSource est mis à jour
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
       console.log("liste role: ", this.roles);
     },
     (error) => {
@@ -111,6 +119,9 @@ export class RoleComponent implements OnInit{
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
 

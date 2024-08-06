@@ -1,10 +1,12 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Transaction } from '../models/Transaction';
 import { AddUpTransactionComponent } from '../add-up-transaction/add-up-transaction.component';
 import Swal from 'sweetalert2';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { TransactionService } from '../services/transaction.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-list-transaction',
@@ -19,6 +21,8 @@ export class ListTransactionComponent implements OnInit{
   dataSource = new MatTableDataSource<Transaction>();
   transactions: Transaction[] = [];
   loading: boolean = true;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
 
   constructor(private dialog: MatDialog , private cd: ChangeDetectorRef, private transactionService: TransactionService) { }
@@ -28,6 +32,8 @@ export class ListTransactionComponent implements OnInit{
       this.transactionService.getAllTransactions().subscribe(data => {
         this.transactions = data;
         this.dataSource = new MatTableDataSource(this.transactions);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
         console.log("liste transactions: ", this.transactions);
       },
       (error) => {
@@ -40,6 +46,8 @@ export class ListTransactionComponent implements OnInit{
     this.transactionService.getAllTransactions().subscribe(data => {
       this.transactions = data;
       this.dataSource = new MatTableDataSource(this.transactions);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
       console.log("liste transactions: ", this.transactions);
     },
     (error) => {
@@ -113,6 +121,9 @@ export class ListTransactionComponent implements OnInit{
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
 

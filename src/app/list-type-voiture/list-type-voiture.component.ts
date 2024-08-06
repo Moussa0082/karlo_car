@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TypeVoiture } from '../models/TypeVoiture';
 import { MatTableDataSource } from '@angular/material/table';
 import { TypeVoitureService } from '../services/type-voiture.service';
@@ -6,6 +6,8 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { AddUpTypeVoitureComponent } from '../add-up-type-voiture/add-up-type-voiture.component';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-list-type-voiture',
@@ -20,6 +22,8 @@ export class ListTypeVoitureComponent  implements OnInit{
   dataSource = new MatTableDataSource<TypeVoiture>();
   typeVoitures: TypeVoiture[] = [];
   loading: boolean = true;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
   
   constructor(private typeVoitureService: TypeVoitureService, private fb: FormBuilder, private dialog: MatDialog){
 
@@ -29,6 +33,8 @@ export class ListTypeVoitureComponent  implements OnInit{
     this.typeVoitureService.getAllTypeVoiture().subscribe(data => {
       this.typeVoitures = data;
       this.dataSource = new MatTableDataSource(this.typeVoitures);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
       console.log("liste type Voitures: ", this.typeVoitures);
     },
     (error) => {
@@ -40,6 +46,8 @@ export class ListTypeVoitureComponent  implements OnInit{
     this.typeVoitureService.getAllTypeVoiture().subscribe(data => {
       this.typeVoitures = data;
       this.dataSource.data = this.typeVoitures; // Assurez-vous que MatTableDataSource est mis à jour
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
       console.log("liste type voitures: ", this.typeVoitures);
     },
     (error) => {
@@ -112,6 +120,9 @@ export class ListTypeVoitureComponent  implements OnInit{
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
 

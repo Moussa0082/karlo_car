@@ -1,72 +1,65 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Contact } from '../models/Contact';
 import { MatTableDataSource } from '@angular/material/table';
-import { Marque } from '../models/Marque';
-import { MatDialog } from '@angular/material/dialog';
-import { HistoriqueService } from '../services/historique.service';
-import { Historique } from '../models/Historique';
-import Swal from 'sweetalert2';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { ContactService } from '../services/contact.service';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-historiques',
-  templateUrl: './historiques.component.html',
-  styleUrls: ['./historiques.component.scss']
+  selector: 'app-list-contact',
+  templateUrl: './list-contact.component.html',
+  styleUrls: ['./list-contact.component.scss']
 })
-export class HistoriquesComponent implements OnInit{
+export class ListContactComponent implements OnInit{
 
 
-  displayedColumns: string[] = [ 'date' , 'description', 'action'];
+         
+  displayedColumns: string[] = [ 'nomContact' , 'email', 'telephone' , 'dateAjout', 'action'];
 
-  dataSource = new MatTableDataSource<Historique>();
-  historiques: Historique[] = [];
-
+  dataSource = new MatTableDataSource<Contact>();
+  contacts: Contact[] = [];
+  loading: boolean = true;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
 
-  constructor(private dialog: MatDialog , private cd: ChangeDetectorRef, private historiqueService: HistoriqueService) { }
+  constructor(private dialog: MatDialog , private cd: ChangeDetectorRef, private contactService: ContactService) { }
 
  
   ngOnInit(): void {
-  
-      this.historiqueService.getAllHistorique().subscribe(data => {
-        this.historiques = data;
-        this.dataSource = new MatTableDataSource(this.historiques);
+      this.contactService.getAllContacts().subscribe(data => {
+        this.contacts = data;
+        this.dataSource = new MatTableDataSource(this.contacts);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        console.log("liste historiques: ", this.historiques);
+        console.log("liste contacts: ", this.contacts);
       },
       (error) => {
-        console.error('Erreur lors du chargement de la liste des marques:', error);
+        console.error('Erreur lors du chargement de la liste des contacts:', error);
       });
-
  
   }
 
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-  }
-
   chargerDonner(): void {
-    this.historiqueService.getAllHistorique().subscribe(data => {
-      this.historiques = data;
-      this.dataSource = new MatTableDataSource(this.historiques);
+    this.contactService.getAllContacts().subscribe(data => {
+      this.contacts = data;
+      this.dataSource = new MatTableDataSource(this.contacts);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste historiques: ", this.historiques);
+      console.log("liste contacts: ", this.contacts);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des marques:', error);
+      console.error('Erreur lors du chargement de la liste des contacts:', error);
     });
-
   }
   
 
   
 
 
-  onDelete(element:Historique):void{
+  onDelete(element:Contact):void{
     Swal.fire({
       title: "Etes vous sûr?",
       text: "Voulez - vous supprimer!",
@@ -78,13 +71,13 @@ export class HistoriquesComponent implements OnInit{
       confirmButtonText: "Oui, je veux supprimer!"
     }).then((result) => {
       if (result.isConfirmed) {
-        this.historiqueService.deleteHistorique(element.idHistorique).subscribe(
+        this.contactService.deleteContact(element.idContact).subscribe(
           (result) => {
             this.chargerDonner(); // Recharger la liste après la suppression réussie
             console.log( "result delete : ", result);
           }
         );
-        console.log("id Historique", element.idHistorique);
+        console.log("id contact", element.idContact);
         Swal.fire({
           title: "Supprimer!",
           text: "Suppression réussi.",
@@ -103,8 +96,6 @@ export class HistoriquesComponent implements OnInit{
 
 
 
-
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -112,6 +103,5 @@ export class HistoriquesComponent implements OnInit{
       this.dataSource.paginator.firstPage();
     }
   }
-
 
 }
