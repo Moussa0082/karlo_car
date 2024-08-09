@@ -75,15 +75,15 @@ export class FullComponent implements OnInit{
     }).then((result) => {
       if (result.isConfirmed) {
       
-        this.userService.disableUtilisateur(user!.idUser).subscribe(
-          () => {
+        this.userService.disconnectUser(user!.idUser).subscribe(
+          (response:any) => {
             // Handle success
             this.userService.logout();
-          console.log( "user deconnecter");
+          console.log( "user deconnecter", response);
           this.router.navigate(['/login']);
             console.log('User disabled successfully');
           },
-          (error) => {
+          (error:any) => {
             // Handle error
             console.error('Error disabling user', error);
           }
@@ -116,6 +116,11 @@ export class FullComponent implements OnInit{
       link: "/roles",
       icon: "layers",
       menu: "Liste rôles",
+    },
+    {
+      link: "/voituresLouer",
+      icon: "layers",
+      menu: "Liste voitures à louer",
     },
     {
       link: "/reservoires",

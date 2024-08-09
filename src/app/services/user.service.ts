@@ -59,7 +59,7 @@ export class UserService {
   }
 
   disconnectUser(idUser: string): any {
-    return this.http.post(`${apiUrl}/${this.baseUrl}/logout?idUser=${idUser}`, idUser);
+    return this.http.put(`${apiUrl}/${this.baseUrl}/logout/${idUser}`, idUser);
   }
 
 

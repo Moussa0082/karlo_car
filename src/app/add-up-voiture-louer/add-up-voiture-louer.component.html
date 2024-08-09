@@ -1,0 +1,77 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Modifier une voiture à louer' : 'Ajouter une voiture à louer' }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="voitureLouerForm">
+    <div class="row">
+      <div class="col">
+        <mat-form-field appearance="fill">
+          <mat-label>Matricule</mat-label>
+          <input matInput placeholder="Matricule" formControlName="matricule" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Année</mat-label>
+          <input matInput placeholder="Année" formControlName="annee" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Type boite</mat-label>
+          <input matInput placeholder="type boite" formControlName="typeBoite" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Nombre de protes</mat-label>
+          <input matInput placeholder="nombre de porte" formControlName="nbPortiere" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Prix propriétaire</mat-label>
+          <input matInput placeholder="prix proprietaire" formControlName="prixProprietaire" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Prix augmentation</mat-label>
+          <input matInput placeholder="prix augmentation" formControlName="prixAugmente" required>
+        </mat-form-field>
+    
+        <mat-form-field appearance="fill">
+          <mat-label>Marque</mat-label>
+          <mat-select formControlName="marque" required>
+            <mat-option *ngFor="let marque of marques" [value]="marque"> <!-- Utilisez l'objet complet -->
+              {{marque.nomMarque}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Type voiture</mat-label>
+          <mat-select formControlName="typeVoiture" required>
+            <mat-option *ngFor="let typeVoiture of typeVoitures" [value]="typeVoiture"> <!-- Utilisez l'objet complet -->
+              {{typeVoiture.nomTypeVoiture}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        
+        <mat-form-field appearance="fill">
+            <mat-label>Type reservoir</mat-label>
+            <mat-select formControlName="typeReservoir" required>
+            <mat-option *ngFor="let typeReservoir of typeReservoirs" [value]="typeReservoir"> <!-- Utilisez l'objet complet -->
+              {{typeReservoir.nomTypeReservoir}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+
+          <div class="file-upload-container">
+            <label for="file-upload" class="file-upload-label">
+              <input type="file" id="file-upload" (change)="onFileChange($event)" formControlName="images" multiple style="display: none;" accept="image/*">
+              <span class="file-upload-text">Charger une image</span>
+            </label>
+          </div>
+          <mat-card *ngIf="imagePreviews" class="image-preview-card">
+            <img [src]="imagePreviews" class="image-preview" alt="Image Preview">
+          </mat-card>
+
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button class="dialog-button" (click)="onNoClick()">Annuler</button>
+  <button mat-button color="primary" class="dialog-button" (click)="onSaves()">{{ isEditMode ? 'Modifier' : 'Ajouter' }}</button>
+</mat-dialog-actions>

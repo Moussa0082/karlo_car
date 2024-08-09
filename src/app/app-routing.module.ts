@@ -30,6 +30,7 @@ import { AuthGuard } from './services/auth.guard';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { HistoriquesComponent } from './historiques/historiques.component';
 import { ListContactComponent } from './list-contact/list-contact.component';
+import { ListVoitureLouerComponent } from './list-voiture-louer/list-voiture-louer.component';
 
 const routes: Routes = [
   {
@@ -49,6 +50,7 @@ const routes: Routes = [
       {path:"forbidden", component:ForbiddenComponent },
       {path:"historiques", component:HistoriquesComponent , canActivate: [AuthGuard] },
       {path:"contact", component:ListContactComponent , canActivate: [AuthGuard] },
+      {path:"voituresLouer", component:ListVoitureLouerComponent , canActivate: [AuthGuard] },
       
     ]
   },

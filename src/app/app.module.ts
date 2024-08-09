@@ -32,6 +32,10 @@ import { AddUpTransactionComponent } from './add-up-transaction/add-up-transacti
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { HistoriquesComponent } from './historiques/historiques.component';
 import { ListContactComponent } from './list-contact/list-contact.component';
+import { ListVoitureLouerComponent } from './list-voiture-louer/list-voiture-louer.component';
+import { ListVoitureVendreComponent } from './list-voiture-vendre/list-voiture-vendre.component';
+import { AddUpVoitureVendreComponent } from './add-up-voiture-vendre/add-up-voiture-vendre.component';
+import { AddUpVoitureLouerComponent } from './add-up-voiture-louer/add-up-voiture-louer.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +58,11 @@ import { ListContactComponent } from './list-contact/list-contact.component';
     AddUpTransactionComponent,
     ForbiddenComponent,
     HistoriquesComponent,
-    ListContactComponent
+    ListContactComponent,
+    ListVoitureLouerComponent,
+    ListVoitureVendreComponent,
+    AddUpVoitureVendreComponent,
+    AddUpVoitureLouerComponent
   ],
   imports: [
     BrowserModule,

@@ -45,15 +45,15 @@
           <div class="d-flex align-items-center">
             <img src="assets/images/user2.webp" class="rounded-circle" alt="">
             <span class="fw-light ms-8 text-secondary">Bonjour,</span>
-            <span class="fw-bold ms-8">Julia</span>
+            <span class="fw-bold ms-8">{{ adminRecup != null ? adminRecup.nomUser : "Jone Doe"}}</span>
             <i-feather name="chevron-down" class="feather-base"></i-feather>
           </div>
         </button>
         <mat-menu #menu="matMenu" class="profile-dropdown">
           <div class="p-16 mb-4">
-            <button mat-menu-item class="fs-16">Modifier le Profil</button>
-            <button mat-menu-item class="fs-16">Compte</button>
-            <button mat-menu-item class="fs-16">Changer le Mot de Passe</button>
+            <!-- <button mat-menu-item class="fs-16">Modifier le Profil</button> -->
+            <!-- <button mat-menu-item class="fs-16">Compte</button> -->
+            <!-- <button mat-menu-item class="fs-16">Changer le Mot de Passe</button> -->
             <button mat-menu-item class="fs-16">Mes Paramètres</button>
           </div>
 
