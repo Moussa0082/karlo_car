@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Marque } from '../models/Marque';
 import { TypeVoiture } from '../models/TypeVoiture';
 import { TypeReservoir } from '../models/TypeReservoir';
@@ -13,12 +13,16 @@ import { MarqueService } from '../services/marque.service';
 import Swal from 'sweetalert2';
 import { UserService } from '../services/user.service';
 import { User } from '../models/User';
+import {MatRadioModule} from '@angular/material/radio';
 
 @Component({
   selector: 'app-add-up-voiture-louer',
+  // standalone: true,
+  // imports: [MatRadioModule],
   templateUrl: './add-up-voiture-louer.component.html',
-  styleUrls: ['./add-up-voiture-louer.component.scss']
+  styleUrls: ['./add-up-voiture-louer.component.scss'],
 })
+
 export class AddUpVoitureLouerComponent implements OnInit{
 
   @ViewChild('imageInput') imageInput!: ElementRef<HTMLInputElement>;
@@ -29,7 +33,7 @@ export class AddUpVoitureLouerComponent implements OnInit{
   users: User[] = [];
   typeVoitures: TypeVoiture[] = [];
   typeReservoirs: TypeReservoir[]  = [];
-  selectedImages: File[] = [];
+  selectedImages: File[]  = [];
   imagePreviews: string[] = [];
   isEditMode: boolean;
 
@@ -78,6 +82,10 @@ export class AddUpVoitureLouerComponent implements OnInit{
       typeReservoir: [this.data.voitureLouer?.typeReservoir || '' , Validators.required],
       user: [this.data.voitureLouer?.user || '' , Validators.required]
     });
+    // Abonnez-vous aux changements de valeur pour le contrôle isChauffeur
+    this.voitureLouerForm.get('isChauffeur')?.valueChanges.subscribe(value => {
+      this.onIsChauffeurChange(value);
+    });
     this.typeReservoirService.getAllTypeReservoir().subscribe(data => {
       this.typeReservoirs = data;
       console.log("liste type reservoir charger: ", this.typeReservoirs);
@@ -87,13 +95,15 @@ export class AddUpVoitureLouerComponent implements OnInit{
     });
     this.userService.getAllUsers().subscribe(
       (data) => {
-        this.users = data.filter((user:any) => user.role.libelle != "user");
-        // console.log(this.demandes.utilisateur.nom)
-        // console.log(this.demandes.utilisateur.nom)
-        this.users.forEach(user => {
-          console.log(user.role?.libelle);
-        });
+        this.users = data;
+        // .filter((user:any) => user.role.libelle != "Admin");
+        // // console.log(this.demandes.utilisateur.nom)
+        // // console.log(this.demandes.utilisateur.nom)
+        // this.users.forEach(user => {
+        //   console.log(user.role?.libelle);
+        // });
       },
+      
       (error) => {
         console.error('Erreur lors du chargement de la liste des users:', error);
       }
@@ -168,10 +178,33 @@ export class AddUpVoitureLouerComponent implements OnInit{
         console.error('Erreur lors du chargement des typeVoitures:', error);
       }
     );
+    this.userService.getAllUsers().subscribe(
+      (users: User[]) => {
+        this.users = users;
+        
+        // Pour le mode édition, assurez-vous que la valeur du formulaire est correctement définie
+        if (this.isEditMode && this.data.voitureLouer?.user) {
+          const user = this.users.find(r => r.idUser === this.data.voitureLouer.user.idUser);
+          if (user) {
+            this.voitureLouerForm.patchValue({ user: user });
+            console.log("utilisateur :", user?.nomUser);
+          }
+        }
+      },
+      error => {
+        console.error('Erreur lors du chargement des utilisateurs de la voiture à louer:', error);
+      }
+    );
   }
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  onIsChauffeurChange(value: boolean) {
+    value   === !value;
+    console.log('Valeur booléenne:', value);
+    // Faites ce que vous voulez avec la valeur booléenne
   }
 
  
@@ -212,34 +245,100 @@ export class AddUpVoitureLouerComponent implements OnInit{
           }
         );
       }
-    } 
+    } else{
+      this.showValidationErrors();
+    }
   }
+  
+  // onFileChange(event: Event): void {
+  //   const input = event.target as HTMLInputElement;
+  //   if (input.files) {
+  //     const files = Array.from(input.files); // Convertir FileList en tableau
+  
+  //     files.forEach(file => {
+  //       const reader = new FileReader();
+        
+  //       reader.onload = () => {
+  //         const imageUrl = reader.result as string;
+  //         this.imagePreviews.push(imageUrl); // Ajouter l'aperçu au tableau
+  //         console.log('Image URL:', imageUrl); // Afficher l'URL des données dans la console
+  //       };
+        
+  //       reader.readAsDataURL(file);
+  //       this.selectedImages.push(file); // Ajouter le fichier au tableau
+  //     });
+  
+  //     // Réinitialiser la valeur du champ de fichier pour éviter des problèmes
+  //     input.value = '';
+  //   }
+  // }
 
   onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files) {
-      const files = Array.from(input.files); // Convert FileList to Array
-      this.imagePreviews = []; // Reset imagePreviews array
-  
-      files.forEach(file => {
-        const reader = new FileReader();
-        
-        reader.onload = () => {
-          this.imagePreviews.push(reader.result as string);
-        };
-        
-        reader.readAsDataURL(file);
-      });
-  
-      // Update the selectedImages property if needed
-      this.selectedImages = files; // Store all files
-      // Reset the file input value to avoid issues
-      input.value = '';
+        const files = Array.from(input.files); // Convertir FileList en tableau
+
+        files.forEach(file => {
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                const imageUrl = reader.result as string;
+                this.imagePreviews.push(imageUrl); // Ajouter l'aperçu au tableau
+            };
+            
+
+            reader.readAsDataURL(file); // Lire le fichier comme une URL de données
+
+            // Vérifier si le fichier est déjà dans la liste pour éviter les doublons
+            if (!this.selectedImages.some(img => img.name === file.name)) {
+                this.selectedImages.push(file); // Ajouter le fichier au tableau
+            }
+        });
+
+        // Réinitialiser la valeur du champ de fichier pour éviter des problèmes
+        input.value = '';
     }
-  }
+}
+
   
-  // onFileChange(event: any): void {
-  //   this.selectedImages = Array.from(event.target.files);
-  // }
+
+  editImage(index: number): void {
+    const newFileInput = document.createElement('input');
+    newFileInput.type = 'file';
+    newFileInput.accept = 'image/*';
+    newFileInput.onchange = (event: Event) => {
+      const input = event.target as HTMLInputElement;
+      if (input.files) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = () => {
+          const imageUrl = reader.result as string;
+          this.imagePreviews[index] = imageUrl;
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    newFileInput.click();
+  }
+
+   // Méthode pour supprimer une image
+   removeImage(index: number): void {
+    // Supprime l'image à l'index spécifié
+    this.imagePreviews.splice(index, 1);
+  }
+
+  private showValidationErrors() {
+    Object.keys(this.voitureLouerForm.controls).forEach(key => {
+      const control = this.voitureLouerForm.get(key);
+      if (control) {
+        const controlErrors = control.errors as ValidationErrors | null; // Assertion de type
+        if (controlErrors) {
+          Object.keys(controlErrors).forEach(keyError => {
+            console.log(`Control ${key} has error: ${keyError}`);
+          });
+        }
+      }
+    });
+  }
 
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/User';
 import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from '@angular/common/http';
-import {  Subject, tap } from 'rxjs';
+import {  BehaviorSubject, Subject, tap } from 'rxjs';
 import { apiUrl } from '../constant/constantes';
 import { catchError } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
@@ -14,16 +14,26 @@ export class UserService {
   private baseUrl = 'user';
   
   private user: User | null = null;
-
+  
   public isAuthAdmin:boolean = false;
   
-
-
-  constructor(private http: HttpClient) { }
-
-
-
   private userKey = 'userData';  // Key used to store user data in localStorage
+
+
+  constructor(private http: HttpClient) { 
+    const storedUser = localStorage.getItem('userData');
+    if (storedUser) {
+        this.userSubject.next(JSON.parse(storedUser).userData);
+    }
+  }
+
+
+
+
+
+
+  private userSubject = new BehaviorSubject<User | null>(null);
+  user$ = this.userSubject.asObservable();
 
   // Check if the user is logged in
   isLoggedIn(): boolean {
@@ -59,7 +69,7 @@ export class UserService {
   }
 
   disconnectUser(idUser: string): any {
-    return this.http.put(`${apiUrl}/${this.baseUrl}/logout/${idUser}`, idUser);
+    return this.http.put<any>(`${apiUrl}/${this.baseUrl}/logout/${idUser}`, idUser);
   }
 
 
@@ -67,14 +77,6 @@ export class UserService {
    updateUser(user: User): Observable<any> {
     return this.http.put(`${apiUrl}/${this.baseUrl}/update/${user.idUser}`, user);
   }
-    
-
-  // createUtilisateur(utilisateur: any, image?: File): Observable<any> {
-  //   const formData = new FormData();
-  //   formData.append('utilisateur', JSON.stringify(utilisateur));
-  //   if (image) formData.append('image', image);
-  //   return this.http.post(`http://localhost:8080/utilisateur/create`, formData);
-  // }
 
 
   getAllUsers(): Observable<any> {
@@ -103,19 +105,9 @@ export class UserService {
       })
     );
   }
-  // loginutilisateur(email: string, motDePasse: string): Observable<any> {
-  //   const body = {
-  //    email: email,
-  //    motdepasse: motDePasse,
-  //   };
  
-  //   return this.http.get(`${this.baseUrl}/login?email=${email}&motDePasse=${motDePasse}`);
-  //  }
 
   login(email: string, password: string): Observable<User> {
-    // const params = new HttpParams()
-    //   .set('email', email)
-    //   .set('password', password);
 
     return this.http.get<User>(`${apiUrl}/${this.baseUrl}/login?email=${email}&password=${password}`).pipe(
       catchError(this.handleError)
@@ -170,25 +162,34 @@ export class UserService {
       return throwError('Une erreur est survenue; veuillez réessayer plus tard.');
     }
 
-    setutilisateurConnect(utilisateur: User) {
-      this.user = utilisateur;
-      this.isAuthAdmin = true;
-      // Also update localStorage to persist data across page refreshes
-      localStorage.setItem('userData', JSON.stringify({ userData: utilisateur }));
+    getUtilisateurConnect(): Observable<User | null> {
+      return this.user$;
     }
+    // setutilisateurConnect(utilisateur: User) {
+    //   this.user = utilisateur;
+    //   this.isAuthAdmin = true;
+    //   // Also update localStorage to persist data across page refreshes
+    //   localStorage.setItem('userData', JSON.stringify({ userData: utilisateur }));
+    // }
+    setutilisateurConnect(user: User) {
+      // Mettre à jour l'utilisateur dans le service et le stocker dans localStorage
+      this.userSubject.next(user);
+      localStorage.setItem('userData', JSON.stringify({ userData: user }));
+  }
+
   
-    getUtilisateurConnect(): User | null {
-      if (this.user) {
-        return this.user;
-      }
+    // getUtilisateurConnect(): User | null {
+    //   if (this.user) {
+    //     return this.user;
+    //   }
   
-      // Try to get user from localStorage if `user` is not set
-      const storedUserData = localStorage.getItem('userData');
-      if (storedUserData) {
-        return JSON.parse(storedUserData).userData as User;
-      }
+    //   // Try to get user from localStorage if `user` is not set
+    //   const storedUserData = localStorage.getItem('userData');
+    //   if (storedUserData) {
+    //     return JSON.parse(storedUserData).userData as User;
+    //   }
   
-      return null; // Return null if no user data is available
-    }
+    //   return null; // Return null if no user data is available
+    // }
 
 }

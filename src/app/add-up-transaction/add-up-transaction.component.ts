@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { TypeTransaction } from '../models/TypeTransaction';
 import Swal from 'sweetalert2';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-up-transaction',
@@ -22,6 +23,9 @@ export class AddUpTransactionComponent implements OnInit{
   transactionForm!:FormGroup;
   typeTransactions: TypeTransaction[] = [];
   isEditMode: boolean;
+  private userSubject = new BehaviorSubject<User | null>(null);
+  private userSubscription!: Subscription;
+
 
 
 
@@ -31,8 +35,11 @@ export class AddUpTransactionComponent implements OnInit{
     private route:Router,
     private fb:FormBuilder,private transactionService : TransactionService
   ){
-    this.adminRecup = this.userService.getUtilisateurConnect();
-    this.isEditMode = !!data.transaction; // Si une transaction est passé, alors c'est le mode édition
+    this.userSubscription = this.userService.getUtilisateurConnect().subscribe(user => {
+      this.adminRecup = user;
+      // Si nécessaire, actualiser la vue ou effectuer des actions spécifiques ici
+    }); 
+       this.isEditMode = !!data.transaction; // Si une transaction est passé, alors c'est le mode édition
     this.transactionForm = this.fb.group({
       idTransaction: [this.isEditMode ? this.data.transaction?.idTransaction : '', this.isEditMode ? Validators.required : null],
       description: [data.transaction?.description || '', Validators.required],
@@ -42,7 +49,10 @@ export class AddUpTransactionComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.adminRecup = this.userService.getUtilisateurConnect();
+    this.userSubscription = this.userService.getUtilisateurConnect().subscribe(user => {
+      this.adminRecup = user;
+      // Si nécessaire, actualiser la vue ou effectuer des actions spécifiques ici
+    });
     console.log("Admin recup  ", this.adminRecup);
     this.isEditMode = !!this.data.transaction; // Si une transaction est passé, alors c'est le mode édition
     this.transactionForm = this.fb.group({

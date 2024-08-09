@@ -64,7 +64,7 @@
 
           <ng-container matColumnDef="dateModif">
             <th mat-header-cell *matHeaderCellDef>Date de modification</th>
-            <td mat-cell *matCellDef="let element">{{ element.dateModif }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.dateModif != null ? element.dateModif : "Pas modifier" }}</td>
           </ng-container>
 
           <ng-container matColumnDef="nbreView">

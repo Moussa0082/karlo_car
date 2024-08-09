@@ -1,6 +1,8 @@
 .mat-dialog-container {
-    max-width: 500px; /* Ajustez la largeur du dialogue ici */
+    max-width: 700px; /* Ajustez la largeur du dialogue ici */
     padding: 20px; /* Espace autour du contenu du dialogue */
+    overflow-y: auto;  /* Enable vertical scrolling */
+
   }
   
   .mat-dialog-content {
@@ -11,7 +13,6 @@
     display: flex;
     justify-content: space-between;
   }
-   
   
   
   .col {
@@ -50,20 +51,44 @@
     margin-top: 16px;
   }
   
-  .image-preview-card {
-    object-fit: cover;
-    margin-top: 16px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    width: 150px;
-    height: 150px;
-    overflow: hidden;
-    border-radius: 50%;
+  .image-grid {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .image-container {
+    position: relative;
+    margin: 8px;
   }
   
   .image-preview {
-    width:150px;
-    height: 150px;
+    width: 100px; /* Ajustez la taille selon vos besoins */
+    height: 100px; /* Ajustez la taille selon vos besoins */
+    object-fit: cover;
   }
   
+  .up, .del {
+    cursor: pointer;
+  }
+
+  .icones{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .up, .del {
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    color: white;
+  }
+  //radio btn
+  .mat-mdc-radio-button ~ .mat-mdc-radio-button {
+    margin-left: 16px;
+  }
+  
+  
+  
+  .scrollable-dialog-content {
+    max-height: 60vh; /* 60% of the viewport height or adjust as needed */
+    overflow-y: auto;
+  }
   

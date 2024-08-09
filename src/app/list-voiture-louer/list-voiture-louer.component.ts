@@ -91,7 +91,7 @@ export class ListVoitureLouerComponent implements OnInit{
 
   openDialog(voitureLouer?: VoitureLouer): void {
     const dialogRef = this.dialog.open(AddUpVoitureLouerComponent, {
-      width: '500px',
+      width: '700px',
       data: { voitureLouer }
     });
   

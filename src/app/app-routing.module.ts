@@ -37,7 +37,7 @@ const routes: Routes = [
     path:"",
     component:FullComponent,
     children: [
-      {path:"", redirectTo:"/forbidden", pathMatch:"full"},
+      {path:"", redirectTo:"/login", pathMatch:"full"},
       {path:"login", component:LoginComponent},
       {path:"home", component:DashboardComponent,  canActivate: [AuthGuard]},
       {path:"users", component:ListUserComponent , canActivate: [AuthGuard]},
@@ -47,7 +47,7 @@ const routes: Routes = [
       {path:"typeVoitures", component:ListTypeVoitureComponent , canActivate: [AuthGuard]},
       {path:"marques", component:ListMarqueComponent , canActivate: [AuthGuard]},
       {path:"transactions", component:ListTransactionComponent , canActivate: [AuthGuard]},
-      {path:"forbidden", component:ForbiddenComponent },
+      {path:"forbidden", component:ForbiddenComponent , canActivate: [AuthGuard]  },
       {path:"historiques", component:HistoriquesComponent , canActivate: [AuthGuard] },
       {path:"contact", component:ListContactComponent , canActivate: [AuthGuard] },
       {path:"voituresLouer", component:ListVoitureLouerComponent , canActivate: [AuthGuard] },

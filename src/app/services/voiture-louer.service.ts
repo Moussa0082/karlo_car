@@ -31,7 +31,26 @@ export class VoitureLouerService {
         // Vous pouvez ajouter des en-têtes si nécessaire
       })
     });
-  }
+}
+
+  // addVoitureLouer(voiture: VoitureLouer, images: File[]): Observable<any> {
+  //   const formData = new FormData();
+    
+  //   // Ajouter les données de la voiture au FormData
+  //   formData.append('voiture', JSON.stringify(voiture));
+
+  //   // Ajouter les fichiers d'images au FormData
+  //   images.forEach((image, index) => {
+  //     formData.append('images', image, image.name);
+  //   });
+
+  //   // Envoyer la requête POST
+  //   return this.http.post(`${apiUrl}/${this.baseUrl}/addVoiture`, formData, {
+  //     headers: new HttpHeaders({
+  //       // Vous pouvez ajouter des en-têtes si nécessaire
+  //     })
+  //   });
+  // }
   
 
   

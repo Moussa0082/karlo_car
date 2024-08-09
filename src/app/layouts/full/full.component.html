@@ -2,13 +2,13 @@
   <!-- Sidebar -->
   <mat-sidenav  
     #drawer
-    [ngClass]="{'sidenav': !isLoginPage && !isForbiddenPage}"
+    [ngClass]="{'sidenav': adminRecup != null}"
     fixedInViewport
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
     
-    <div class="p-16" *ngIf="!isLoginPage && !isForbiddenPage">
+    <div class="p-16" *ngIf="adminRecup != null">
       <div class="mb-16">
         <a href="javascript:void(0)" class="d-flex align-items-center">
           <img src="assets/images/favicon-logo.png" alt="">
@@ -16,7 +16,7 @@
         </a>
       </div>
 
-      <div class="pt-8" *ngIf="!isLoginPage && !isForbiddenPage">
+      <div class="pt-8" *ngIf="adminRecup != null || adminRecup != null && !isForbiddenPage">
         <ul>
           <li class="list-group mb-8" *ngFor="let sidenav of sidebarMenu">
             <a matRipple [matRippleColor]="'#f7f8f443'" routerLink="{{ sidenav.link }}"
@@ -33,7 +33,7 @@
 
   <mat-sidenav-content>
     <!-- Header -->
-    <mat-toolbar [ngClass]="{'sidenav': !isLoginPage && !isForbiddenPage}" class="header ps-24 pe-24" *ngIf="!isLoginPage && !isForbiddenPage">
+    <mat-toolbar [ngClass]="{'sidenav': adminRecup != null}" class="header ps-24 pe-24" *ngIf="adminRecup != null">
       <button type="button" class="ms-4" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
         <i-feather name="menu" class="text-light-muted feather-base mt-n3"></i-feather>
       </button>
@@ -73,7 +73,7 @@
       </div>
     </div>
 
-    <p *ngIf="!isLoginPage && !isForbiddenPage" class="text-center pb-24 fs-16">
+    <p *ngIf="adminRecup != null" class="text-center pb-24 fs-16">
       © 2023 Tous droits réservés par <a href="#" class="text-indigo">Karlo Car</a>
     </p>
   </mat-sidenav-content>

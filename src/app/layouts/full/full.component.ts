@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
@@ -21,9 +21,12 @@ interface sidebarMenu {
 export class FullComponent implements OnInit{
 
   search: boolean = false;
+  isBlankPage:boolean=false;
   isLoginPage:boolean=false;
   isForbiddenPage:boolean=false;
   adminRecup!:User | null;
+  private userSubscription!: Subscription;
+
 
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -33,10 +36,16 @@ export class FullComponent implements OnInit{
     );
 
   constructor(private breakpointObserver: BreakpointObserver, private router: Router, private userService:UserService) { 
-    this.router.events.subscribe((event) => {
-      this.adminRecup = this.userService.getUtilisateurConnect();
+    this.userSubscription = this.userService.getUtilisateurConnect().subscribe(user => {
+      this.adminRecup = user;
+      // Si nécessaire, actualiser la vue ou effectuer des actions spécifiques ici
+    }); 
+       this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.isLoginPage = event.url.endsWith('login') || event.url === '/login';
+      }
+      if (event instanceof NavigationEnd) {
+        this.isBlankPage = event.url.endsWith('/') || event.url === '/login';
       }
       if (event instanceof NavigationEnd) {
         this.isForbiddenPage = event.url.endsWith('forbidden') || event.url === '/forbidden';
@@ -45,17 +54,30 @@ export class FullComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.adminRecup = this.userService.getUtilisateurConnect();
+    this.userSubscription = this.userService.getUtilisateurConnect().subscribe(user => {
+      this.adminRecup = user;
+      // Si nécessaire, actualiser la vue ou effectuer des actions spécifiques ici
+      console.log("user recup :" , this.adminRecup)
+    });
+    
     console.log("user recup ", this.adminRecup);
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.isLoginPage = event.url.endsWith('login') || event.url === '/login';
       }
       if (event instanceof NavigationEnd) {
+        this.isBlankPage = event.url.endsWith('/') || event.url === '/login';
+      }
+      if (event instanceof NavigationEnd) {
         this.isForbiddenPage = event.url.endsWith('forbidden') || event.url === '/forbidden';
       }
     });
     
+  }
+
+  ngOnDestroy(): void {
+    // Se désabonner pour éviter les fuites de mémoire
+    this.userSubscription.unsubscribe();
   }
 
   // Get the user data from localStorage
@@ -80,6 +102,8 @@ export class FullComponent implements OnInit{
             // Handle success
             this.userService.logout();
           console.log( "user deconnecter", response);
+          // Réinitialiser adminRecup
+          this.adminRecup = null;
           this.router.navigate(['/login']);
             console.log('User disabled successfully');
           },
