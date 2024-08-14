@@ -37,6 +37,10 @@ import { ListVoitureVendreComponent } from './list-voiture-vendre/list-voiture-v
 import { AddUpVoitureVendreComponent } from './add-up-voiture-vendre/add-up-voiture-vendre.component';
 import { AddUpVoitureLouerComponent } from './add-up-voiture-louer/add-up-voiture-louer.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { ListReservationComponent } from './list-reservation/list-reservation.component';
+import { AddUpReservationComponent } from './add-up-reservation/add-up-reservation.component';
+import { ListVenteComponent } from './list-vente/list-vente.component';
+import { AddUpVenteComponent } from './add-up-vente/add-up-vente.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +67,11 @@ import { MatRadioModule } from '@angular/material/radio';
     ListVoitureLouerComponent,
     ListVoitureVendreComponent,
     AddUpVoitureVendreComponent,
-    AddUpVoitureLouerComponent
+    AddUpVoitureLouerComponent,
+    ListReservationComponent,
+    AddUpReservationComponent,
+    ListVenteComponent,
+    AddUpVenteComponent
   ],
   imports: [
     MatRadioModule,

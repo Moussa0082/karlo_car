@@ -14,24 +14,56 @@ export class VoitureLouerService {
   constructor(private http: HttpClient) { }
 
   // Méthode pour ajouter une voiture à louer
-  addVoitureLouer(voiture: VoitureLouer, images: File[]): Observable<any> {
+  addVoitureLouer(voitureLouer: any, images: File[]): Observable<any> {
     const formData = new FormData();
-    
-    // Ajouter les données de la voiture au FormData
-    formData.append('voiture', JSON.stringify(voiture));
+    formData.append('voiture', JSON.stringify(voitureLouer));
+  
+    if(images){
+  
+      for (let i = 0; i < images.length; i++) {
+        formData.append('images', images[i], images[i].name);
+      }
+      console.log("service formData : " , images);
+    }else{
+      console.log("image non pris comme tableau ou vide");
 
-    // Ajouter les fichiers d'images au FormData
-    images.forEach((image, index) => {
-      formData.append('images', image, image.name);
-    });
+    }
+  
+    return this.http.post<any>(`${apiUrl}/${this.baseUrl}/addVoiture`, formData);
+  }
+  
+  // addVoitureLouer(voiture: VoitureLouer, images: File[]): Observable<any> {
+  //   const formData = new FormData();
+  
+  //   // Ajouter les données de la voiture au FormData
+  //   formData.append('voiture', JSON.stringify(voiture));
+  
+  //   // Ajouter les fichiers d'images au FormData
+  //   if (images && images.length) {
+  //     for (const image of images) {
+  //       formData.append('images', image);
+  //     }
+  //   }
+  
+  //   // Log FormData pour débogage
+  //   formData.forEach((value, key) => {
+  //     if (value instanceof File) {
+  //       console.log(`${key}: ${value.name}`);
+  //     } else {
+  //       console.log(`${key}: ${value}`);
+  //     }
+  //   });
+  
+  //   // Envoyer la requête POST
+  //   return this.http.post(`${apiUrl}/${this.baseUrl}/addVoiture`, formData, {
+  //     headers: new HttpHeaders({
+  //       // Vous pouvez ajouter des en-têtes si nécessaire
+  //     }),
+  //     responseType: 'json'
+  //   });
+  // }
+  
 
-    // Envoyer la requête POST
-    return this.http.post(`${apiUrl}/${this.baseUrl}/addVoiture`, formData, {
-      headers: new HttpHeaders({
-        // Vous pouvez ajouter des en-têtes si nécessaire
-      })
-    });
-}
 
   // addVoitureLouer(voiture: VoitureLouer, images: File[]): Observable<any> {
   //   const formData = new FormData();
@@ -48,6 +80,7 @@ export class VoitureLouerService {
   //   return this.http.post(`${apiUrl}/${this.baseUrl}/addVoiture`, formData, {
   //     headers: new HttpHeaders({
   //       // Vous pouvez ajouter des en-têtes si nécessaire
+  // responseType: 'json'
   //     })
   //   });
   // }

@@ -1,7 +1,7 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import Swal from 'sweetalert2';
 import { Marque } from '../models/Marque';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { MarqueService } from '../services/marque.service';
@@ -136,40 +136,58 @@ export class AddUpMarqueComponent implements OnInit{
     if (this.marqueForm.valid && this.logo) {
       const marque = this.marqueForm.value;
       if (this.isEditMode) {
+        console.log("marque value :" ,marque);
         // Modifier marque
-        this.marqueService.updateMarque(this.data.marque.idMarque, marque, this.logo).subscribe(
-          response => {
-            Swal.fire('Succès !', 'Marque modifié avec succès', 'success');
-            console.log("marque modifier : " , response);
-            this.dialogRef.close(response);
-          },
-          error => {
-            Swal.fire('Erreur !', 'Erreur lors de la modification', error);
-          }
-        );
+        // this.marqueService.updateMarque(this.data.marque.idMarque, marque, this.logo).subscribe(
+        //   response => {
+        //     Swal.fire('Succès !', 'Marque modifié avec succès', 'success');
+        //     console.log("marque modifier : " , response);
+        //     this.dialogRef.close(response);
+        //   },
+        //   error => {
+        //     Swal.fire('Erreur !', 'Erreur lors de la modification', error);
+        //   }
+        // );
       } else {
         // Ajouter une marque
         const newMarque: Marque = this.marqueForm.value;
-        this.marqueService.createMarque(newMarque, this.logo).subscribe(
-          (response) => {
-            console.log('Marque ajouté avec succès :', response);
-            this.marqueForm.reset();
-            Swal.fire('Succès !', 'Marque crée avec succès', 'success');
-            this.dialogRef.close(response);
-          },
-          (error) => {
-            console.error("Erreur lors de l'ajout du role :", error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: error.error.message,
-            });
-          }
-        );
+        console.log("marque value :" ,newMarque);
+
+        // this.marqueService.createMarque(newMarque, this.logo).subscribe(
+        //   (response) => {
+        //     console.log('Marque ajouté avec succès :', response);
+        //     this.marqueForm.reset();
+        //     Swal.fire('Succès !', 'Marque crée avec succès', 'success');
+        //     this.dialogRef.close(response);
+        //   },
+        //   (error) => {
+        //     console.error("Erreur lors de l'ajout du role :", error);
+        //     Swal.fire({
+        //       icon: 'error',
+        //       title: 'Oops...',
+        //       text: error.error.message,
+        //     });
+        //   }
+        // );
       }
     }else{
       console.log("logo null");
+      this.showValidationErrors();
     }
+  }
+
+  private showValidationErrors() {
+    Object.keys(this.marqueForm.controls).forEach(key => {
+      const control = this.marqueForm.get(key);
+      if (control) {
+        const controlErrors = control.errors as ValidationErrors | null; // Assertion de type
+        if (controlErrors) {
+          Object.keys(controlErrors).forEach(keyError => {
+            console.log(`Control ${key} has error: ${keyError}`);
+          });
+        }
+      }
+    });
   }
 
 }

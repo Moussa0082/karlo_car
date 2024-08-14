@@ -33,7 +33,7 @@ export class AddUpVoitureLouerComponent implements OnInit{
   users: User[] = [];
   typeVoitures: TypeVoiture[] = [];
   typeReservoirs: TypeReservoir[]  = [];
-  selectedImages: File[]  = [];
+  images: File[]  = [];
   imagePreviews: string[] = [];
   isEditMode: boolean;
 
@@ -56,7 +56,7 @@ export class AddUpVoitureLouerComponent implements OnInit{
       prixProprietaire: [this.data.voitureLouer?.prixProprietaire ||  0, Validators.required],
       prixAugmente: [ this.data.voitureLouer?.prixAugmente || 0, Validators.required],
       isChauffeur: [this.data.voitureLouer?.isChauffeur || false],
-      images: [null],
+      images: this.fb.array([]), // Changez ici pour un tableau
       marque: [this.data.voitureLouer?.marque || '', Validators.required],
       typeVoiture: [this.data.voitureLouer?.typeVoiture || '', Validators.required],
       typeReservoir: [this.data.voitureLouer?.typeReservoir || '' , Validators.required],
@@ -76,7 +76,7 @@ export class AddUpVoitureLouerComponent implements OnInit{
       prixProprietaire: [this.data.voitureLouer?.prixProprietaire ||  0, Validators.required],
       prixAugmente: [ this.data.voitureLouer?.prixAugmente || 0, Validators.required],
       isChauffeur: [this.data.voitureLouer?.isChauffeur || false],
-      images: [null],
+      images: this.fb.array([]), // Changez ici pour un tableau
       marque: [this.data.voitureLouer?.marque || '', Validators.required],
       typeVoiture: [this.data.voitureLouer?.typeVoiture || '', Validators.required],
       typeReservoir: [this.data.voitureLouer?.typeReservoir || '' , Validators.required],
@@ -215,7 +215,7 @@ export class AddUpVoitureLouerComponent implements OnInit{
   
       if (this.isEditMode) {
         console.log('Edit Mode');
-        this.voitureService.updateVoitureLouer(voitureLouer,this.selectedImages).subscribe(
+        this.voitureService.updateVoitureLouer(voitureLouer, this.images).subscribe(
           response => {
             Swal.fire('Succès !', 'Voiture à louer modifié avec succès', 'success');
             console.log("Voiture à louer modifié : ", response);
@@ -223,20 +223,22 @@ export class AddUpVoitureLouerComponent implements OnInit{
           },
           error => {
             console.error('Erreur lors de la modification:', error);
-            Swal.fire('Erreur !', 'Erreur lors de la modification', error);
+            Swal.fire('Erreur !', 'Erreur lors de la modification', 'error');
           }
         );
       } else {
         console.log('Add Mode');
-        this.voitureService.addVoitureLouer(voitureLouer,this.selectedImages).subscribe(
+        this.voitureService.addVoitureLouer(voitureLouer, this.images).subscribe(
           response => {
             console.log('Voiture à louer ajoutée avec succès :', response);
             this.voitureLouerForm.reset();
+            this.images = [];
+            this.imagePreviews = [];
             Swal.fire('Succès !', 'Voiture à louer créé avec succès', 'success');
             this.dialogRef.close(response);
           },
           error => {
-            console.error("Erreur lors de l'ajout de l'utilisateur :", error);
+            console.error("Erreur lors de l'ajout de la voiture à louer :", error);
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
@@ -245,10 +247,11 @@ export class AddUpVoitureLouerComponent implements OnInit{
           }
         );
       }
-    } else{
+    } else {
       this.showValidationErrors();
     }
   }
+  
   
   // onFileChange(event: Event): void {
   //   const input = event.target as HTMLInputElement;
@@ -265,7 +268,7 @@ export class AddUpVoitureLouerComponent implements OnInit{
   //       };
         
   //       reader.readAsDataURL(file);
-  //       this.selectedImages.push(file); // Ajouter le fichier au tableau
+  //       this.images.push(file); // Ajouter le fichier au tableau
   //     });
   
   //     // Réinitialiser la valeur du champ de fichier pour éviter des problèmes
@@ -275,30 +278,64 @@ export class AddUpVoitureLouerComponent implements OnInit{
 
   onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
+  
     if (input.files) {
-        const files = Array.from(input.files); // Convertir FileList en tableau
-
-        files.forEach(file => {
-            const reader = new FileReader();
-
-            reader.onload = () => {
-                const imageUrl = reader.result as string;
-                this.imagePreviews.push(imageUrl); // Ajouter l'aperçu au tableau
-            };
-            
-
-            reader.readAsDataURL(file); // Lire le fichier comme une URL de données
-
-            // Vérifier si le fichier est déjà dans la liste pour éviter les doublons
-            if (!this.selectedImages.some(img => img.name === file.name)) {
-                this.selectedImages.push(file); // Ajouter le fichier au tableau
-            }
-        });
-
-        // Réinitialiser la valeur du champ de fichier pour éviter des problèmes
-        input.value = '';
+      const files = Array.from(input.files);
+  
+      // Réinitialiser les images sélectionnées et les aperçus
+      this.images = [];
+      this.imagePreviews = [];
+  
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const imageUrl = reader.result as string;
+          this.imagePreviews.push(imageUrl); // Ajouter l'aperçu au tableau
+        };
+        reader.readAsDataURL(file);
+  
+        // Ajouter le fichier à la liste des images sélectionnées
+        this.images.push(file);
+      });
+  
+      input.value = ''; // Réinitialiser le champ pour éviter des problèmes
     }
-}
+  }
+  
+  // onFileChange(event: any) {
+  //   const files = event.target.files;
+  //   this.images = files; // Assurez-vous que `images` est bien défini
+  // }
+  
+  
+  
+//   onFileChange(event: Event): void {
+//     const input = event.target as HTMLInputElement;
+
+//     if (input.files) {
+//         const files = Array.from(input.files); // Convertir FileList en tableau
+
+//         files.forEach(file => {
+//             // Créer une prévisualisation pour chaque fichier
+//             const reader = new FileReader();
+//             reader.onload = () => {
+//                 const imageUrl = reader.result as string;
+//                 this.imagePreviews.push(imageUrl); // Ajouter l'aperçu au tableau
+//             };
+//             reader.readAsDataURL(file); // Lire le fichier comme une URL de données
+
+//             // Vérifier si le fichier est déjà dans la liste pour éviter les doublons
+//             if (!this.images.some(img => img.name === file.name)) {
+//                 this.images.push(file); // Ajouter le fichier au tableau
+//                 console.log("Nom du fichier:", file.name); // Afficher le nom du fichier
+//             }
+//         });
+
+//         // Réinitialiser la valeur du champ de fichier pour éviter des problèmes
+//         input.value = '';
+//     }
+// }
+
 
   
 
