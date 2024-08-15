@@ -31,6 +31,9 @@ import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { HistoriquesComponent } from './historiques/historiques.component';
 import { ListContactComponent } from './list-contact/list-contact.component';
 import { ListVoitureLouerComponent } from './list-voiture-louer/list-voiture-louer.component';
+import { ListVoitureVendreComponent } from './list-voiture-vendre/list-voiture-vendre.component';
+import { ListReservationComponent } from './list-reservation/list-reservation.component';
+import { ListVenteComponent } from './list-vente/list-vente.component';
 
 const routes: Routes = [
   {
@@ -51,6 +54,9 @@ const routes: Routes = [
       {path:"historiques", component:HistoriquesComponent , canActivate: [AuthGuard] },
       {path:"contact", component:ListContactComponent , canActivate: [AuthGuard] },
       {path:"voituresLouer", component:ListVoitureLouerComponent , canActivate: [AuthGuard] },
+      {path:"voituresVendre", component:ListVoitureVendreComponent , canActivate: [AuthGuard] },
+      {path:"reservations", component:ListReservationComponent , canActivate: [AuthGuard] },
+      {path:"ventes", component:ListVenteComponent , canActivate: [AuthGuard] },
       
     ]
   },

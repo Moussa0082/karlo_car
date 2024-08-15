@@ -28,7 +28,7 @@ export class ListVoitureLouerComponent implements OnInit{
 
   
   ngOnInit(): void {
-    this.voitureLouerService.getAllVoitures().subscribe(data => {
+    this.voitureLouerService.getAllVoituresLouer().subscribe(data => {
       this.voituresLouer = data;
       this.dataSource = new MatTableDataSource(this.voituresLouer);
       this.dataSource.paginator = this.paginator;
@@ -41,7 +41,7 @@ export class ListVoitureLouerComponent implements OnInit{
    }
 
   chargerDonner(): void {
-    this.voitureLouerService.getAllVoitures().subscribe(data => {
+    this.voitureLouerService.getAllVoituresLouer().subscribe(data => {
       this.voituresLouer = data;
       this.dataSource = new MatTableDataSource(this.voituresLouer);
       this.dataSource.paginator = this.paginator;

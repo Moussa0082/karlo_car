@@ -41,6 +41,7 @@ import { ListReservationComponent } from './list-reservation/list-reservation.co
 import { AddUpReservationComponent } from './add-up-reservation/add-up-reservation.component';
 import { ListVenteComponent } from './list-vente/list-vente.component';
 import { AddUpVenteComponent } from './add-up-vente/add-up-vente.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { AddUpVenteComponent } from './add-up-vente/add-up-vente.component';
     AddUpVenteComponent
   ],
   imports: [
+    MatDatepickerModule,
     MatRadioModule,
     BrowserModule,
     AppRoutingModule,

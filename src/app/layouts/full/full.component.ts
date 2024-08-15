@@ -128,14 +128,11 @@ export class FullComponent implements OnInit{
       icon: "home",
       menu: "Dashboard",
     },
-    
     {
       link: "/users",
       icon: "user",
       menu: "Liste utilisateurs",
     },
-    
-    
     {
       link: "/roles",
       icon: "layers",
@@ -145,6 +142,21 @@ export class FullComponent implements OnInit{
       link: "/voituresLouer",
       icon: "layers",
       menu: "Liste voitures à louer",
+    },
+    {
+      link: "/voituresVendre",
+      icon: "layers",
+      menu: "Liste voitures à vendre",
+    },
+    {
+      link: "/reservations",
+      icon: "layers",
+      menu: "Liste des reservations",
+    },
+    {
+      link: "/ventes",
+      icon: "layers",
+      menu: "Liste des ventes",
     },
     {
       link: "/reservoires",

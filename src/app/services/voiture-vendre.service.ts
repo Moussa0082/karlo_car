@@ -21,12 +21,19 @@ export class VoitureVendreService {
     formData.append('voiture', JSON.stringify(voiture));
 
     // Ajouter les fichiers d'images au FormData
-    images.forEach((image, index) => {
-      formData.append('images', image, image.name);
-    });
+    if(images){
+  
+      for (let i = 0; i < images.length; i++) {
+        formData.append('images', images[i], images[i].name);
+      }
+      console.log("service formData : " , images);
+    }else{
+      console.log("image non pris comme tableau ou vide");
+
+    }
 
     // Envoyer la requête POST
-    return this.http.post(`${apiUrl}/${this.baseUrl}/addVoitureLouer`, formData, {
+    return this.http.post(`${apiUrl}/${this.baseUrl}/addVoiture`, formData, {
       headers: new HttpHeaders({
         // Vous pouvez ajouter des en-têtes si nécessaire
       })
@@ -36,7 +43,7 @@ export class VoitureVendreService {
 
   
   //Modifier voiture à louer
-  updateVoitureVendre(id: string, voiture: any, images: File[]): Observable<any> {
+  updateVoitureVendre(voiture: VoitureVendre, images: File[]): Observable<any> {
     const formData = new FormData();
     
     // Ajouter les données de la voiture au FormData
@@ -48,7 +55,7 @@ export class VoitureVendreService {
     });
 
     // Envoye la requête PUT
-    return this.http.put(`${apiUrl}/${this.baseUrl}/update/${id}`, formData, {
+    return this.http.put(`${apiUrl}/${this.baseUrl}/update/${voiture.idVoiture}`, formData, {
       headers: new HttpHeaders({
         // Vous pouvez ajouter des en-têtes si nécessaire
       })

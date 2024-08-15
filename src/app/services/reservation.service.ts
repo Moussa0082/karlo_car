@@ -1,22 +1,22 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { VoitureLouer } from '../models/VoitureLouer';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { apiUrl } from '../constant/constantes';
+import { Reservation } from '../models/Reservation';
 
 @Injectable({
   providedIn: 'root'
 })
-export class VoitureLouerService {
+export class ReservationService {
 
-  private baseUrl = 'voitureLouer';
+  private baseUrl = 'reservation';
 
   constructor(private http: HttpClient) { }
 
-  // Méthode pour ajouter une voiture à louer
-  addVoitureLouer(voitureLouer: any, images: File[]): Observable<any> {
+  // Méthode pour ajouter une reservation
+  addReservation(reservation: any, images: File[]): Observable<any> {
     const formData = new FormData();
-    formData.append('voiture', JSON.stringify(voitureLouer));
+    formData.append('reservation', JSON.stringify(reservation));
   
     if(images){
   
@@ -29,15 +29,15 @@ export class VoitureLouerService {
 
     }
   
-    return this.http.post<any>(`${apiUrl}/${this.baseUrl}/addVoiture`, formData);
+    return this.http.post<any>(`${apiUrl}/${this.baseUrl}/addReservation`, formData);
   }
 
-  //Modifier voiture à louer
-  updateVoitureLouer(voiture: VoitureLouer, images: File[]): Observable<any> {
+  //Modifier ue reservation
+  updateReservation(reservation: Reservation, images: File[]): Observable<any> {
     const formData = new FormData();
     
-    // Ajouter les données de la voiture au FormData
-    formData.append('voiture', JSON.stringify(voiture));
+    // Ajouter les données de la reservation au FormData
+    formData.append('reservation', JSON.stringify(reservation));
     
     // Ajouter les fichiers d'images au FormData
     images.forEach((image, index) => {
@@ -45,31 +45,26 @@ export class VoitureLouerService {
     });
 
     // Envoye la requête PUT
-    return this.http.put(`${apiUrl}/${this.baseUrl}/update/${voiture.idVoiture}`, formData, {
-      headers: new HttpHeaders({
-        // Vous pouvez ajouter des en-têtes si nécessaire
-      })
+    return this.http.put(`${apiUrl}/${this.baseUrl}/update/${reservation.idReservation}`, formData, {
+
     });
   }
 
-   // Modifier vue voiture
-   updateViews(voiture: VoitureLouer): Observable<any> {
-    return this.http.put(`${apiUrl}/${this.baseUrl}/update/${voiture.idVoiture}`, voiture);
-  }
+
 
    // lisyte des voiture
-   getAllVoituresLouer(): Observable<any> {
-    return this.http.get(`${apiUrl}/${this.baseUrl}/getAllVoiture`);
+   getAllReservation(): Observable<any> {
+    return this.http.get(`${apiUrl}/${this.baseUrl}/getAllReservation`);
   }
 
 
-     // Méthode pour supprimer une voiture à louer
-     deleteVoiture(id: string): Observable<HttpResponse<void>> {
+     // Méthode pour supprimer une reservation
+     deleteReservation(id: string): Observable<HttpResponse<void>> {
       return this.http.delete<void>(`${apiUrl}/${this.baseUrl}/delete/${id}`, { observe: 'response' })
         .pipe(
           tap((response: HttpResponse<void>) => {
             if (response.status === 200 || response.status === 201 || response.status === 202) {
-              console.log('Voiture à  louer supprimé avec succès.');
+              console.log('Reservation supprimé avec succès.');
             } else {
               console.log('Statut de la réponse:', response.status);
             }
@@ -87,6 +82,5 @@ export class VoitureLouerService {
         }
         return throwError('Une erreur est survenue, veuillez réessayer plus tard.');
       }
-
 
 }

@@ -82,6 +82,8 @@ export class AddUpVoitureLouerComponent implements OnInit{
       typeReservoir: [this.data.voitureLouer?.typeReservoir || '' , Validators.required],
       user: [this.data.voitureLouer?.user || '' , Validators.required]
     });
+    this.isEditMode ? this.loadExistingImages(this.data.voitureLouer?.images) : null;
+
     // Abonnez-vous aux changements de valeur pour le contrôle isChauffeur
     this.voitureLouerForm.get('isChauffeur')?.valueChanges.subscribe(value => {
       this.onIsChauffeurChange(value);
@@ -123,6 +125,13 @@ export class AddUpVoitureLouerComponent implements OnInit{
       console.error('Erreur lors du chargement de la liste des marques:', error);
     });
     this.loadSelectOptions();
+  }
+
+   // Méthode pour charger les images existantes
+   private loadExistingImages(logoPaths: string[]): void {
+    if (logoPaths && logoPaths.length > 0) {
+      this.imagePreviews = logoPaths.map(path => `http://localhost/${path}`);
+    }
   }
 
 
@@ -251,30 +260,7 @@ export class AddUpVoitureLouerComponent implements OnInit{
       this.showValidationErrors();
     }
   }
-  
-  
-  // onFileChange(event: Event): void {
-  //   const input = event.target as HTMLInputElement;
-  //   if (input.files) {
-  //     const files = Array.from(input.files); // Convertir FileList en tableau
-  
-  //     files.forEach(file => {
-  //       const reader = new FileReader();
-        
-  //       reader.onload = () => {
-  //         const imageUrl = reader.result as string;
-  //         this.imagePreviews.push(imageUrl); // Ajouter l'aperçu au tableau
-  //         console.log('Image URL:', imageUrl); // Afficher l'URL des données dans la console
-  //       };
-        
-  //       reader.readAsDataURL(file);
-  //       this.images.push(file); // Ajouter le fichier au tableau
-  //     });
-  
-  //     // Réinitialiser la valeur du champ de fichier pour éviter des problèmes
-  //     input.value = '';
-  //   }
-  // }
+
 
   onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -302,39 +288,6 @@ export class AddUpVoitureLouerComponent implements OnInit{
     }
   }
   
-  // onFileChange(event: any) {
-  //   const files = event.target.files;
-  //   this.images = files; // Assurez-vous que `images` est bien défini
-  // }
-  
-  
-  
-//   onFileChange(event: Event): void {
-//     const input = event.target as HTMLInputElement;
-
-//     if (input.files) {
-//         const files = Array.from(input.files); // Convertir FileList en tableau
-
-//         files.forEach(file => {
-//             // Créer une prévisualisation pour chaque fichier
-//             const reader = new FileReader();
-//             reader.onload = () => {
-//                 const imageUrl = reader.result as string;
-//                 this.imagePreviews.push(imageUrl); // Ajouter l'aperçu au tableau
-//             };
-//             reader.readAsDataURL(file); // Lire le fichier comme une URL de données
-
-//             // Vérifier si le fichier est déjà dans la liste pour éviter les doublons
-//             if (!this.images.some(img => img.name === file.name)) {
-//                 this.images.push(file); // Ajouter le fichier au tableau
-//                 console.log("Nom du fichier:", file.name); // Afficher le nom du fichier
-//             }
-//         });
-
-//         // Réinitialiser la valeur du champ de fichier pour éviter des problèmes
-//         input.value = '';
-//     }
-// }
 
 
   

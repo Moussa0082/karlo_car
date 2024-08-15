@@ -62,7 +62,7 @@ export class AddUpMarqueComponent implements OnInit{
 
   private loadExistingImage(imagePath: string): void {
     // Construct the URL for the existing image
-    const imageUrl = `http://localhost/Karlo/${imagePath}`;
+    const imageUrl = `http://localhost/${imagePath}`;
     this.imagePreview = imageUrl;
   }
 
@@ -138,37 +138,37 @@ export class AddUpMarqueComponent implements OnInit{
       if (this.isEditMode) {
         console.log("marque value :" ,marque);
         // Modifier marque
-        // this.marqueService.updateMarque(this.data.marque.idMarque, marque, this.logo).subscribe(
-        //   response => {
-        //     Swal.fire('Succès !', 'Marque modifié avec succès', 'success');
-        //     console.log("marque modifier : " , response);
-        //     this.dialogRef.close(response);
-        //   },
-        //   error => {
-        //     Swal.fire('Erreur !', 'Erreur lors de la modification', error);
-        //   }
-        // );
+        this.marqueService.updateMarque(this.data.marque.idMarque, marque, this.logo).subscribe(
+          response => {
+            Swal.fire('Succès !', 'Marque modifié avec succès', 'success');
+            console.log("marque modifier : " , response);
+            this.dialogRef.close(response);
+          },
+          error => {
+            Swal.fire('Erreur !', 'Erreur lors de la modification', error);
+          }
+        );
       } else {
         // Ajouter une marque
         const newMarque: Marque = this.marqueForm.value;
         console.log("marque value :" ,newMarque);
 
-        // this.marqueService.createMarque(newMarque, this.logo).subscribe(
-        //   (response) => {
-        //     console.log('Marque ajouté avec succès :', response);
-        //     this.marqueForm.reset();
-        //     Swal.fire('Succès !', 'Marque crée avec succès', 'success');
-        //     this.dialogRef.close(response);
-        //   },
-        //   (error) => {
-        //     console.error("Erreur lors de l'ajout du role :", error);
-        //     Swal.fire({
-        //       icon: 'error',
-        //       title: 'Oops...',
-        //       text: error.error.message,
-        //     });
-        //   }
-        // );
+        this.marqueService.createMarque(newMarque, this.logo).subscribe(
+          (response) => {
+            console.log('Marque ajouté avec succès :', response);
+            this.marqueForm.reset();
+            Swal.fire('Succès !', 'Marque crée avec succès', 'success');
+            this.dialogRef.close(response);
+          },
+          (error) => {
+            console.error("Erreur lors de l'ajout du role :", error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: error.error.message,
+            });
+          }
+        );
       }
     }else{
       console.log("logo null");

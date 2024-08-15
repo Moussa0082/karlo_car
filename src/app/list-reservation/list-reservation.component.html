@@ -1,1 +1,107 @@
-<p>list-reservation works!</p>
+<!-- voiture-list.component.html -->
+<div class="entete">
+    <h2 class="users">Liste des reservations</h2>
+    <button mat-flat-button color="primary" id="btn-add" (click)="openDialog()">Ajouter</button>
+  </div>
+  
+  <mat-form-field class="full-width">
+    <mat-label>Filter</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Search Columns"
+      #input
+    />
+  </mat-form-field>
+  
+  <mat-card class="w-100">
+    <mat-card-content>
+      <div class="table-responsive">
+        <table mat-table [dataSource]="dataSource" matSort class="text-nowrap w-100">
+  
+  
+          <!-- Matricule Column -->
+          <ng-container matColumnDef="dateDebut">
+            <th mat-header-cell *matHeaderCellDef>Date début</th>
+            <td mat-cell *matCellDef="let element">{{ element.dateDebut }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="dateFin">
+            <th mat-header-cell *matHeaderCellDef>Date fin</th>
+            <td mat-cell *matCellDef="let element">{{ element.dateFin }}</td>
+          </ng-container>
+  
+          <!-- Modèle Column -->
+          <ng-container matColumnDef="dateAjout">
+            <th mat-header-cell *matHeaderCellDef>Date enregistrement</th>
+            <td mat-cell *matCellDef="let element">{{ element.dateAjout }}</td>
+          </ng-container>
+  
+          <!-- Images Column -->
+          <ng-container matColumnDef="images">
+            <th mat-header-cell *matHeaderCellDef>Images</th>
+            <td mat-cell *matCellDef="let element">
+              <div *ngFor="let image of element.images">
+                <img [src]=" 'http://localhost/' + image" alt="Image" height="40" width="40" style="border-radius: 50%;" class="styled-image">
+              </div>
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="nomClient">
+            <th mat-header-cell *matHeaderCellDef>Nom cliet</th>
+            <td mat-cell *matCellDef="let element">{{ element.nomClient }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="telephone">
+            <th mat-header-cell *matHeaderCellDef>Téléphone</th>
+            <td mat-cell *matCellDef="let element">{{ element.telephone }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Desctiption</th>
+            <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="dateModif">
+            <th mat-header-cell *matHeaderCellDef>Date de modification</th>
+            <td mat-cell *matCellDef="let element">{{ element.dateModif != null ? element.dateModif : "Pas modifier" }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="montant">
+            <th mat-header-cell *matHeaderCellDef>Montant</th>
+            <td mat-cell *matCellDef="let element">{{ element.montant }}</td>
+          </ng-container>
+          
+          <ng-container matColumnDef="voitureLouer">
+            <th mat-header-cell *matHeaderCellDef>voitureLouer</th>
+            <td mat-cell *matCellDef="let element">{{ element.voitureLouer.matricule }}  {{ element.voitureLouer.modele }}</td>
+          </ng-container>
+  
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button color="primary" (click)="editElement(element)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="onDelete(element)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+  
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="5" align="center">Aucune donnée trouvée</td>
+          </tr>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20, 30]" showFirstLastButtons aria-label="Select page of periodic elements">
+        </mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  
