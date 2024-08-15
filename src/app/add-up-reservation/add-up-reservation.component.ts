@@ -36,11 +36,11 @@ export class AddUpReservationComponent implements OnInit{
       dateDebut: [this.data.reservation?.dateDebut || '', Validators.required],
       dateFin: [this.data.reservation?.dateFin || '', Validators.required],
       nomClient: [this.data.reservation?.nomClient || '', Validators.required],
-      telephone: [this.data.voitureVendre?.telephone ||'', Validators.required],
-      montant: [this.data.voitureVendre?.montant ||  '', Validators.required],
-      description: [this.data.voitureVendre?.description || '', Validators.required],
+      telephone: [this.data.reservation?.telephone ||'', Validators.required],
+      montant: [this.data.reservation?.montant ||  '', Validators.required],
+      description: [this.data.reservation?.description || '', Validators.required],
       images:this.fb.array([]),
-      voitureLouer: [this.data.voitureVendre?.prixProprietaire ||  0, Validators.required],
+      voitureLouer: [this.data.reservation?.voitureLouer ||  '', Validators.required],
      });
      this.isEditMode ? this.loadExistingImages(this.data.reservation?.images) : null;
      this.isEditMode ? this.loadSelectOptions() : null;
@@ -52,7 +52,7 @@ export class AddUpReservationComponent implements OnInit{
   ngOnInit(): void {
     this.isEditMode =  !!this.data.reservation;
     this.reservationForm = this.fb.group({
-      idReservation: [this.data.reservation?.idReservation || '', Validators.required],
+      idReservation: [this.isEditMode ? this.data.reservation?.idReservation : '', this.isEditMode ? Validators.required : null],
       dateDebut: [this.data.reservation?.dateDebut || '', Validators.required],
       dateFin: [this.data.reservation?.dateFin || '', Validators.required],
       nomClient: [this.data.reservation?.nomClient || '', Validators.required],
@@ -60,15 +60,32 @@ export class AddUpReservationComponent implements OnInit{
       montant: [this.data.reservation?.montant ||  '', Validators.required],
       description: [this.data.reservation?.description || '', Validators.required],
       images:this.fb.array([]),
-      voitureLouer: [this.data.reservation?.prixProprietaire ||  0, Validators.required],
+      voitureLouer: [this.data.reservation?.voitureLouer ||  '', Validators.required],
      });
-     this.voitureService.getAllVoituresLouer().subscribe(data => {
-      this.voituresLouer = data;
-      console.log("liste des voiture à louer charger: ", this.voituresLouer);
-    },
-    (error) => {
-      console.error('Erreur lors du chargement de la liste des voitures à louer:', error);
-    });
+     this.voitureService.getAllVoituresLouer().subscribe(
+      data => {
+        console.log('Données reçues :', data);
+    
+        // Vérifiez la structure des données reçues
+        if (Array.isArray(data)) {
+          this.voituresLouer = data
+            .filter((v: any) => v.isDisponible === true); // Assurez-vous que `isDisponible` est correctement orthographié
+    
+          // Vérifiez les données filtrées
+          this.voituresLouer.forEach(v => {
+            console.log("Statut voiture louée :", v.isDisponible);
+          });
+    
+          console.log("Liste des voitures à louer chargée :", this.voituresLouer);
+        } else {
+          console.error('Les données reçues ne sont pas au format attendu.');
+        }
+      },
+      error => {
+        console.error('Erreur lors du chargement de la liste des voitures à louer :', error);
+      }
+    );
+    
   }
 
   private loadSelectOptions(): void {
@@ -156,9 +173,9 @@ export class AddUpReservationComponent implements OnInit{
     if (input.files) {
       const files = Array.from(input.files);
   
-      // Réinitialiser les images sélectionnées et les aperçus
-      this.images = [];
-      this.imagePreviews = [];
+      // // Réinitialiser les images sélectionnées et les aperçus
+      // this.images = [];
+      // this.imagePreviews = [];
   
       files.forEach(file => {
         const reader = new FileReader();
@@ -170,7 +187,9 @@ export class AddUpReservationComponent implements OnInit{
   
         // Ajouter le fichier à la liste des images sélectionnées
         this.images.push(file);
+        
       });
+
   
       input.value = ''; // Réinitialiser le champ pour éviter des problèmes
     }

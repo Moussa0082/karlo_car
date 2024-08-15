@@ -53,7 +53,7 @@ export class VenteService {
 
 
    // lisyte des voiture
-   getAllReservation(): Observable<any> {
+   getAllVente(): Observable<any> {
     return this.http.get(`${apiUrl}/${this.baseUrl}/getAllVente`);
   }
 

@@ -251,9 +251,9 @@ export class AddUpVoitureVendreComponent implements OnInit{
     if (input.files) {
       const files = Array.from(input.files);
   
-      // Réinitialiser les images sélectionnées et les aperçus
-      this.images = [];
-      this.imagePreviews = [];
+      // // Réinitialiser les images sélectionnées et les aperçus
+      // this.images = [];
+      // this.imagePreviews = [];
   
       files.forEach(file => {
         const reader = new FileReader();

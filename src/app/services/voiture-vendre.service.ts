@@ -68,8 +68,19 @@ export class VoitureVendreService {
   }
 
    // lisyte des voiture
-   getAllVoitures(): Observable<any> {
+   getAllVoituresVendre(): Observable<any> {
     return this.http.get(`${apiUrl}/${this.baseUrl}/getAllVoiture`);
+  }
+
+
+   //Activer voiture à vendre 
+   enableVoitureVendre(idUser: string) {
+    return this.http.put(`${apiUrl}/${this.baseUrl}/activer/${idUser}`, {});
+  }
+
+  //Desactiver voiture à vendre 
+  disableVoitureVendre(idUser: string | null) : Observable<any> {
+    return this.http.put<any>(`${apiUrl}/${this.baseUrl}/desactiver/${idUser}`, {});
   }
 
 

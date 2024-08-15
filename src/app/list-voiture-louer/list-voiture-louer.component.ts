@@ -16,8 +16,9 @@ import Swal from 'sweetalert2';
 })
 export class ListVoitureLouerComponent implements OnInit{
   
-  displayedColumns: string[] = ['matricule', 'modele', 'annee', 'typeBoite' , 'dateAjout' , 'dateModif' , 'nbreView' ,  'nbPortiere',  'prixProprietaire', 'prixAugmente' , 'isChauffeur' , 'images' , 'marque',   'typeVoiture', 'typeReservoir', 'user', 'actions'];
+  displayedColumns: string[] = ['matricule', 'statut' , 'modele', 'annee', 'typeBoite' , 'dateAjout' , 'dateModif' , 'nbreView' ,  'nbPortiere',  'prixProprietaire', 'prixAugmente' , 'isChauffeur' , 'images' , 'marque',   'typeVoiture', 'typeReservoir', 'user', 'actions'];
   voituresLouer: VoitureLouer[] = [];
+  tempStatus!: boolean; // Variable temporaire pour stocker l'état
   dataSource = new MatTableDataSource<VoitureLouer>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -89,6 +90,101 @@ export class ListVoitureLouerComponent implements OnInit{
   }
 
 
+  onDesActivate(element: VoitureLouer) {
+    // Sauvegardez l'état initial du switch
+    this.tempStatus = element.isDisponible;
+    
+    Swal.fire({
+      title: 'Êtes-vous sûr de vouloir désactiver cette voiture à louer?',
+      text: 'Personne ne pourra la louer!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, désactive-le!',
+      cancelButtonText: 'Non, garde-le'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.voitureLouerService.disableVoitureLouer(element.idVoiture).subscribe(
+          () => {
+            Swal.fire(
+              'Désactivation!',
+              `${element.matricule}  ${element.modele} a été désactivé.`,
+              'success'
+            );
+            // Mettre à jour l'état dans le composant ou le tableau
+            this.chargerDonner(); // Recharger les données si nécessaire
+          },
+          (error) => {
+            console.error('Erreur lors de la désactivation : ', error);
+            element.isDisponible = this.tempStatus; // Réinitialiser l'état en cas d'erreur
+            Swal.fire(
+              'Erreur!',
+              'Une erreur est survenue lors de la désactivation.',
+              'error'
+            );
+            this.chargerDonner(); // Recharger les données si nécessaire
+          }
+        );
+      } else if (result.isDismissed) {
+        element.isDisponible = this.tempStatus; // Réinitialisez l'état si l'action est annulée
+        Swal.fire(
+          'Annulé',
+          'Désactivation annulée',
+          'error'
+        );
+        this.chargerDonner(); // Recharger les données si nécessaire
+      }
+    });
+  }
+  
+  onActivate(element: VoitureLouer) {
+    // Sauvegardez l'état initial du switch
+    this.tempStatus = element.isDisponible;
+  
+    Swal.fire({
+      title: 'Êtes-vous sûr de vouloir activer cette voiture à louer?',
+      text: 'Les utilisateurs pourront le louer!',
+      icon: 'success',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, active-le!',
+      cancelButtonText: 'Non, garde-le'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.voitureLouerService.enableVoitureLouer(element.idVoiture).subscribe(
+          () => {
+            Swal.fire(
+              'Activation!',
+              `${element.matricule}  ${element.modele} a été activé.`,
+              'success'
+            );
+            // Mettre à jour l'état dans le composant ou le tableau
+            this.chargerDonner(); // Recharger les données si nécessaire
+          },
+          (error) => {
+            console.error('Erreur lors de l\'activation : ', error);
+            element.isDisponible = this.tempStatus; // Réinitialiser l'état en cas d'erreur
+            Swal.fire(
+              'Erreur!',
+              'Une erreur est survenue lors de l\'activation.',
+              'error'
+            );
+            this.chargerDonner(); // Recharger les données si nécessaire
+          }
+        );
+      } else if (result.isDismissed) {
+        element.isDisponible = this.tempStatus; // Réinitialisez l'état si l'action est annulée
+        Swal.fire(
+          'Annulé',
+          'Activation annulée',
+          'error'
+        );
+        this.chargerDonner(); // Recharger les données si nécessaire
+  
+      }
+    });
+  }
+  
+
+
   openDialog(voitureLouer?: VoitureLouer): void {
     const dialogRef = this.dialog.open(AddUpVoitureLouerComponent, {
       width: '700px',
@@ -111,6 +207,10 @@ export class ListVoitureLouerComponent implements OnInit{
     console.log("voiture Louer open dialog: ", voitureLouer);
   }
 
+
+  getToggleLabel(enabled: boolean): string {
+    return enabled === true ? 'Dispo' : 'Non dispo';
+  }
 
     applyFilter(event: Event) {
       const filterValue = (event.target as HTMLInputElement).value;

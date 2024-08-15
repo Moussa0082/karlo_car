@@ -52,6 +52,17 @@ export class VoitureLouerService {
     });
   }
 
+
+   //Activer voiture à louer 
+   enableVoitureLouer(idUser: string) {
+    return this.http.put(`${apiUrl}/${this.baseUrl}/activer/${idUser}`, {});
+  }
+
+  //Desactiver voiture à louer 
+  disableVoitureLouer(idUser: string | null) : Observable<any> {
+    return this.http.put<any>(`${apiUrl}/${this.baseUrl}/desactiver/${idUser}`, {});
+  }
+
    // Modifier vue voiture
    updateViews(voiture: VoitureLouer): Observable<any> {
     return this.http.put(`${apiUrl}/${this.baseUrl}/update/${voiture.idVoiture}`, voiture);

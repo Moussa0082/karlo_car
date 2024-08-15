@@ -10,6 +10,7 @@ export interface VoitureLouer {
     annee:            string;
     typeBoite:        string;
     dateAjout:        string;
+    isDisponible :     boolean;
     dateModif:        string;
     nbreView:         number;
     nbPortiere:       number;

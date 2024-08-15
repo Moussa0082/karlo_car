@@ -16,8 +16,9 @@ import { AddUpVoitureVendreComponent } from '../add-up-voiture-vendre/add-up-voi
 export class ListVoitureVendreComponent implements OnInit{
 
 
-  displayedColumns: string[] = ['matricule', 'modele', 'annee', 'typeBoite' , 'dateAjout' , 'dateModif' , 'nbreView' ,  'nbPortiere',  'prixProprietaire', 'prixAugmente' , 'images' , 'marque',   'typeVoiture', 'typeReservoir', 'user', 'actions'];
+  displayedColumns: string[] = ['matricule', 'statut' ,'modele', 'annee', 'typeBoite' , 'dateAjout' , 'dateModif' , 'nbreView' ,  'nbPortiere',  'prixProprietaire', 'prixAugmente' , 'images' , 'marque',   'typeVoiture', 'typeReservoir', 'user', 'actions'];
   voituresVendre: VoitureVendre[] = [];
+  tempStatus!: boolean; // Variable temporaire pour stocker l'état
   dataSource = new MatTableDataSource<VoitureVendre>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -27,7 +28,7 @@ export class ListVoitureVendreComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
-    this.voitureVendreService.getAllVoitures().subscribe(data => {
+    this.voitureVendreService.getAllVoituresVendre().subscribe(data => {
       this.voituresVendre = data;
       this.dataSource = new MatTableDataSource(this.voituresVendre);
       this.dataSource.paginator = this.paginator;
@@ -41,7 +42,7 @@ export class ListVoitureVendreComponent implements OnInit{
 
 
   chargerDonner(): void {
-    this.voitureVendreService.getAllVoitures().subscribe(data => {
+    this.voitureVendreService.getAllVoituresVendre().subscribe(data => {
       this.voituresVendre = data;
       this.dataSource = new MatTableDataSource(this.voituresVendre);
       this.dataSource.paginator = this.paginator;
@@ -89,6 +90,100 @@ export class ListVoitureVendreComponent implements OnInit{
   }
 
 
+  onDesActivate(element: VoitureVendre) {
+    // Sauvegardez l'état initial du switch
+    this.tempStatus = element.isVendu;
+    
+    Swal.fire({
+      title: 'Êtes-vous sûr de vouloir désactiver cette voiture à vendre?',
+      text: 'Personne ne pourra l\'acheter!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, désactive-le!',
+      cancelButtonText: 'Non, garde-le'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.voitureVendreService.disableVoitureVendre(element.idVoiture).subscribe(
+          () => {
+            Swal.fire(
+              'Désactivation!',
+              `${element.matricule}  ${element.modele} a été désactivé.`,
+              'success'
+            );
+            // Mettre à jour l'état dans le composant ou le tableau
+            this.chargerDonner(); // Recharger les données si nécessaire
+          },
+          (error) => {
+            console.error('Erreur lors de la désactivation : ', error);
+            element.isVendu = this.tempStatus; // Réinitialiser l'état en cas d'erreur
+            Swal.fire(
+              'Erreur!',
+              'Une erreur est survenue lors de la désactivation.',
+              'error'
+            );
+            this.chargerDonner(); // Recharger les données si nécessaire
+          }
+        );
+      } else if (result.isDismissed) {
+        element.isVendu = this.tempStatus; // Réinitialisez l'état si l'action est annulée
+        Swal.fire(
+          'Annulé',
+          'Désactivation annulée',
+          'error'
+        );
+        this.chargerDonner(); // Recharger les données si nécessaire
+      }
+    });
+  }
+  
+  onActivate(element: VoitureVendre) {
+    // Sauvegardez l'état initial du switch
+    this.tempStatus = element.isVendu;
+  
+    Swal.fire({
+      title: 'Êtes-vous sûr de vouloir activer cette voiture à vendre?',
+      text: 'Les utilisateurs pourront  l\'acheter!',
+      icon: 'success',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, active-le!',
+      cancelButtonText: 'Non, garde-le'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.voitureVendreService.enableVoitureVendre(element.idVoiture).subscribe(
+          () => {
+            Swal.fire(
+              'Activation!',
+              `${element.matricule}  ${element.modele} a été activé.`,
+              'success'
+            );
+            // Mettre à jour l'état dans le composant ou le tableau
+            this.chargerDonner(); // Recharger les données si nécessaire
+          },
+          (error) => {
+            console.error('Erreur lors de l\'activation : ', error);
+            element.isVendu = this.tempStatus; // Réinitialiser l'état en cas d'erreur
+            Swal.fire(
+              'Erreur!',
+              'Une erreur est survenue lors de l\'activation.',
+              'error'
+            );
+            this.chargerDonner(); // Recharger les données si nécessaire
+          }
+        );
+      } else if (result.isDismissed) {
+        element.isVendu = this.tempStatus; // Réinitialisez l'état si l'action est annulée
+        Swal.fire(
+          'Annulé',
+          'Activation annulée',
+          'error'
+        );
+        this.chargerDonner(); // Recharger les données si nécessaire
+  
+      }
+    });
+  }
+
+
   openDialog(voitureVendre?: VoitureVendre): void {
     const dialogRef = this.dialog.open(AddUpVoitureVendreComponent, {
       width: '700px',
@@ -103,6 +198,10 @@ export class ListVoitureVendreComponent implements OnInit{
         console.log('Dialog closed without result');
       }
     });
+  }
+
+  getToggleLabel(enabled: boolean): string {
+    return enabled === true ? 'Vendu' : 'Non vendu';
   }
 
 

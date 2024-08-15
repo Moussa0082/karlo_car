@@ -92,6 +92,19 @@
             <td mat-cell *matCellDef="let element">{{ element.isChauffeur ? 'Oui' : 'Non' }}</td>
           </ng-container>
 
+          <ng-container matColumnDef="statut">
+            <th mat-header-cell *matHeaderCellDef> Statut </th>
+            <td mat-cell *matCellDef="let element">
+              <mat-slide-toggle
+                [(ngModel)]="element.isDisponible"
+                (change)="element.isDisponible ?  onActivate(element) : onDesActivate(element)"
+                [color]="element.isDisponible ? 'primary' : 'red'">
+                <!-- {{element.enabled === true ? 'Activer' : 'Desactiver'}} -->
+                {{ getToggleLabel(element.isDisponible) }}
+              </mat-slide-toggle>
+            </td>
+          </ng-container>
+
           <ng-container matColumnDef="marque">
             <th mat-header-cell *matHeaderCellDef>Marque</th>
             <td mat-cell *matCellDef="let element">{{ element.marque.nomMarque }}</td>

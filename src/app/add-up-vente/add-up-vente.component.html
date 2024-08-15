@@ -1,1 +1,65 @@
-<p>add-up-vente works!</p>
+<h2 mat-dialog-title>{{ isEditMode ? 'Modifier une vente' : 'Ajouter une vente' }}</h2>
+<mat-dialog-content class="scrollable-dialog-content">
+  <form [formGroup]="venteForm">
+    <div class="row">
+      <div class="col">
+
+        <mat-form-field appearance="fill">
+          <mat-label>Nom client</mat-label>
+          <input matInput placeholder="Nom client" formControlName="nomClient" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Téléphone</mat-label>
+          <input matInput placeholder="Téléphone" formControlName="telephone" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Montant</mat-label>
+          <input matInput placeholder="Montant" formControlName="montant" required>
+        </mat-form-field>
+
+       
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <textarea matInput placeholder="Description" formControlName="description" required></textarea>
+        </mat-form-field>
+        
+      
+    
+        <mat-form-field appearance="fill">
+          <mat-label>Voiture à vendre</mat-label>
+          <mat-select formControlName="voitureVendre" required>
+            <mat-option *ngFor="let voitureVendre of voituresVendre" [value]="voitureVendre"> <!-- Utilisez l'objet complet -->
+              {{voitureVendre.matricule}}  {{voitureVendre.modele}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <div class="file-upload-container">
+          <label for="file-upload" class="file-upload-label">
+            <input type="file" id="file-upload" (change)="onFileChange($event)" formControlName="images" multiple style="display: none;" accept="image/*">
+            <span class="file-upload-text">Charger les images</span>
+          </label>
+        </div>
+      
+        <mat-card *ngIf="imagePreviews.length" class="image-preview-card">
+          <div class="image-grid">
+            <div *ngFor="let preview of imagePreviews; let i = index" class="image-container">
+              <img [src]="preview" class="image-preview" alt="Image Preview">
+              <div class="icones">
+                <mat-icon class="up" (click)="editImage(i)">edit</mat-icon>
+                <mat-icon class="del" (click)="removeImage(i)">delete</mat-icon>
+              </div>
+            </div>
+          </div>
+        </mat-card>
+        
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button class="dialog-button" (click)="onNoClick()">Annuler</button>
+  <button mat-button color="primary" class="dialog-button" (click)="onSaves()">{{ isEditMode ? 'Modifier' : 'Ajouter' }}</button>
+</mat-dialog-actions>

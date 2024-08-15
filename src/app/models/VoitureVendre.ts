@@ -8,6 +8,7 @@ export interface VoitureVendre {
     matricule:        string;
     modele:           string;
     annee:            string;
+    isVendu :         boolean;
     typeBoite:        string;
     dateAjout:        string;
     dateModif:        string;
