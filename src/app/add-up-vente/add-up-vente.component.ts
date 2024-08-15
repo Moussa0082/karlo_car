@@ -41,7 +41,6 @@ export class AddUpVenteComponent implements OnInit{
       images:this.fb.array([]),
       voitureVendre: [this.data.vente?.voitureVendre ||  0, Validators.required],
      });
-    
 
   }
 

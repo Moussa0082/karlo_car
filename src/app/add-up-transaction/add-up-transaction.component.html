@@ -3,11 +3,18 @@
   <form [formGroup]="transactionForm">
     <div class="row">
       <div class="col">
+
+        <mat-form-field appearance="fill">
+          <mat-label>Montant</mat-label>
+          <input matInput placeholder="Montant" formControlName="montant" required>
+        </mat-form-field>
+
         <mat-form-field appearance="fill">
           <mat-label>Description</mat-label>
           <textarea matInput placeholder="Description" formControlName="description" required>
             </textarea>
         </mat-form-field>
+
         <mat-form-field appearance="fill">
           <mat-label>Type Transaction</mat-label>
           <mat-select formControlName="typeTransaction" required>

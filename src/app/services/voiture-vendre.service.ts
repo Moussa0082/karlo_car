@@ -72,6 +72,9 @@ export class VoitureVendreService {
     return this.http.get(`${apiUrl}/${this.baseUrl}/getAllVoiture`);
   }
 
+   
+  
+
 
    //Activer voiture à vendre 
    enableVoitureVendre(idUser: string) {

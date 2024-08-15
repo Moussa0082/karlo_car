@@ -51,6 +51,10 @@ export class ReservationService {
   }
 
 
+    // Method to get the total amount for voiture louer
+    getTotalVoitureLouer(): Observable<number> {
+      return this.http.get<number>(`${apiUrl}/${this.baseUrl}/totalVoitureLouer`);
+    } 
 
    // lisyte des voiture
    getAllReservation(): Observable<any> {

@@ -16,7 +16,7 @@ import { MatSort } from '@angular/material/sort';
 export class ListTransactionComponent implements OnInit{
 
        
-  displayedColumns: string[] = [ 'dateTransaction' , 'dateModif', 'description' , 'type', 'user',  'typeTransaction' , 'action'];
+  displayedColumns: string[] = [ 'dateTransaction' , 'montant' ,'dateModif', 'description' , 'type', 'user',  'typeTransaction' , 'action'];
 
   dataSource = new MatTableDataSource<Transaction>();
   transactions: Transaction[] = [];

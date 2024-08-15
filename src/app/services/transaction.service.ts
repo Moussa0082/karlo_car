@@ -33,6 +33,16 @@ export class TransactionService {
     return this.http.get(`${apiUrl}/${this.baseUrl}/getAllTransaction`);
   }
 
+    // Method to get the total amount for depot transactions
+  getTotalAmountForDepot(): Observable<number> {
+    return this.http.get<number>(`${apiUrl}/${this.baseUrl}/totalDepot`);
+  }
+
+    // Method to get the total amount for retrait transactions
+  getTotalAmountForRetrait(): Observable<number> {
+    return this.http.get<number>(`${apiUrl}/${this.baseUrl}/totalRetrait`);
+  }
+
    
   
    // Méthode pour supprimer une transaction

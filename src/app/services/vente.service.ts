@@ -32,6 +32,11 @@ export class VenteService {
     return this.http.post<any>(`${apiUrl}/${this.baseUrl}/addVente`, formData);
   }
 
+    // Method to get the total amount for voiture vendu
+    getTotalVoitureVendu(): Observable<number> {
+      return this.http.get<number>(`${apiUrl}/${this.baseUrl}/totalVoitureVendu`);
+    } 
+
   //Modifier ue vente
   updateVente(vente: Vente, images: File[]): Observable<any> {
     const formData = new FormData();

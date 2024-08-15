@@ -43,6 +43,7 @@ export class AddUpTransactionComponent implements OnInit{
     this.transactionForm = this.fb.group({
       idTransaction: [this.isEditMode ? this.data.transaction?.idTransaction : '', this.isEditMode ? Validators.required : null],
       description: [data.transaction?.description || '', Validators.required],
+      montant: [data.transaction?.montant || '', Validators.required],
       user: this.adminRecup,
       typeTransaction: [data.transaction?.typeTransaction || '', Validators.required],
     });
@@ -58,6 +59,7 @@ export class AddUpTransactionComponent implements OnInit{
     this.transactionForm = this.fb.group({
       idTransaction: [this.isEditMode ? this.data.transaction?.idTransaction : '', this.isEditMode ? Validators.required : null],
       description: [this.data.transaction?.description || '', Validators.required],
+      montant: [this.data.transaction?.montant || '', Validators.required],
       user: this.adminRecup,
       typeTransaction: [this.data.transaction?.typeTransaction || '', Validators.required],
     });
@@ -83,6 +85,7 @@ export class AddUpTransactionComponent implements OnInit{
     // }
     if (this.transactionForm.valid) {
       const transaction = this.transactionForm.value;
+      console.log("form", transaction);
       if (this.isEditMode) {
         // Modifier une transaction
         this.transactionService.updateTransaction(transaction).subscribe(
