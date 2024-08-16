@@ -29,6 +29,11 @@ export class ReservoirService {
   }
     
   
+  // Method to get the total reservation amount by month
+  getTotalReservationByMonth(): Observable<Map<string, number>> {
+    return this.http.get<Map<string, number>>(`${apiUrl}/${this.baseUrl}/totalReservationParMoi`);
+  }
+
 
   getAllTypeReservoir(): Observable<any> {
     return this.http.get(`${apiUrl}/${this.baseUrl}/getAllTypeReservoir`);

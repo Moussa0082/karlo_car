@@ -27,3 +27,23 @@
 .sidebar-menu.disabled:hover {
   text-decoration: none;
 }
+
+
+
+/* Add styles for the close button */
+button.mat-icon-button {
+  background: none; /* Remove the default button background */
+  border: none; /* Remove the default button border */
+  color: #000; /* Set icon color to black */
+  cursor: pointer; /* Change cursor to pointer */
+}
+
+button.mat-icon-button:hover {
+  color: #555; /* Change color on hover */
+}
+
+button.mat-icon-button.mat-icon-button {
+  padding: 0; /* Remove default padding */
+  margin-left: auto; /* Push button to the right */
+}
+

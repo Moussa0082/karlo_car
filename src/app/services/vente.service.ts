@@ -32,6 +32,11 @@ export class VenteService {
     return this.http.post<any>(`${apiUrl}/${this.baseUrl}/addVente`, formData);
   }
 
+  // Method to get the total sales amount by month
+  getTotalSalesByMonth(): Observable<Map<string, number>> {
+    return this.http.get<Map<string, number>>(`${apiUrl}/${this.baseUrl}/totalVenteParMoi`);
+  }
+
     // Method to get the total amount for voiture vendu
     getTotalVoitureVendu(): Observable<number> {
       return this.http.get<number>(`${apiUrl}/${this.baseUrl}/totalVoitureVendu`);

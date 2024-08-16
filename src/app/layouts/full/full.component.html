@@ -7,14 +7,20 @@
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
+
+    
     
     <div class="p-16" *ngIf="adminRecup != null">
-      <div class="mb-16">
+      <div class="mb-16 d-flex align-items-center">
         <a href="javascript:void(0)" class="d-flex align-items-center">
           <img src="assets/images/favicon-logo.png" alt="">
           <span class="ms-16 fw-medium fs-26">Karlo Car</span>
         </a>
+        <button mat-icon-button class="close-button" (click)="drawer.close()" *ngIf="isHandset$ | async">
+          <i-feather name="x" class="feather-base"></i-feather>
+        </button>
       </div>
+    </div>
 
       <div class="pt-8" *ngIf="adminRecup != null || adminRecup != null && !isForbiddenPage">
         <ul>
@@ -28,7 +34,6 @@
         </ul>
       </div>
       
-    </div>
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -37,14 +42,15 @@
       <button type="button" class="ms-4" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
         <i-feather name="menu" class="text-light-muted feather-base mt-n3"></i-feather>
       </button>
-      <button mat-icon-button class="ms-4 me-4" (click)="search=!search">
+      <!-- <button mat-icon-button class="ms-4 me-4" (click)="search=!search">
         <i-feather name="search" class="mt-n3 text-light-muted feather-base text-dark"></i-feather>
-      </button>
+      </button> -->
+      
       <div class="ms-auto">
-        <button mat-button class="fs-16 pt-4 pb-4 ps-8 pe-8 text-light-muted d-flex align-items-center" [matMenuTriggerFor]="menu">
-          <div class="d-flex align-items-center">
-            <img src="assets/images/user2.webp" class="rounded-circle" alt="">
-            <span class="fw-light ms-8 text-secondary">Bonjour,</span>
+        <button  mat-button class="fs-16 pt-4 pb-4 ps-8 pe-8 text-light-muted d-flex align-items-center" [matMenuTriggerFor]="menu">
+          <div class="d-flex align-items-center" >
+            <!-- <img src="assets/images/user2.webp" class="rounded-circle" alt=""> -->
+            <span class="fw-light ms-8 text-secondary">Salut,</span>
             <span class="fw-bold ms-8">{{ adminRecup != null ? adminRecup.nomUser : "Jone Doe"}}</span>
             <i-feather name="chevron-down" class="feather-base"></i-feather>
           </div>
@@ -64,6 +70,7 @@
           </div>
         </mat-menu>
       </div>
+
     </mat-toolbar>
 
     <!-- Content -->

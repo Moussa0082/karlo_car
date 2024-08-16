@@ -61,8 +61,8 @@ const routes: Routes = [
     ]
   },
 
-  {path:"", redirectTo:"/forbidden", pathMatch:"full"},
-  {path:"**", redirectTo:"/forbidden", pathMatch:"full"},
+  {path:"", redirectTo:"/home", pathMatch:"full"},
+  {path:"**", redirectTo:"/home", pathMatch:"full"},
 ];
 
 @NgModule({

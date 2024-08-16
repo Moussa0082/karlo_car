@@ -32,6 +32,11 @@ export class ReservationService {
     return this.http.post<any>(`${apiUrl}/${this.baseUrl}/addReservation`, formData);
   }
 
+   // Method to get the total reservation amount by month
+   getTotalReservationByMonth(): Observable<Map<string, number>> {
+    return this.http.get<Map<string, number>>(`${apiUrl}/${this.baseUrl}/totalReservationParMoi`);
+  }
+
   //Modifier ue reservation
   updateReservation(reservation: Reservation, images: File[]): Observable<any> {
     const formData = new FormData();

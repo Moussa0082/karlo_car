@@ -80,6 +80,18 @@ export class FullComponent implements OnInit{
     this.userSubscription.unsubscribe();
   }
 
+  transform(value: string): string {
+    if (value.length > 10) {
+      const words = value.split(' ');
+      const initials = words.map(word => word.charAt(0).toUpperCase());
+      return initials.join('');
+    } else {
+      return value;
+    }
+  }
+
+  
+
   // Get the user data from localStorage
   
   
@@ -135,62 +147,62 @@ export class FullComponent implements OnInit{
     },
     {
       link: "/roles",
-      icon: "layers",
+      icon: "group",
       menu: "Liste rôles",
     },
     {
       link: "/voituresLouer",
-      icon: "layers",
+      icon: "directions_car",
       menu: "Liste voitures à louer",
     },
     {
       link: "/voituresVendre",
-      icon: "layers",
+      icon: "directions_car",
       menu: "Liste voitures à vendre",
     },
     {
       link: "/reservations",
-      icon: "layers",
+      icon: "event_note",
       menu: "Liste des reservations",
     },
     {
       link: "/ventes",
-      icon: "layers",
+      icon: "attach_money",
       menu: "Liste des ventes",
     },
     {
       link: "/reservoires",
-      icon: "layers",
+      icon: "local_gas_station",
       menu: "Liste reservoirs",
     },
     {
       link: "/typeTransactions",
-      icon: "layers",
+      icon: "swap_horiz",
       menu: "Liste type transactions",
     },
     {
       link: "/typeVoitures",
-      icon: "layers",
+      icon: "directions_car",
       menu: "Liste type voitures",
     },
     {
       link: "/marques",
-      icon: "layers",
+      icon: "label",
       menu: "Liste des marques",
     },
     {
       link: "/transactions",
-      icon: "layers",
+      icon: "swap_horiz",
       menu: "Liste des transactions",
     },
     {
       link: "/historiques",
-      icon: "layers",
+      icon: "history",
       menu: "Liste des historiques",
     },
     {
       link: "/contact",
-      icon: "layers",
+      icon: "contact",
       menu: "Liste des contact",
     },
   ]
