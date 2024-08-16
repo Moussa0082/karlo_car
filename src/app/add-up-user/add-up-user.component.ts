@@ -46,7 +46,7 @@ export class AddUpUserComponent implements OnInit{
           // idUser: [this.data.user?.idUser || '', Validators.required],
         nomUser: [this.data.user?.nomUser || '', Validators.required],
         email: [this.data.user?.email || '', Validators.required],
-        password: [this.data.user?.password || '', Validators.required],
+        password: [ '', Validators.required],
         telephone: [this.data.user?.telephone || '', Validators.required],
         adresse: [this.data.user?.adresse || '', Validators.required],
         role: [this.data.user?.role || '', Validators.required]
