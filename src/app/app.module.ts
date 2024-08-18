@@ -43,6 +43,10 @@ import { ListVenteComponent } from './list-vente/list-vente.component';
 import { AddUpVenteComponent } from './add-up-vente/add-up-vente.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { InitialsIfLongPipe } from './initials-if-long.pipe';
+import { ListVoiturePartComponent } from './list-voiture-part/list-voiture-part.component';
+import { AddUpVPartComponent } from './add-up-vpart/add-up-vpart.component';
+import { ListVoitureLPartComponent } from './list-voiture-lpart/list-voiture-lpart.component';
+import { AddUpVLPartComponent } from './add-up-vlpart/add-up-vlpart.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +78,11 @@ import { InitialsIfLongPipe } from './initials-if-long.pipe';
     AddUpReservationComponent,
     ListVenteComponent,
     AddUpVenteComponent,
-    InitialsIfLongPipe
+    InitialsIfLongPipe,
+    ListVoiturePartComponent,
+    AddUpVPartComponent,
+    ListVoitureLPartComponent,
+    AddUpVLPartComponent
   ],
   imports: [
     MatDatepickerModule,

@@ -74,6 +74,11 @@ export class VoitureLouerService {
     return this.http.get(`${apiUrl}/${this.baseUrl}/getAllVoiture`);
   }
 
+   // lisyte des voiture à louer par utilisateur
+   getAllVoituresLouerByUSer(idUser:string): Observable<any> {
+    return this.http.get(`${apiUrl}/${this.baseUrl}/getAllVoitureLouerByUser/${idUser}`);
+  }
+
 
      // Méthode pour supprimer une voiture à louer
      deleteVoiture(id: string): Observable<HttpResponse<void>> {

@@ -12,13 +12,17 @@ import { VoitureVendreService } from '../services/voiture-vendre.service';
 import { Router } from '@angular/router';
 import { ReservoirService } from '../services/reservoir.service';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
+
 
 @Component({
-  selector: 'app-add-up-voiture-vendre',
-  templateUrl: './add-up-voiture-vendre.component.html',
-  styleUrls: ['./add-up-voiture-vendre.component.scss']
+  selector: 'app-add-up-vpart',
+  templateUrl: './add-up-vpart.component.html',
+  styleUrls: ['./add-up-vpart.component.scss']
 })
-export class AddUpVoitureVendreComponent implements OnInit{
+export class AddUpVPartComponent  
+
+implements OnInit{
 
 
   @ViewChild('imageInput') imageInput!: ElementRef<HTMLInputElement>;
@@ -32,9 +36,12 @@ export class AddUpVoitureVendreComponent implements OnInit{
   images: File[]  = [];
   imagePreviews: string[] = [];
   isEditMode: boolean;
+  adminRecup!: User  | null;
+  userSubscription!: Subscription;
+
 
   constructor(private fb: FormBuilder, private voitureService: VoitureVendreService,
-    public dialogRef: MatDialogRef<AddUpVoitureVendreComponent>,
+    public dialogRef: MatDialogRef<AddUpVPartComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private route:Router,
     private userService:UserService,
@@ -42,6 +49,10 @@ export class AddUpVoitureVendreComponent implements OnInit{
     private typeReservoirService:ReservoirService ,
     private marqueservice : MarqueService,
   ) { 
+    this.userSubscription = this.userService.getUtilisateurConnect().subscribe(user => {
+      this.adminRecup = user;
+      // Si nécessaire, actualiser la vue ou effectuer des actions spécifiques ici
+    }); 
     this.isEditMode =  !!data.voitureVendre;
     this.voitureVendreForm = this.fb.group({
       matricule: [this.data.voitureVendre?.matricule || '', Validators.required],
@@ -55,14 +66,16 @@ export class AddUpVoitureVendreComponent implements OnInit{
       marque: [this.data.voitureVendre?.marque || '', Validators.required],
       typeVoiture: [this.data.voitureVendre?.typeVoiture || '', Validators.required],
       typeReservoir: [this.data.voitureVendre?.typeReservoir || '' , Validators.required],
-      user: [this.data.voitureVendre?.user || '' , Validators.required]
+      user: this.adminRecup
     });
   }
 
   ngOnInit(): void {
+    this.userSubscription = this.userService.getUtilisateurConnect().subscribe(user => {
+      this.adminRecup = user;
+      // Si nécessaire, actualiser la vue ou effectuer des actions spécifiques ici
+    }); 
     this.isEditMode =  !!this.data.voitureVendre;
-    this.isEditMode ? this.loadExistingImages(this.data.voitureVendre?.images) : null;
-    
     this.voitureVendreForm = this.fb.group({
       idVoiture: [ this.isEditMode ? this.data.voitureVendre?.idVoiture : '', this.isEditMode ? Validators.required : null],
       matricule: [this.data.voitureVendre?.matricule || '', Validators.required],
@@ -76,9 +89,9 @@ export class AddUpVoitureVendreComponent implements OnInit{
       marque: [this.data.voitureVendre?.marque || '', Validators.required],
       typeVoiture: [this.data.voitureVendre?.typeVoiture || '', Validators.required],
       typeReservoir: [this.data.voitureVendre?.typeReservoir || '' , Validators.required],
-      user: [this.data.voitureVendre?.user || '' , Validators.required]
+      user: this.adminRecup
     });
-
+    this.isEditMode ? this.loadExistingImages(this.data.voitureVendre?.images) : null;
     
     this.typeReservoirService.getAllTypeReservoir().subscribe(data => {
       this.typeReservoirs = data;
@@ -116,7 +129,7 @@ export class AddUpVoitureVendreComponent implements OnInit{
     (error) => {
       console.error('Erreur lors du chargement de la liste des marques:', error);
     });
-   this.isEditMode ? this.loadSelectOptions() : null ;
+    this.loadSelectOptions();
   }
 
   private loadSelectOptions(): void {

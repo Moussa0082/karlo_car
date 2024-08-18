@@ -73,7 +73,10 @@ export class VoitureVendreService {
   }
 
    
-  
+  // lisyte des voiture à vendre par utilisateur
+  getAllVoituresVendreByUSer(idUser:string): Observable<any> {
+    return this.http.get(`${apiUrl}/${this.baseUrl}/getAllVoitureVendreByUser/${idUser}`);
+  }
 
 
    //Activer voiture à vendre 

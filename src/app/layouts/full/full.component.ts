@@ -22,6 +22,7 @@ export class FullComponent implements OnInit{
 
   search: boolean = false;
   isBlankPage:boolean=false;
+  libelle!:any;
   isLoginPage:boolean=false;
   isForbiddenPage:boolean=false;
   adminRecup!:User | null;
@@ -38,6 +39,8 @@ export class FullComponent implements OnInit{
   constructor(private breakpointObserver: BreakpointObserver, private router: Router, private userService:UserService) { 
     this.userSubscription = this.userService.getUtilisateurConnect().subscribe(user => {
       this.adminRecup = user;
+      this.libelle = this.adminRecup?.role.libelle;
+      console.log("libelle ", this.libelle);
       // Si nécessaire, actualiser la vue ou effectuer des actions spécifiques ici
     }); 
        this.router.events.subscribe((event) => {
@@ -60,7 +63,6 @@ export class FullComponent implements OnInit{
       console.log("user recup :" , this.adminRecup)
     });
     
-    console.log("user recup ", this.adminRecup);
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.isLoginPage = event.url.endsWith('login') || event.url === '/login';
@@ -147,22 +149,22 @@ export class FullComponent implements OnInit{
     },
     {
       link: "/roles",
-      icon: "group",
+      icon: "package",
       menu: "Liste rôles",
     },
     {
       link: "/voituresLouer",
-      icon: "directions_car",
+      icon: "car",
       menu: "Liste voitures à louer",
     },
     {
       link: "/voituresVendre",
-      icon: "directions_car",
+      icon: "car",
       menu: "Liste voitures à vendre",
     },
     {
       link: "/reservations",
-      icon: "event_note",
+      icon: "calendar",
       menu: "Liste des reservations",
     },
     {
@@ -170,9 +172,10 @@ export class FullComponent implements OnInit{
       icon: "attach_money",
       menu: "Liste des ventes",
     },
+    
     {
       link: "/reservoires",
-      icon: "local_gas_station",
+      icon: "dollarSign",
       menu: "Liste reservoirs",
     },
     {
@@ -182,12 +185,12 @@ export class FullComponent implements OnInit{
     },
     {
       link: "/typeVoitures",
-      icon: "directions_car",
+      icon: "cars",
       menu: "Liste type voitures",
     },
     {
       link: "/marques",
-      icon: "label",
+      icon: "arrowLeftCircle",
       menu: "Liste des marques",
     },
     {
@@ -197,14 +200,39 @@ export class FullComponent implements OnInit{
     },
     {
       link: "/historiques",
-      icon: "history",
+      icon: "clock",
       menu: "Liste des historiques",
     },
     {
       link: "/contact",
-      icon: "contact",
+      icon: "phone",
       menu: "Liste des contact",
     },
   ]
+
+
+  sidebarMenuPart: sidebarMenu[] = [
+    {
+      link: "/vlpart",
+      icon: "car",
+      menu: "Liste voitures à louer",
+    },
+    {
+      link: "/vvpart",
+      icon: "car",
+      menu: "Liste voitures à vendre",
+    },
+    // {
+    //   link: "/reservations",
+    //   icon: "calendar",
+    //   menu: "Liste des reservations",
+    // },
+    // {
+    //   link: "/ventes",
+    //   icon: "attach_money",
+    //   menu: "Liste des ventes",
+    // }
+  ]
+  
 
 }

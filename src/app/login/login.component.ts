@@ -71,8 +71,11 @@ export class LoginComponent implements AfterViewInit{
     
             console.log("userType", localStorage.getItem('userData'));
             // Rediriger vers la page appropriée
-            this.router.navigate(['/home']);
-           
+            if(response.role.libelle.toLocaleLowerCase()=== 'admin'){
+              this.router.navigate(['/home']);
+            }else{
+              this.router.navigate(['/vlpart']);
+            }
             this.loginForm.reset();
           },
           error => {

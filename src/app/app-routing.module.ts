@@ -27,6 +27,7 @@ import { ListMarqueComponent } from './list-marque/list-marque.component';
 import { ListTransactionComponent } from './list-transaction/list-transaction.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './services/auth.guard';
+import { UserGuard } from './services/user.guard';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { HistoriquesComponent } from './historiques/historiques.component';
 import { ListContactComponent } from './list-contact/list-contact.component';
@@ -34,6 +35,8 @@ import { ListVoitureLouerComponent } from './list-voiture-louer/list-voiture-lou
 import { ListVoitureVendreComponent } from './list-voiture-vendre/list-voiture-vendre.component';
 import { ListReservationComponent } from './list-reservation/list-reservation.component';
 import { ListVenteComponent } from './list-vente/list-vente.component';
+import { ListVoitureLPartComponent } from './list-voiture-lpart/list-voiture-lpart.component';
+import { ListVoiturePartComponent } from './list-voiture-part/list-voiture-part.component';
 
 const routes: Routes = [
   {
@@ -50,13 +53,15 @@ const routes: Routes = [
       {path:"typeVoitures", component:ListTypeVoitureComponent , canActivate: [AuthGuard]},
       {path:"marques", component:ListMarqueComponent , canActivate: [AuthGuard]},
       {path:"transactions", component:ListTransactionComponent , canActivate: [AuthGuard]},
-      {path:"forbidden", component:ForbiddenComponent , canActivate: [AuthGuard]  },
+      {path:"forbidden", component:ForbiddenComponent  },
       {path:"historiques", component:HistoriquesComponent , canActivate: [AuthGuard] },
       {path:"contact", component:ListContactComponent , canActivate: [AuthGuard] },
       {path:"voituresLouer", component:ListVoitureLouerComponent , canActivate: [AuthGuard] },
       {path:"voituresVendre", component:ListVoitureVendreComponent , canActivate: [AuthGuard] },
       {path:"reservations", component:ListReservationComponent , canActivate: [AuthGuard] },
       {path:"ventes", component:ListVenteComponent , canActivate: [AuthGuard] },
+      {path:"vlpart", component:ListVoitureLPartComponent , canActivate: [UserGuard] },
+      {path:"vvpart", component:ListVoiturePartComponent , canActivate: [UserGuard] },
       
     ]
   },

@@ -17,8 +17,6 @@ import {MatRadioModule} from '@angular/material/radio';
 
 @Component({
   selector: 'app-add-up-voiture-louer',
-  // standalone: true,
-  // imports: [MatRadioModule],
   templateUrl: './add-up-voiture-louer.component.html',
   styleUrls: ['./add-up-voiture-louer.component.scss'],
 })
@@ -124,7 +122,7 @@ export class AddUpVoitureLouerComponent implements OnInit{
     (error) => {
       console.error('Erreur lors du chargement de la liste des marques:', error);
     });
-    this.loadSelectOptions();
+    this.isEditMode ? this.loadSelectOptions() : null ;
   }
 
    // Méthode pour charger les images existantes
