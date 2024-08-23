@@ -33,14 +33,33 @@
           </ng-container>
   
           <!-- Images Column -->
-          <ng-container matColumnDef="images">
+          <!-- <ng-container matColumnDef="images">
             <th mat-header-cell *matHeaderCellDef>Images</th>
             <td mat-cell *matCellDef="let element">
               <div *ngFor="let image of element.images">
                 <img [src]=" 'http://localhost/' + image" alt="Image" height="40" width="40" style="border-radius: 50%;" class="styled-image">
               </div>
             </td>
-          </ng-container>
+          </ng-container> -->
+          <!-- <ng-container matColumnDef="images">
+            <th mat-header-cell *matHeaderCellDef>Images</th>
+            <td mat-cell *matCellDef="let voitureLouer">
+              <div class="image-slider-container">
+                <button class="prec" (click)="previousImage(voitureLouer)">&#8592;</button>
+                <img 
+                  *ngIf="voitureLouer.images?.length"
+                  [src]="'http://localhost/' + voitureLouer.images[voitureLouer.currentImageIndex]" 
+                  alt="Image voiture"
+                  height="40" 
+                  width="40" 
+                  style="border-radius: 50%;" 
+                  class="styled-image">
+                <button class="suiv" (click)="nextImage(voitureLouer)">&#8594;</button>
+              </div>
+            </td>
+          </ng-container> -->
+          
+          
 
           <ng-container matColumnDef="annee">
             <th mat-header-cell *matHeaderCellDef>Annee</th>
@@ -126,6 +145,9 @@
             <td mat-cell *matCellDef="let element">
               <button mat-icon-button color="primary" (click)="editElement(element)">
                 <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" (click)="voirElement(element)">
+                <mat-icon>visibility</mat-icon>
               </button>
               <button mat-icon-button color="warn" (click)="onDelete(element)">
                 <mat-icon>delete</mat-icon>

@@ -1,43 +1,43 @@
-<h2 mat-dialog-title>{{ isEditMode ? 'Modifier une voiture à vendre' : 'Ajouter une voiture à vendre' }}</h2>
+<h2 mat-dialog-title>{{ isEditMode ? 'Detail voiture à vendre' : 'Detail voiture à vendre' }}</h2>
 <mat-dialog-content class="scrollable-dialog-content">
   <form [formGroup]="voitureVendreForm">
     <div class="row">
       <div class="col">
         <mat-form-field appearance="fill">
           <mat-label>Matricule</mat-label>
-          <input matInput placeholder="Matricule" formControlName="matricule" required>
+          <input matInput placeholder="Matricule" formControlName="matricule" readonly>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Année</mat-label>
-          <input matInput placeholder="Année" formControlName="annee" required>
+          <input matInput placeholder="Année" formControlName="annee" readonly>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Type boite</mat-label>
-          <input matInput placeholder="Type boite" formControlName="typeBoite" required>
+          <input matInput placeholder="Type boite" formControlName="typeBoite" readonly>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Modèle</mat-label>
-          <input matInput placeholder="Modèle" formControlName="modele" required>
+          <input matInput placeholder="Modèle" formControlName="modele" readonly>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Nombre de protes</mat-label>
-          <input matInput placeholder="Nombre de porte" formControlName="nbPortiere" required>
+          <input matInput placeholder="Nombre de porte" formControlName="nbPortiere" readonly>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Prix propriétaire</mat-label>
-          <input matInput placeholder="Prix proprietaire" formControlName="prixProprietaire" required>
+          <input matInput placeholder="Prix proprietaire" formControlName="prixProprietaire" readonly>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Prix augmentation</mat-label>
-          <input matInput placeholder="Prix augmentation" formControlName="prixAugmente" required>
+          <input matInput placeholder="Prix augmentation" formControlName="prixAugmente" readonly>
         </mat-form-field>
         
       
     
         <mat-form-field appearance="fill">
           <mat-label>Marque</mat-label>
-          <mat-select formControlName="marque" required>
-            <mat-option *ngFor="let marque of marques" [value]="marque"> <!-- Utilisez l'objet complet -->
+          <mat-select formControlName="marque" readonly>
+            <mat-option *ngFor="let marque of marques" [value]="marque" [disabled]="true"> <!-- Utilisez l'objet complet -->
               {{marque.nomMarque}}
             </mat-option>
           </mat-select>
@@ -47,8 +47,8 @@
 
         <mat-form-field appearance="fill">
           <mat-label>Type voiture</mat-label>
-          <mat-select formControlName="typeVoiture" required>
-            <mat-option *ngFor="let typeVoiture of typeVoitures" [value]="typeVoiture"> <!-- Utilisez l'objet complet -->
+          <mat-select formControlName="typeVoiture" readonly>
+            <mat-option *ngFor="let typeVoiture of typeVoitures" [value]="typeVoiture" [disabled]="true"> <!-- Utilisez l'objet complet -->
               {{typeVoiture.nomTypeVoiture}}
             </mat-option>
           </mat-select>
@@ -57,8 +57,8 @@
         
         <mat-form-field appearance="fill">
             <mat-label>Type reservoir</mat-label>
-            <mat-select formControlName="typeReservoir" required>
-            <mat-option *ngFor="let typeReservoir of typeReservoirs" [value]="typeReservoir"> <!-- Utilisez l'objet complet -->
+            <mat-select formControlName="typeReservoir" >
+            <mat-option *ngFor="let typeReservoir of typeReservoirs" [value]="typeReservoir" [disabled]="true"> <!-- Utilisez l'objet complet -->
               {{typeReservoir.nomTypeReservoir}}
             </mat-option>
           </mat-select>
@@ -68,8 +68,8 @@
        
         <div class="file-upload-container">
           <label for="file-upload" class="file-upload-label">
-            <input type="file" id="file-upload" (change)="onFileChange($event)" formControlName="images" multiple style="display: none;" accept="image/*">
-            <span class="file-upload-text">Charger les images</span>
+            <input type="file" id="file-upload"  formControlName="images" multiple style="display: none;" accept="image/*" readonly>
+            <!-- <span class="file-upload-text">Charger les images</span> -->
           </label>
         </div>
       
@@ -77,10 +77,6 @@
           <div class="image-grid">
             <div *ngFor="let preview of imageUrls; let i = index" class="image-container">
               <img [src]="preview" class="image-preview" alt="Image Preview">
-              <div class="icones">
-                <mat-icon class="up" (click)="editImage(i)">edit</mat-icon>
-                <mat-icon class="del" (click)="removeImage(i)">delete</mat-icon>
-              </div>
             </div>
           </div>
         </mat-card>
@@ -91,6 +87,5 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button class="dialog-button" (click)="onNoClick()">Annuler</button>
-  <button mat-button color="primary" class="dialog-button" (click)="onSaves()">{{ isEditMode ? 'Modifier' : 'Ajouter' }}</button>
+  <button mat-button class="dialog-button" (click)="onNoClick()">Fermer</button>
 </mat-dialog-actions>

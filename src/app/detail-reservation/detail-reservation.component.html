@@ -1,0 +1,72 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Detail reservation' : 'Detail reservation' }}</h2>
+<mat-dialog-content class="scrollable-dialog-content">
+  <form [formGroup]="reservationForm">
+    <div class="row">
+      <div class="col">
+        <mat-form-field appearance="fill">
+            <mat-label>Date et Heure début</mat-label>
+            <input matInput [matDatepicker]="startDatePicker" formControlName="dateDebut" placeholder="Date et Heure Début" readonly>
+            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #startDatePicker></mat-datepicker>
+          </mat-form-field>
+        
+          <mat-form-field appearance="fill">
+            <mat-label>Date et Heure fin</mat-label>
+            <input matInput [matDatepicker]="endDatePicker" formControlName="dateFin" placeholder="Date et Heure Fin" readonly>
+            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #endDatePicker></mat-datepicker>
+          </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Nom client</mat-label>
+          <input matInput placeholder="Nom client" formControlName="nomClient" readonly>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Téléphone</mat-label>
+          <input matInput placeholder="Téléphone" formControlName="telephone" readonly>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Montant</mat-label>
+          <input matInput placeholder="Montant" formControlName="montant" readonly>
+        </mat-form-field>
+
+       
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <textarea matInput placeholder="Description" formControlName="description" readonly></textarea>
+        </mat-form-field>
+        
+      
+    
+        <mat-form-field appearance="fill">
+          <mat-label>Voiture à louer</mat-label>
+          <mat-select formControlName="voitureLouer" >
+            <mat-option *ngFor="let voitureLouer of voituresLouer" [value]="voitureLouer" disabled="true"> <!-- Utilisez l'objet complet -->
+              {{voitureLouer.matricule}}  {{voitureLouer.modele}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <div class="file-upload-container">
+          <label for="file-upload" class="file-upload-label">
+            <input type="file" id="file-upload"  formControlName="images" multiple style="display: none;" accept="image/*" readonly>
+          </label>
+        </div>
+      
+        <mat-card *ngIf="imagePreviews.length" class="image-preview-card">
+          <div class="image-grid">
+            <div *ngFor="let preview of imagePreviews; let i = index" class="image-container">
+              <img [src]="preview" class="image-preview" alt="Image Preview">
+            </div>
+          </div>
+        </mat-card>
+        
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button class="dialog-button" (click)="onNoClick()">Fermer</button>
+</mat-dialog-actions>

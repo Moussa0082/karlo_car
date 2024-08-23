@@ -7,6 +7,7 @@ import { VoitureVendreService } from '../services/voiture-vendre.service';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { AddUpVoitureVendreComponent } from '../add-up-voiture-vendre/add-up-voiture-vendre.component';
+import { DetailVoitureComponent } from '../detail-voiture/detail-voiture.component';
 
 @Component({
   selector: 'app-list-voiture-vendre',
@@ -16,7 +17,8 @@ import { AddUpVoitureVendreComponent } from '../add-up-voiture-vendre/add-up-voi
 export class ListVoitureVendreComponent implements OnInit{
 
 
-  displayedColumns: string[] = ['matricule', 'statut' ,'modele', 'annee', 'typeBoite' , 'dateAjout' , 'dateModif' , 'nbreView' ,  'nbPortiere',  'prixProprietaire', 'prixAugmente' , 'images' , 'marque',   'typeVoiture', 'typeReservoir', 'user', 'actions'];
+  displayedColumns: string[] = ['matricule', 'statut' ,'modele', 'annee', 'typeBoite' , 'dateAjout' , 'dateModif' , 'nbreView' ,  'nbPortiere',  'prixProprietaire', 'prixAugmente' , 'marque',   'typeVoiture', 'typeReservoir', 'user', 'actions'];
+  // displayedColumns: string[] = ['matricule', 'statut' ,'modele', 'annee', 'typeBoite' , 'dateAjout' , 'dateModif' , 'nbreView' ,  'nbPortiere',  'prixProprietaire', 'prixAugmente' , 'images' , 'marque',   'typeVoiture', 'typeReservoir', 'user', 'actions'];
   voituresVendre: VoitureVendre[] = [];
   tempStatus!: boolean; // Variable temporaire pour stocker l'état
   dataSource = new MatTableDataSource<VoitureVendre>();
@@ -208,6 +210,28 @@ export class ListVoitureVendreComponent implements OnInit{
   editElement(voitureVendre: VoitureVendre): void {
 
     this.openDialog(voitureVendre);
+    console.log("voiture Vendre open dialog: ", voitureVendre);
+  }
+
+  openDialogView(voitureVendre?: VoitureVendre): void {
+    const dialogRef = this.dialog.open(DetailVoitureComponent, {
+      width: '700px',
+      data: { voitureVendre }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Dialog closed with result:', result);
+        this.chargerDonner();
+      } else {
+        console.log('Dialog closed without result');
+      }
+    });
+  }
+
+  voirElement(voitureVendre: VoitureVendre): void {
+
+    this.openDialogView(voitureVendre);
     console.log("voiture Vendre open dialog: ", voitureVendre);
   }
 

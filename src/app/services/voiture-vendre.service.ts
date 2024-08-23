@@ -90,6 +90,10 @@ export class VoitureVendreService {
   }
 
 
+  getImageUrl(idVoiture: string, imageName: string): string {
+    return `${apiUrl}/${this.baseUrl}/${idVoiture}/images/${imageName}`;
+  }
+
      // Méthode pour supprimer une voiture à vendre
      deleteVoiture(id: string): Observable<HttpResponse<void>> {
       return this.http.delete<void>(`${apiUrl}/${this.baseUrl}/delete/${id}`, { observe: 'response' })

@@ -37,7 +37,7 @@
         <ng-container matColumnDef="logo">
           <th mat-header-cell *matHeaderCellDef> Logo </th>
           <td mat-cell *matCellDef="let element">
-            <img [src]=" 'http://localhost/' + element.logo" alt="logo marque" height="40" width="40" style="border-radius: 50%;" class="styled-image">
+            <img [src]=" 'http://185.194.216.57:9000/marque/' + element.idMarque+'/image'" alt="logo marque" height="40" width="40" style="border-radius: 50%;" class="styled-image">
         </td>
         </ng-container>
 

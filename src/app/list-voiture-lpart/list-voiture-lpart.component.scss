@@ -101,3 +101,19 @@
     background: #f6f7f8;
   }
 // end shimmer effect  
+
+.image-slider-container {
+  display: flex;
+  align-items: center;
+}
+
+.suiv,.prec {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.suiv,.prec:hover {
+  color: #007BFF; /* Change the color on hover */
+}

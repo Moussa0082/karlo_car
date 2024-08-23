@@ -22,4 +22,6 @@ export interface VoitureLouer {
     typeVoiture:      TypeVoiture;
     typeReservoir:    TypeReservoir;
     user:             User;
+
+    currentImageIndex?: number;
 }

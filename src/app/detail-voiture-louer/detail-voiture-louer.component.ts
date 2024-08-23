@@ -1,27 +1,27 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Marque } from '../models/Marque';
+import { User } from '../models/User';
 import { TypeVoiture } from '../models/TypeVoiture';
 import { TypeReservoir } from '../models/TypeReservoir';
-import { VoitureLouerService } from '../services/voiture-louer.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AddUpUserComponent } from '../add-up-user/add-up-user.component';
-import { Router } from '@angular/router';
-import { TypeVoitureService } from '../services/type-voiture.service';
-import { ReservoirService } from '../services/reservoir.service';
 import { MarqueService } from '../services/marque.service';
-import Swal from 'sweetalert2';
+import { TypeVoitureService } from '../services/type-voiture.service';
 import { UserService } from '../services/user.service';
-import { User } from '../models/User';
-import {MatRadioModule} from '@angular/material/radio';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { VoitureVendreService } from '../services/voiture-vendre.service';
+import { Router } from '@angular/router';
+import { ReservoirService } from '../services/reservoir.service';
+import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
+import { VoitureLouerService } from '../services/voiture-louer.service';
 
 @Component({
-  selector: 'app-add-up-voiture-louer',
-  templateUrl: './add-up-voiture-louer.component.html',
-  styleUrls: ['./add-up-voiture-louer.component.scss'],
+  selector: 'app-detail-voiture-louer',
+  templateUrl: './detail-voiture-louer.component.html',
+  styleUrls: ['./detail-voiture-louer.component.scss']
 })
+export class DetailVoitureLouerComponent implements OnInit{
 
-export class AddUpVoitureLouerComponent implements OnInit{
 
   @ViewChild('imageInput') imageInput!: ElementRef<HTMLInputElement>;
   // imagePreview: string | ArrayBuffer | null | any = null;
@@ -34,18 +34,26 @@ export class AddUpVoitureLouerComponent implements OnInit{
   images: File[]  = [];
   imagePreviews: string[] = [];
   isEditMode: boolean;
+  adminRecup!: User  | null;
+  userSubscription!: Subscription;
   imageUrls: string[] = [];  // Stocker les URLs des images de la voiture
 
 
+
   constructor(private fb: FormBuilder, private voitureService: VoitureLouerService,
-    public dialogRef: MatDialogRef<AddUpVoitureLouerComponent>,
+    public dialogRef: MatDialogRef<DetailVoitureLouerComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private cdr: ChangeDetectorRef,
     private route:Router,
     private userService:UserService,
     private typeVoitureService : TypeVoitureService, 
     private typeReservoirService:ReservoirService ,
     private marqueservice : MarqueService,
   ) { 
+    this.userSubscription = this.userService.getUtilisateurConnect().subscribe(user => {
+      this.adminRecup = user;
+      // Si nécessaire, actualiser la vue ou effectuer des actions spécifiques ici
+    }); 
     this.isEditMode =  !!data.voitureLouer;
     this.voitureLouerForm = this.fb.group({
       matricule: [this.data.voitureLouer?.matricule || '', Validators.required],
@@ -60,11 +68,15 @@ export class AddUpVoitureLouerComponent implements OnInit{
       marque: [this.data.voitureLouer?.marque || '', Validators.required],
       typeVoiture: [this.data.voitureLouer?.typeVoiture || '', Validators.required],
       typeReservoir: [this.data.voitureLouer?.typeReservoir || '' , Validators.required],
-      user: [this.data.voitureLouer?.user || '' , Validators.required]
+      user: this.adminRecup
     });
   }
 
   ngOnInit(): void {
+    this.userSubscription = this.userService.getUtilisateurConnect().subscribe(user => {
+      this.adminRecup = user;
+      // Si nécessaire, actualiser la vue ou effectuer des actions spécifiques ici
+    }); 
     this.isEditMode =  !!this.data.voitureLouer;
     this.voitureLouerForm = this.fb.group({
       idVoiture: [ this.isEditMode ? this.data.voitureLouer?.idVoiture : '', this.isEditMode ? Validators.required : null],
@@ -80,14 +92,9 @@ export class AddUpVoitureLouerComponent implements OnInit{
       marque: [this.data.voitureLouer?.marque || '', Validators.required],
       typeVoiture: [this.data.voitureLouer?.typeVoiture || '', Validators.required],
       typeReservoir: [this.data.voitureLouer?.typeReservoir || '' , Validators.required],
-      user: [this.data.voitureLouer?.user || '' , Validators.required]
+      user: this.adminRecup
     });
-    // this.isEditMode ? this.loadExistingImages(this.data.voitureLouer?.images) : null;
-
-    // Abonnez-vous aux changements de valeur pour le contrôle isChauffeur
-    this.voitureLouerForm.get('isChauffeur')?.valueChanges.subscribe(value => {
-      this.onIsChauffeurChange(value);
-    });
+    
     this.typeReservoirService.getAllTypeReservoir().subscribe(data => {
       this.typeReservoirs = data;
       console.log("liste type reservoir charger: ", this.typeReservoirs);
@@ -102,9 +109,9 @@ export class AddUpVoitureLouerComponent implements OnInit{
         // // console.log(this.demandes.utilisateur.nom)
         // // console.log(this.demandes.utilisateur.nom)
         // this.users.forEach(user => {
-        //   console.log(user.role?.libelle);
-        // });
-      },
+          //   console.log(user.role?.libelle);
+          // });
+        },
       
       (error) => {
         console.error('Erreur lors du chargement de la liste des users:', error);
@@ -124,17 +131,9 @@ export class AddUpVoitureLouerComponent implements OnInit{
     (error) => {
       console.error('Erreur lors du chargement de la liste des marques:', error);
     });
-    this.isEditMode ? this.loadSelectOptions() : null ;
+    this.loadSelectOptions();
     this.loadImages();
   }
-
-   // Méthode pour charger les images existantes
-  //  private loadExistingImages(logoPaths: string[]): void {
-  //   if (logoPaths && logoPaths.length > 0) {
-  //     this.imagePreviews = logoPaths.map(path => `http://localhost/${path}`);
-  //   }
-  // }
-
 
   private loadSelectOptions(): void {
     this.marqueservice.getAllMarque().subscribe(
@@ -207,197 +206,53 @@ export class AddUpVoitureLouerComponent implements OnInit{
     );
   }
 
-  private loadImages(): any {
+   // Méthode pour charger les images existantes
+  //  private loadExistingImages(logoPaths: string[]): void {
+  //   if (logoPaths && logoPaths.length > 0) {
+  //     this.imagePreviews = logoPaths.map(path => `http://localhost/${path}`);
+  //   }
+  // }
+  //  private loadExistingImages(logoPaths: string[]): void {
+  //   if (logoPaths && logoPaths.length > 0) {
+  //     this.imagePreviews = logoPaths.map(path => `http://185.194.216.57:9000/voitureLouer/${path}`);
+  //   }
+  // }
+
+  // private loadImages(): void {
+  //   if (this.data.voitureLouer && this.data.voitureLouer.images && this.data.voitureLouer.images.length > 0) {
+  //     this.data.voitureLouer.images.forEach((imageName: string) => {
+  //       this.voitureService.getImages(this.data.voitureLouer.idVoiture, imageName).subscribe(
+  //         (imageBlob: any) => {
+  //           const objectURL = URL.createObjectURL(imageBlob);
+  //           this.imageUrls.push(objectURL);  // Ajouter l'URL de l'image au tableau
+  //           console.log("image chargée", this.imageUrls);
+            
+  //           // Déclencher la détection des changements
+  //           this.cdr.detectChanges();
+  //         },
+  //         (error) => {
+  //           console.error(`Erreur lors du chargement de l'image ${imageName}:`, error);
+  //         }
+  //       );
+  //     });
+  //   }
+  // }
+  private loadImages(): void {
     if (this.data.voitureLouer && this.data.voitureLouer.images && this.data.voitureLouer.images.length > 0) {
       this.data.voitureLouer.images.forEach((imageName: string) => {
         const imageUrl = this.voitureService.getImageUrl(this.data.voitureLouer.idVoiture, imageName);
         this.imageUrls.push(imageUrl);  // Ajouter l'URL complète de l'image au tableau
         console.log("Image URL chargée", this.imageUrls);
-      }
-    );
+      });
     }
   }
-
+  
+  
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  onIsChauffeurChange(value: boolean) {
-    value   === !value;
-    console.log('Valeur booléenne:', value);
-    // Faites ce que vous voulez avec la valeur booléenne
-  }
-
- 
-  onSaves(): void {
-    if (this.voitureLouerForm.valid) {
-      const voitureLouer = this.voitureLouerForm.value;
-      console.log('Form Data:', voitureLouer);
   
-      if (this.isEditMode) {
-        console.log('Edit Mode');
-        this.voitureService.updateVoitureLouer(voitureLouer, this.images).subscribe(
-          response => {
-            Swal.fire('Succès !', 'Voiture à louer modifié avec succès', 'success');
-            console.log("Voiture à louer modifié : ", response);
-            this.dialogRef.close(response);
-          },
-          error => {
-            console.error('Erreur lors de la modification:', error);
-            Swal.fire('Erreur !', 'Erreur lors de la modification', 'error');
-          }
-        );
-      } else {
-        console.log('Add Mode');
-        this.voitureService.addVoitureLouer(voitureLouer, this.images).subscribe(
-          response => {
-            console.log('Voiture à louer ajoutée avec succès :', response);
-            this.voitureLouerForm.reset();
-            this.images = [];
-            this.imagePreviews = [];
-            Swal.fire('Succès !', 'Voiture à louer créé avec succès', 'success');
-            this.dialogRef.close(response);
-          },
-          error => {
-            console.error("Erreur lors de l'ajout de la voiture à louer :", error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: error.error.message,
-            });
-          }
-        );
-      }
-    } else {
-      this.showValidationErrors();
-    }
-  }
-  
-  
-  // onFileChange(event: Event): void {
-  //   const input = event.target as HTMLInputElement;
-  //   if (input.files) {
-  //     const files = Array.from(input.files); // Convertir FileList en tableau
-  
-  //     files.forEach(file => {
-  //       const reader = new FileReader();
-        
-  //       reader.onload = () => {
-  //         const imageUrl = reader.result as string;
-  //         this.imagePreviews.push(imageUrl); // Ajouter l'aperçu au tableau
-  //         console.log('Image URL:', imageUrl); // Afficher l'URL des données dans la console
-  //       };
-        
-  //       reader.readAsDataURL(file);
-  //       this.images.push(file); // Ajouter le fichier au tableau
-  //     });
-  
-  //     // Réinitialiser la valeur du champ de fichier pour éviter des problèmes
-  //     input.value = '';
-  //   }
-  // }
-
-  onFileChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-  
-    if (input.files) {
-      const files = Array.from(input.files);
-  
-      // Réinitialiser les images sélectionnées et les aperçus
-      // this.images = [];
-      // this.imagePreviews = [];
-  
-      files.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const imageUrl = reader.result as string;
-          this.imageUrls.push(imageUrl); // Ajouter l'aperçu au tableau
-        };
-        reader.readAsDataURL(file);
-  
-        // Ajouter le fichier à la liste des images sélectionnées
-        this.images.push(file);
-      });
-  
-      input.value = ''; // Réinitialiser le champ pour éviter des problèmes
-    }
-  }
-  
-  // onFileChange(event: any) {
-  //   const files = event.target.files;
-  //   this.images = files; // Assurez-vous que `images` est bien défini
-  // }
-  
-  
-  
-//   onFileChange(event: Event): void {
-//     const input = event.target as HTMLInputElement;
-
-//     if (input.files) {
-//         const files = Array.from(input.files); // Convertir FileList en tableau
-
-//         files.forEach(file => {
-//             // Créer une prévisualisation pour chaque fichier
-//             const reader = new FileReader();
-//             reader.onload = () => {
-//                 const imageUrl = reader.result as string;
-//                 this.imagePreviews.push(imageUrl); // Ajouter l'aperçu au tableau
-//             };
-//             reader.readAsDataURL(file); // Lire le fichier comme une URL de données
-
-//             // Vérifier si le fichier est déjà dans la liste pour éviter les doublons
-//             if (!this.images.some(img => img.name === file.name)) {
-//                 this.images.push(file); // Ajouter le fichier au tableau
-//                 console.log("Nom du fichier:", file.name); // Afficher le nom du fichier
-//             }
-//         });
-
-//         // Réinitialiser la valeur du champ de fichier pour éviter des problèmes
-//         input.value = '';
-//     }
-// }
-
-
-  
-
-  editImage(index: number): void {
-    const newFileInput = document.createElement('input');
-    newFileInput.type = 'file';
-    newFileInput.accept = 'image/*';
-    newFileInput.onchange = (event: Event) => {
-      const input = event.target as HTMLInputElement;
-      if (input.files) {
-        const file = input.files[0];
-        const reader = new FileReader();
-        reader.onload = () => {
-          const imageUrl = reader.result as string;
-          this.imagePreviews[index] = imageUrl;
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-    newFileInput.click();
-  }
-
-   // Méthode pour supprimer une image
-   removeImage(index: number): void {
-    // Supprime l'image à l'index spécifié
-    this.imagePreviews.splice(index, 1);
-  }
-
-  private showValidationErrors() {
-    Object.keys(this.voitureLouerForm.controls).forEach(key => {
-      const control = this.voitureLouerForm.get(key);
-      if (control) {
-        const controlErrors = control.errors as ValidationErrors | null; // Assertion de type
-        if (controlErrors) {
-          Object.keys(controlErrors).forEach(keyError => {
-            console.log(`Control ${key} has error: ${keyError}`);
-          });
-        }
-      }
-    });
-  }
-
 }
+

@@ -37,6 +37,8 @@ export class AddUpVLPartComponent  implements OnInit{
   imagePreviews: string[] = [];
   isEditMode: boolean;
   userSubscription!: Subscription;
+  imageUrls: string[] = [];  // Stocker les URLs des images de la voiture
+
 
 
   constructor(private fb: FormBuilder, private voitureService: VoitureLouerService,
@@ -90,9 +92,9 @@ export class AddUpVLPartComponent  implements OnInit{
       marque: [this.data.voitureLouer?.marque || '', Validators.required],
       typeVoiture: [this.data.voitureLouer?.typeVoiture || '', Validators.required],
       typeReservoir: [this.data.voitureLouer?.typeReservoir || '' , Validators.required],
-      user: [this.data.voitureLouer?.user || '' , Validators.required]
+      user: this.adminRecup
     });
-    this.isEditMode ? this.loadExistingImages(this.data.voitureLouer?.images) : null;
+    // this.isEditMode ? this.loadExistingImages(this.data.voitureLouer?.images) : null;
 
     // Abonnez-vous aux changements de valeur pour le contrôle isChauffeur
     this.voitureLouerForm.get('isChauffeur')?.valueChanges.subscribe(value => {
@@ -135,14 +137,15 @@ export class AddUpVLPartComponent  implements OnInit{
       console.error('Erreur lors du chargement de la liste des marques:', error);
     });
     this.loadSelectOptions();
+    this.loadImages();
   }
 
    // Méthode pour charger les images existantes
-   private loadExistingImages(logoPaths: string[]): void {
-    if (logoPaths && logoPaths.length > 0) {
-      this.imagePreviews = logoPaths.map(path => `http://localhost/${path}`);
-    }
-  }
+  //  private loadExistingImages(logoPaths: string[]): void {
+  //   if (logoPaths && logoPaths.length > 0) {
+  //     this.imagePreviews = logoPaths.map(path => `http://localhost/${path}`);
+  //   }
+  // }
 
 
   private loadSelectOptions(): void {
@@ -216,6 +219,18 @@ export class AddUpVLPartComponent  implements OnInit{
     );
   }
 
+  private loadImages(): any {
+    if (this.data.voitureLouer && this.data.voitureLouer.images && this.data.voitureLouer.images.length > 0) {
+      this.data.voitureLouer.images.forEach((imageName: string) => {
+        const imageUrl = this.voitureService.getImageUrl(this.data.voitureLouer.idVoiture, imageName);
+        this.imageUrls.push(imageUrl);  // Ajouter l'URL complète de l'image au tableau
+        console.log("Image URL chargée", this.imageUrls);
+      }
+    );
+    }
+  }
+
+
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -287,7 +302,7 @@ export class AddUpVLPartComponent  implements OnInit{
         const reader = new FileReader();
         reader.onload = () => {
           const imageUrl = reader.result as string;
-          this.imagePreviews.push(imageUrl); // Ajouter l'aperçu au tableau
+          this.imageUrls.push(imageUrl); // Ajouter l'aperçu au tableau
         };
         reader.readAsDataURL(file);
   

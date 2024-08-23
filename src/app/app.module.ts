@@ -47,6 +47,11 @@ import { ListVoiturePartComponent } from './list-voiture-part/list-voiture-part.
 import { AddUpVPartComponent } from './add-up-vpart/add-up-vpart.component';
 import { ListVoitureLPartComponent } from './list-voiture-lpart/list-voiture-lpart.component';
 import { AddUpVLPartComponent } from './add-up-vlpart/add-up-vlpart.component';
+import { DetailVoitureComponent } from './detail-voiture/detail-voiture.component';
+import { DetailVoitureLouerComponent } from './detail-voiture-louer/detail-voiture-louer.component';
+import { DetailReservationComponent } from './detail-reservation/detail-reservation.component';
+import { DetailVenteComponent } from './detail-vente/detail-vente.component';
+import { DetailVComponent } from './detail-v/detail-v.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +87,12 @@ import { AddUpVLPartComponent } from './add-up-vlpart/add-up-vlpart.component';
     ListVoiturePartComponent,
     AddUpVPartComponent,
     ListVoitureLPartComponent,
-    AddUpVLPartComponent
+    AddUpVLPartComponent,
+    DetailVoitureComponent,
+    DetailVoitureLouerComponent,
+    DetailReservationComponent,
+    DetailVenteComponent,
+    DetailVComponent
   ],
   imports: [
     MatDatepickerModule,

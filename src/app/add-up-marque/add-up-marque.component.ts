@@ -47,7 +47,7 @@ export class AddUpMarqueComponent implements OnInit{
       nomMarque: [this.data.marque?.nomMarque || '', Validators.required],
       logo: [null],
     });
-    this.isEditMode ? this.loadExistingImage(this.data.marque?.logo) : null;
+    this.isEditMode ? this.loadExistingImage(this.data.marque?.idMarque+"/image") : null;
     this.marqueService.getAllMarque().subscribe(data =>{
       this.marques = data;
       console.log("Liste marques:", this.marques);
@@ -60,9 +60,14 @@ export class AddUpMarqueComponent implements OnInit{
   }
 
 
+  // private loadExistingImage(imagePath: string): void {
+  //   // Construct the URL for the existing image
+  //   const imageUrl = `http://localhost/${imagePath}`;
+  //   this.imagePreview = imageUrl;
+  // }
   private loadExistingImage(imagePath: string): void {
     // Construct the URL for the existing image
-    const imageUrl = `http://localhost/${imagePath}`;
+    const imageUrl = `http://185.194.216.57:9000/marque/${imagePath}`;
     this.imagePreview = imageUrl;
   }
 

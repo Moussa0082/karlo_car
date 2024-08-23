@@ -175,7 +175,7 @@ export class FullComponent implements OnInit{
     
     {
       link: "/reservoires",
-      icon: "dollarSign",
+      icon: "dollarsign",
       menu: "Liste reservoirs",
     },
     {
@@ -190,12 +190,12 @@ export class FullComponent implements OnInit{
     },
     {
       link: "/marques",
-      icon: "arrowLeftCircle",
+      icon: "arrowleftcircle",
       menu: "Liste des marques",
     },
     {
       link: "/transactions",
-      icon: "swap_horiz",
+      icon: "swaphoriz",
       menu: "Liste des transactions",
     },
     {

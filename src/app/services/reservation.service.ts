@@ -55,6 +55,9 @@ export class ReservationService {
     });
   }
 
+  getImageUrl(idReservation: string, imageName: string): string {
+    return `${apiUrl}/${this.baseUrl}/${idReservation}/images/${imageName}`;
+  }
 
     // Method to get the total amount for voiture louer
     getTotalVoitureLouer(): Observable<number> {

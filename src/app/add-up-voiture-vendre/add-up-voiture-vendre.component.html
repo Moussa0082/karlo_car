@@ -82,9 +82,9 @@
           </label>
         </div>
       
-        <mat-card *ngIf="imagePreviews.length" class="image-preview-card">
+        <mat-card *ngIf="imageUrls.length" class="image-preview-card">
           <div class="image-grid">
-            <div *ngFor="let preview of imagePreviews; let i = index" class="image-container">
+            <div *ngFor="let preview of imageUrls; let i = index" class="image-container">
               <img [src]="preview" class="image-preview" alt="Image Preview">
               <div class="icones">
                 <mat-icon class="up" (click)="editImage(i)">edit</mat-icon>

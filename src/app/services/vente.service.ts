@@ -67,6 +67,9 @@ export class VenteService {
     return this.http.get(`${apiUrl}/${this.baseUrl}/getAllVente`);
   }
 
+  getImageUrl(idVente: string, imageName: string): string {
+    return `${apiUrl}/${this.baseUrl}/${idVente}/images/${imageName}`;
+  }
 
      // Méthode pour supprimer une vente
      deleteVente(id: string): Observable<HttpResponse<void>> {

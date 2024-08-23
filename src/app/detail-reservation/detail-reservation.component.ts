@@ -8,12 +8,13 @@ import Swal from 'sweetalert2';
 import { ReservationService } from '../services/reservation.service';
 import { formatDate } from '@angular/common';
 
+
 @Component({
-  selector: 'app-add-up-reservation',
-  templateUrl: './add-up-reservation.component.html',
-  styleUrls: ['./add-up-reservation.component.scss']
+  selector: 'app-detail-reservation',
+  templateUrl: './detail-reservation.component.html',
+  styleUrls: ['./detail-reservation.component.scss']
 })
-export class AddUpReservationComponent implements OnInit{
+export class DetailReservationComponent implements OnInit{
 
 
   @ViewChild('imageInput') imageInput!: ElementRef<HTMLInputElement>;
@@ -27,7 +28,7 @@ export class AddUpReservationComponent implements OnInit{
 
    constructor(private fb: FormBuilder, private voitureService: VoitureLouerService,
     private reservationService:ReservationService,
-    public dialogRef: MatDialogRef<AddUpReservationComponent>,
+    public dialogRef: MatDialogRef<DetailReservationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private route:Router,
   ) { 
@@ -45,6 +46,7 @@ export class AddUpReservationComponent implements OnInit{
      });
     //  this.isEditMode ? this.loadExistingImages(this.data.reservation?.images) : null;
      this.isEditMode ? this.loadSelectOptions() : null;
+    //  this.isEditMode ? this.loadImages() : null;
 
   }
 
@@ -89,7 +91,18 @@ export class AddUpReservationComponent implements OnInit{
     this.isEditMode ? this.loadSelectOptions() : null;
     this.isEditMode ? this.loadImages() : null;
 
-    
+  }
+
+
+  private loadImages(): any {
+    if (this.data.reservation && this.data.reservation.images && this.data.reservation.images.length > 0) {
+      this.data.reservation.images.forEach((imageName: string) => {
+        const imageUrl = this.reservationService.getImageUrl(this.data.reservation.idReservation, imageName);
+        this.imagePreviews.push(imageUrl);  // Ajouter l'URL complète de l'image au tableau
+        console.log("Image URL chargée", this.imagePreviews);
+      }
+    );
+    }
   }
 
   private loadSelectOptions(): void {
@@ -115,143 +128,15 @@ export class AddUpReservationComponent implements OnInit{
 
 
   // Méthode pour charger les images existantes
-  private loadExistingImages(logoPaths: string[]): void {
-    if (logoPaths && logoPaths.length > 0) {
-      this.imagePreviews = logoPaths.map(path => `http://localhost/${path}`);
-    }
-  }
+  // private loadExistingImages(logoPaths: string[]): void {
+  //   if (logoPaths && logoPaths.length > 0) {
+  //     this.imagePreviews = logoPaths.map(path => `http://localhost/${path}`);
+  //   }
+  // }
 
 
   onNoClick(): void {
     this.dialogRef.close();
-  }
-
-  onSaves(): void {
-    const rawDate = this.reservationForm.value.dateDebut;
-    const formattedDate = formatDate(rawDate, 'yyyy-MM-dd HH:mm', 'en-FR');
-    console.log('Formatted Date:', formattedDate);
-    if (this.reservationForm.valid) {
-      const reservation = this.reservationForm.value;
-      console.log('Form Data:', reservation);
-  
-      if (this.isEditMode) {
-        console.log('Edit Mode');
-        this.reservationService.updateReservation(reservation, this.images).subscribe(
-          response => {
-            Swal.fire('Succès !', 'Reservation modifié avec succès', 'success');
-            console.log("Reservation modifié : ", response);
-            this.dialogRef.close(response);
-          },
-          error => {
-            console.error('Erreur lors de la modification:', error);
-            Swal.fire('Erreur !', 'Erreur lors de la modification', 'error');
-          }
-        );
-      } else {
-        console.log('Add Mode');
-        this.reservationService.addReservation(reservation, this.images).subscribe(
-          response => {
-            console.log('Reservation ajoutée avec succès :', response);
-            this.reservationForm.reset();
-            this.images = [];
-            this.imagePreviews = [];
-            Swal.fire('Succès !', 'Reservation faite avec succès', 'success');
-            this.dialogRef.close(response);
-          },
-          error => {
-            console.error("Erreur lors de l'ajout de la reservation :", error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: error.error.message,
-            });
-          }
-        );
-      }
-    } else {
-      this.showValidationErrors();
-    }
-  }
-
-
-  onFileChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-  
-    if (input.files) {
-      const files = Array.from(input.files);
-  
-      // // Réinitialiser les images sélectionnées et les aperçus
-      // this.images = [];
-      // this.imagePreviews = [];
-  
-      files.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const imageUrl = reader.result as string;
-          this.imagePreviews.push(imageUrl); // Ajouter l'aperçu au tableau
-        };
-        reader.readAsDataURL(file);
-  
-        // Ajouter le fichier à la liste des images sélectionnées
-        this.images.push(file);
-        
-      });
-
-  
-      input.value = ''; // Réinitialiser le champ pour éviter des problèmes
-    }
-  }
-
-
-  private loadImages(): any {
-    if (this.data.reservation && this.data.reservation.images && this.data.reservation.images.length > 0) {
-      this.data.reservation.images.forEach((imageName: string) => {
-        const imageUrl = this.reservationService.getImageUrl(this.data.reservation.idReservation, imageName);
-        this.imagePreviews.push(imageUrl);  // Ajouter l'URL complète de l'image au tableau
-        console.log("Image URL chargée", this.imagePreviews);
-      }
-    );
-    }
-  }
-
-
-  editImage(index: number): void {
-    const newFileInput = document.createElement('input');
-    newFileInput.type = 'file';
-    newFileInput.accept = 'image/*';
-    newFileInput.onchange = (event: Event) => {
-      const input = event.target as HTMLInputElement;
-      if (input.files) {
-        const file = input.files[0];
-        const reader = new FileReader();
-        reader.onload = () => {
-          const imageUrl = reader.result as string;
-          this.imagePreviews[index] = imageUrl;
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-    newFileInput.click();
-  }
-
-   // Méthode pour supprimer une image
-   removeImage(index: number): void {
-    // Supprime l'image à l'index spécifié
-    this.imagePreviews.splice(index, 1);
-  }
-
-  private showValidationErrors() {
-    Object.keys(this.reservationForm.controls).forEach(key => {
-      const control = this.reservationForm.get(key);
-      if (control) {
-        const controlErrors = control.errors as ValidationErrors | null; // Assertion de type
-        if (controlErrors) {
-          Object.keys(controlErrors).forEach(keyError => {
-            console.log(`Control ${key} has error: ${keyError}`);
-          });
-        }
-      }
-    });
   }
 
 

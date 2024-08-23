@@ -10,6 +10,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-material-components/datetime-picker": "^16.0.1",
     "@angular/animations": "^16.0.0",
     "@angular/cdk": "^16.0.1",
     "@angular/common": "^16.0.0",
@@ -24,6 +25,7 @@
     "apexcharts": "^3.40.0",
     "hammerjs": "^2.0.8",
     "ng-apexcharts": "^1.7.6",
+    "ngx-material-timepicker": "^13.1.1",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.12.3",
     "tslib": "^2.3.0",

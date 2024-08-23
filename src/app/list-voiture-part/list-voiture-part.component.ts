@@ -11,6 +11,7 @@ import { AddUpVPartComponent } from '../add-up-vpart/add-up-vpart.component';
 import { User } from '../models/User';
 import { Subscription } from 'rxjs';
 import { UserService } from '../services/user.service';
+import { DetailVoitureComponent } from '../detail-voiture/detail-voiture.component';
 
 
 @Component({
@@ -23,7 +24,8 @@ export class ListVoiturePartComponent
 implements OnInit{
 
 
-  displayedColumns: string[] = ['matricule', 'statut' ,'modele', 'annee', 'typeBoite' , 'dateAjout' , 'dateModif' , 'nbreView' ,  'nbPortiere',  'prixProprietaire', 'prixAugmente' , 'images' , 'marque',   'typeVoiture', 'typeReservoir', 'user', 'actions'];
+  displayedColumns: string[] = ['matricule', 'statut' ,'modele', 'annee', 'typeBoite' , 'dateAjout' , 'dateModif' , 'nbreView' ,  'nbPortiere',  'prixProprietaire', 'prixAugmente' , 'marque',   'typeVoiture', 'typeReservoir', 'user', 'actions'];
+  // displayedColumns: string[] = ['matricule', 'statut' ,'modele', 'annee', 'typeBoite' , 'dateAjout' , 'dateModif' , 'nbreView' ,  'nbPortiere',  'prixProprietaire', 'prixAugmente' , 'images' , 'marque',   'typeVoiture', 'typeReservoir', 'user', 'actions'];
   voituresVendre: VoitureVendre[] = [];
   tempStatus!: boolean; // Variable temporaire pour stocker l'état
   dataSource = new MatTableDataSource<VoitureVendre>();
@@ -212,6 +214,28 @@ implements OnInit{
         console.log('Dialog closed without result');
       }
     });
+  }
+
+  openDialogView(voitureVendre?: VoitureVendre): void {
+    const dialogRef = this.dialog.open(DetailVoitureComponent, {
+      width: '700px',
+      data: { voitureVendre }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Dialog closed with result:', result);
+        this.chargerDonner();
+      } else {
+        console.log('Dialog closed without result');
+      }
+    });
+  }
+
+  voirElement(voitureVendre: VoitureVendre): void {
+
+    this.openDialogView(voitureVendre);
+    console.log("voiture Vendre open dialog: ", voitureVendre);
   }
 
   getToggleLabel(enabled: boolean): string {

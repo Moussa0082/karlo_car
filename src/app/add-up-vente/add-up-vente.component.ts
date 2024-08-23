@@ -82,8 +82,9 @@ export class AddUpVenteComponent implements OnInit{
       }
     );
 
-    this.isEditMode ? this.loadExistingImages(this.data.vente?.images) : null;
+    // this.isEditMode ? this.loadExistingImages(this.data.vente?.images) : null;
     this.isEditMode ? this.loadSelectOptions() : null;
+    this.loadImages();
   }
 
   private loadSelectOptions(): void {
@@ -117,6 +118,17 @@ export class AddUpVenteComponent implements OnInit{
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  private loadImages(): any {
+    if (this.data.vente && this.data.vente.images && this.data.vente.images.length > 0) {
+      this.data.vente.images.forEach((imageName: string) => {
+        const imageUrl = this.venteService.getImageUrl(this.data.vente.idVente, imageName);
+        this.imagePreviews.push(imageUrl);  // Ajouter l'URL complète de l'image au tableau
+        console.log("Image URL chargée", this.imagePreviews);
+      }
+    );
+    }
   }
 
   onSaves(): void {

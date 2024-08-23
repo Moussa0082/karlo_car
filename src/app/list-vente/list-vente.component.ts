@@ -7,6 +7,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { VenteService } from '../services/vente.service';
 import { AddUpVenteComponent } from '../add-up-vente/add-up-vente.component';
 import Swal from 'sweetalert2';
+import { DetailVenteComponent } from '../detail-vente/detail-vente.component';
+import { DetailVComponent } from '../detail-v/detail-v.component';
 
 @Component({
   selector: 'app-list-vente',
@@ -15,7 +17,7 @@ import Swal from 'sweetalert2';
 })
 export class ListVenteComponent implements OnInit{
 
-  displayedColumns: string[] = [ 'nomClient',  'dateAjout' , 'dateModif' , 'telephone' ,  'montant',  'description', 'voitureVendre' ,  'images' , 'actions'];
+  displayedColumns: string[] = [ 'nomClient',  'dateAjout' , 'dateModif' , 'telephone' ,  'montant',  'description', 'voitureVendre' , 'actions'];
   ventes: Vente[] = [];
   dataSource = new MatTableDataSource<Vente>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -105,9 +107,31 @@ export class ListVenteComponent implements OnInit{
     });
   }
 
+  openDialogView(vente?: Vente): void {
+    const dialogRef = this.dialog.open(DetailVComponent, {
+      width: '700px',
+      data: { vente }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Dialog closed with result:', result);
+        this.chargerDonner();
+      } else {
+        console.log('Dialog closed without result');
+      }
+    });
+  }
+
   editElement(vente: Vente): void {
 
     this.openDialog(vente);
+    console.log("vente open dialog: ", vente);
+  }
+
+  voirElement(vente: Vente): void {
+
+    this.openDialogView(vente);
     console.log("vente open dialog: ", vente);
   }
 

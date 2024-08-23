@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { ReservationService } from '../services/reservation.service';
 import { AddUpReservationComponent } from '../add-up-reservation/add-up-reservation.component';
+import { DetailReservationComponent } from '../detail-reservation/detail-reservation.component';
 
 @Component({
   selector: 'app-list-reservation',
@@ -16,7 +17,7 @@ import { AddUpReservationComponent } from '../add-up-reservation/add-up-reservat
 export class ListReservationComponent implements OnInit{
 
 
-  displayedColumns: string[] = ['dateDebut', 'dateFin', 'nomClient',  'dateAjout' , 'dateModif' , 'telephone' ,  'montant',  'description', 'voitureLouer' ,  'images' , 'actions'];
+  displayedColumns: string[] = ['dateDebut', 'dateFin', 'nomClient',  'dateAjout' , 'dateModif' , 'telephone' ,  'montant',  'description', 'voitureLouer' ,  'actions'];
   reservations: Reservation[] = [];
   dataSource = new MatTableDataSource<Reservation>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -106,9 +107,31 @@ export class ListReservationComponent implements OnInit{
     });
   }
 
+  openDialogView(reservation?: Reservation): void {
+    const dialogRef = this.dialog.open(DetailReservationComponent, {
+      width: '700px',
+      data: { reservation }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Dialog closed with result:', result);
+        this.chargerDonner();
+      } else {
+        console.log('Dialog closed without result');
+      }
+    });
+  }
+
   editElement(reservation: Reservation): void {
 
     this.openDialog(reservation);
+    console.log("reservation open dialog: ", reservation);
+  }
+
+  voirElement(reservation: Reservation): void {
+
+    this.openDialogView(reservation);
     console.log("reservation open dialog: ", reservation);
   }
 

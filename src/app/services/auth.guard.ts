@@ -55,7 +55,7 @@
 
 
 
-import { CanActivate, CanActivateFn, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
 import { UserService } from './user.service';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
@@ -76,7 +76,11 @@ export class AuthGuard implements CanActivate {
   //     return false;  // Deny access
   //   }
   // }
-  canActivate(): Observable<boolean> | Promise<boolean> | boolean {
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> | Promise<boolean> | boolean {
+    const isLoginPage = state.url === '/login';
     return this.authService.getUtilisateurConnect().pipe(
       map(user => {
         if (user && user.role.libelle.toLowerCase() === 'admin') {

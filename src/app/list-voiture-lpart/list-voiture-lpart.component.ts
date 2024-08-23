@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { AddUpVLPartComponent } from '../add-up-vlpart/add-up-vlpart.component';
 import { User } from '../models/User';
 import { Subscription } from 'rxjs';
+import { DetailVoitureLouerComponent } from '../detail-voiture-louer/detail-voiture-louer.component';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class ListVoitureLPartComponent
 
 implements OnInit{
   
-  displayedColumns: string[] = ['matricule', 'statut' , 'modele', 'annee', 'typeBoite' , 'dateAjout' , 'dateModif' , 'nbreView' ,  'nbPortiere',  'prixProprietaire', 'prixAugmente' , 'isChauffeur' , 'images' , 'marque',   'typeVoiture', 'typeReservoir', 'user', 'actions'];
+  displayedColumns: string[] = ['matricule', 'statut' , 'modele', 'annee', 'typeBoite' , 'dateAjout' , 'dateModif' , 'nbreView' ,  'nbPortiere',  'prixProprietaire', 'prixAugmente' , 'isChauffeur' ,  'marque',   'typeVoiture', 'typeReservoir', 'user', 'actions'];
+  // displayedColumns: string[] = ['matricule', 'statut' , 'modele', 'annee', 'typeBoite' , 'dateAjout' , 'dateModif' , 'nbreView' ,  'nbPortiere',  'prixProprietaire', 'prixAugmente' , 'isChauffeur' , 'images' , 'marque',   'typeVoiture', 'typeReservoir', 'user', 'actions'];
   voituresLouer: VoitureLouer[] = [];
   tempStatus!: boolean; // Variable temporaire pour stocker l'état
   dataSource = new MatTableDataSource<VoitureLouer>();
@@ -30,6 +32,7 @@ implements OnInit{
   @ViewChild(MatSort) sort!: MatSort;
   adminRecup!: User  | null;
   userSubscription!: Subscription;
+  sliderInterval: any;
 
   
   constructor(private dialog: MatDialog , private cd: ChangeDetectorRef, 
@@ -44,7 +47,43 @@ implements OnInit{
       // Si nécessaire, actualiser la vue ou effectuer des actions spécifiques ici
     });
     this.voitureLouerService.getAllVoituresLouerByUSer(this.adminRecup!.idUser).subscribe(data => {
-      this.voituresLouer = data;
+      // this.voituresLouer = data;
+      this.voituresLouer = data.map((voiture:any) => ({
+        ...voiture,
+        currentImageIndex: 0
+      }));
+      this.dataSource = new MatTableDataSource(this.voituresLouer);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      console.log("liste voitures à louer: ", this.voituresLouer);
+    },
+    (error) => {
+      console.error('Erreur lors du chargement de la liste des voitures à louer:', error);
+    }); 
+    // Démarrer le slider automatique au chargement du composant
+    this.startAutoSlider();
+  }
+
+  startAutoSlider(): void {
+    this.sliderInterval = setInterval(() => {
+      this.voituresLouer.forEach(voiture => {
+        // Si la voiture a des images, faire défiler
+        if (voiture.images.length > 0) {
+          voiture.currentImageIndex = 
+            (voiture.currentImageIndex! + 1) % voiture.images.length;
+        }
+      });
+    }, 2000); // Changer d'image toutes les 3 secondes
+  }
+
+  chargerDonner(): void {
+    this.voitureLouerService.getAllVoituresLouerByUSer(this.adminRecup!.idUser).subscribe(data => {
+      // this.voituresLouer = data;
+       // Initialisation de l'index des images pour chaque voiture
+       this.voituresLouer = data.map((voiture:any) => ({
+        ...voiture,
+        currentImageIndex: 0
+      }));
       this.dataSource = new MatTableDataSource(this.voituresLouer);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -55,18 +94,23 @@ implements OnInit{
     }); 
    }
 
-  chargerDonner(): void {
-    this.voitureLouerService.getAllVoituresLouerByUSer(this.adminRecup!.idUser).subscribe(data => {
-      this.voituresLouer = data;
-      this.dataSource = new MatTableDataSource(this.voituresLouer);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      console.log("liste voitures à louer: ", this.voituresLouer);
-    },
-    (error) => {
-      console.error('Erreur lors du chargement de la liste des voitures à louer:', error);
-    }); 
-   }
+
+   previousImage(voitureLouer: VoitureLouer): void {
+    if (voitureLouer.images && voitureLouer.images.length > 1) {
+      voitureLouer.currentImageIndex = 
+        (voitureLouer.currentImageIndex === 0) ? 
+        voitureLouer.images.length - 1 : 
+        voitureLouer.currentImageIndex! - 1;
+    }
+  }
+
+  // Fonction pour passer à l'image suivante
+  nextImage(voitureLouer: VoitureLouer): void {
+    if (voitureLouer.images && voitureLouer.images.length > 1) {
+      voitureLouer.currentImageIndex = 
+        (voitureLouer.currentImageIndex! + 1) % voitureLouer.images.length;
+    }
+  }
 
 
    onDelete(element:VoitureLouer):void{
@@ -215,12 +259,34 @@ implements OnInit{
     });
   }
 
+  openDialogView(voitureLouer?: VoitureLouer): void {
+    const dialogRef = this.dialog.open(DetailVoitureLouerComponent, {
+      width: '700px',
+      data: { voitureLouer }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Dialog closed with result:', result);
+        this.chargerDonner();
+      } else {
+        console.log('Dialog closed without result');
+      }
+    });
+  }
+
+  
+  voirElement(voitureLouer: VoitureLouer): void {
+    
+    this.openDialogView(voitureLouer);
+    console.log("voiture Louer open dialog: ", voitureLouer);
+  }
+  
   editElement(voitureLouer: VoitureLouer): void {
 
     this.openDialog(voitureLouer);
     console.log("voiture Louer open dialog: ", voitureLouer);
   }
-
 
   getToggleLabel(enabled: boolean): string {
     return enabled === true ? 'Dispo' : 'Non dispo';

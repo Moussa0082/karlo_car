@@ -79,6 +79,21 @@ export class VoitureLouerService {
     return this.http.get(`${apiUrl}/${this.baseUrl}/getAllVoitureLouerByUser/${idUser}`);
   }
 
+  // Méthode pour obtenir les images d'une voiture spécifique
+  // getImages(idVoiture: string, imageName:string): Observable<string[]> {
+  //   const url = `${apiUrl}/${this.baseUrl}/${idVoiture}/images/${imageName}`;
+  //   return this.http.get<string[]>(url);
+  // }
+  // getImages(idVoiture: string, imageName: string): Observable<Blob> {
+  //   const url = `${apiUrl}/${this.baseUrl}/${idVoiture}/images/${imageName}`;
+  //   return this.http.get(url, { responseType: 'blob' });  // Spécifiez que la réponse est un Blob (binaire)
+  // }
+  getImageUrl(idVoiture: string, imageName: string): string {
+    return `${apiUrl}/${this.baseUrl}/${idVoiture}/images/${imageName}`;
+  }
+  
+  
+
 
      // Méthode pour supprimer une voiture à louer
      deleteVoiture(id: string): Observable<HttpResponse<void>> {

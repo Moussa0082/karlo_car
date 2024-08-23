@@ -16,11 +16,11 @@ import { Subscription } from 'rxjs';
 
 
 @Component({
-  selector: 'app-add-up-vpart',
-  templateUrl: './add-up-vpart.component.html',
-  styleUrls: ['./add-up-vpart.component.scss']
+  selector: 'app-detail-voiture',
+  templateUrl: './detail-voiture.component.html',
+  styleUrls: ['./detail-voiture.component.scss']
 })
-export class AddUpVPartComponent  implements OnInit{
+export class DetailVoitureComponent   implements OnInit{
 
 
   @ViewChild('imageInput') imageInput!: ElementRef<HTMLInputElement>;
@@ -41,7 +41,7 @@ export class AddUpVPartComponent  implements OnInit{
 
 
   constructor(private fb: FormBuilder, private voitureService: VoitureVendreService,
-    public dialogRef: MatDialogRef<AddUpVPartComponent>,
+    public dialogRef: MatDialogRef<DetailVoitureComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private route:Router,
     private userService:UserService,
@@ -91,7 +91,7 @@ export class AddUpVPartComponent  implements OnInit{
       typeReservoir: [this.data.voitureVendre?.typeReservoir || '' , Validators.required],
       user: this.adminRecup
     });
-    this.isEditMode ? this.loadExistingImages(this.data.voitureVendre?.images) : null;
+    
     
     this.typeReservoirService.getAllTypeReservoir().subscribe(data => {
       this.typeReservoirs = data;
@@ -132,6 +132,7 @@ export class AddUpVPartComponent  implements OnInit{
     this.loadSelectOptions();
     this.loadImages();
   }
+
 
   private loadSelectOptions(): void {
     this.marqueservice.getAllMarque().subscribe(
@@ -205,62 +206,11 @@ export class AddUpVPartComponent  implements OnInit{
   }
 
    // Méthode pour charger les images existantes
-   private loadExistingImages(logoPaths: string[]): void {
-    if (logoPaths && logoPaths.length > 0) {
-      this.imagePreviews = logoPaths.map(path => `http://localhost/${path}`);
-    }
-  }
-
-
-  
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-  onSaves(): void {
-    if (this.voitureVendreForm.valid) {
-      const voitureVendre = this.voitureVendreForm.value;
-      console.log('Form Data:', voitureVendre);
-  
-      if (this.isEditMode) {
-        console.log('Edit Mode');
-        this.voitureService.updateVoitureVendre(voitureVendre, this.images).subscribe(
-          response => {
-            Swal.fire('Succès !', 'Voiture à louer modifié avec succès', 'success');
-            console.log("Voiture à louer modifié : ", response);
-            this.dialogRef.close(response);
-          },
-          error => {
-            console.error('Erreur lors de la modification:', error);
-            Swal.fire('Erreur !', 'Erreur lors de la modification', 'error');
-          }
-        );
-      } else {
-        console.log('Add Mode');
-        this.voitureService.addVoitureVendre(voitureVendre, this.images).subscribe(
-          response => {
-            console.log('Voiture à vendre ajoutée avec succès :', response);
-            this.voitureVendreForm.reset();
-            this.images = [];
-            this.imagePreviews = [];
-            Swal.fire('Succès !', 'Voiture à vendre créé avec succès', 'success');
-            this.dialogRef.close(response);
-          },
-          error => {
-            console.error("Erreur lors de l'ajout de la voiture à vendre :", error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: error.error.message,
-            });
-          }
-        );
-      }
-    } else {
-      this.showValidationErrors();
-    }
-  }
+  //  private loadExistingImages(logoPaths: string[]): void {
+  //   if (logoPaths && logoPaths.length > 0) {
+  //     this.imagePreviews = logoPaths.map(path => `http://localhost/${path}`);
+  //   }
+  // }
 
   private loadImages(): void {
     if (this.data.voitureVendre && this.data.voitureVendre.images && this.data.voitureVendre.images.length > 0) {
@@ -272,69 +222,12 @@ export class AddUpVPartComponent  implements OnInit{
     }
   }
 
-  onFileChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-  
-    if (input.files) {
-      const files = Array.from(input.files);
-  
-      // // Réinitialiser les images sélectionnées et les aperçus
-      // this.images = [];
-      // this.imagePreviews = [];
-  
-      files.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const imageUrl = reader.result as string;
-          this.imageUrls.push(imageUrl); // Ajouter l'aperçu au tableau
-        };
-        reader.readAsDataURL(file);
-  
-        // Ajouter le fichier à la liste des images sélectionnées
-        this.images.push(file);
-      });
-  
-      input.value = ''; // Réinitialiser le champ pour éviter des problèmes
-    }
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
-  editImage(index: number): void {
-    const newFileInput = document.createElement('input');
-    newFileInput.type = 'file';
-    newFileInput.accept = 'image/*';
-    newFileInput.onchange = (event: Event) => {
-      const input = event.target as HTMLInputElement;
-      if (input.files) {
-        const file = input.files[0];
-        const reader = new FileReader();
-        reader.onload = () => {
-          const imageUrl = reader.result as string;
-          this.imagePreviews[index] = imageUrl;
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-    newFileInput.click();
-  }
+  
 
-   // Méthode pour supprimer une image
-   removeImage(index: number): void {
-    // Supprime l'image à l'index spécifié
-    this.imagePreviews.splice(index, 1);
-  }
-
-  private showValidationErrors() {
-    Object.keys(this.voitureVendreForm.controls).forEach(key => {
-      const control = this.voitureVendreForm.get(key);
-      if (control) {
-        const controlErrors = control.errors as ValidationErrors | null; // Assertion de type
-        if (controlErrors) {
-          Object.keys(controlErrors).forEach(keyError => {
-            console.log(`Control ${key} has error: ${keyError}`);
-          });
-        }
-      }
-    });
-  }
+ 
 
 }

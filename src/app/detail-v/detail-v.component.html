@@ -1,0 +1,59 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Detail vente' : 'Detail vente' }}</h2>
+<mat-dialog-content class="scrollable-dialog-content">
+  <form [formGroup]="venteForm">
+    <div class="row">
+      <div class="col">
+
+        <mat-form-field appearance="fill">
+          <mat-label>Nom client</mat-label>
+          <input matInput placeholder="Nom client" formControlName="nomClient" readonly>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Téléphone</mat-label>
+          <input matInput placeholder="Téléphone" formControlName="telephone" readonly>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Montant</mat-label>
+          <input matInput placeholder="Montant" formControlName="montant" readonly>
+        </mat-form-field>
+
+       
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <textarea matInput placeholder="Description" formControlName="description" readonly></textarea>
+        </mat-form-field>
+        
+      
+    
+        <mat-form-field appearance="fill">
+          <mat-label>Voiture à vendre</mat-label>
+          <mat-select formControlName="voitureVendre" readonly>
+            <mat-option *ngFor="let voitureVendre of voituresVendre" [value]="voitureVendre"  disabled="true"> <!-- Utilisez l'objet complet -->
+              {{voitureVendre.matricule}}  {{voitureVendre.modele}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <div class="file-upload-container">
+          <label for="file-upload" class="file-upload-label">
+            <input type="file" id="file-upload"  formControlName="images"  multiple style="display: none;" accept="image/*" readonly>
+          </label>
+        </div>
+      
+        <mat-card *ngIf="imageUrls.length" class="image-preview-card">
+          <div class="image-grid">
+            <div *ngFor="let preview of imageUrls; let i = index" class="image-container">
+              <img [src]="preview" class="image-preview" alt="Image Preview">
+            </div>
+          </div>
+        </mat-card>
+        
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button class="dialog-button" (click)="onNoClick()">Fermer</button>
+</mat-dialog-actions>

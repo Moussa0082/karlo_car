@@ -1,0 +1,93 @@
+.mat-dialog-container {
+  max-width: 700px; /* Ajustez la largeur du dialogue ici */
+  padding: 20px; /* Espace autour du contenu du dialogue */
+  overflow-y: auto;  /* Enable vertical scrolling */
+
+}
+
+.mat-dialog-content {
+  padding: 0; /* Réduit le padding dans le contenu du dialogue */
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.col {
+  flex: 1;
+  margin: 0 10px;
+}
+
+.dialog-button {
+  color: white;
+  border-radius: 20px;
+  background-color: blue;
+  border: none;
+  width: 120px;
+  margin: 0 8px; /* Espace entre les boutons */
+}
+
+.mat-dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px; /* Espace au-dessus des boutons */
+}
+
+.dialog-button {
+  color: white;
+  border-radius: 20px;
+  background-color: blue;
+  border: none;
+  width: 120px;
+}
+
+
+
+
+
+.file-upload-container {
+  margin-top: 16px;
+}
+
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.image-container {
+  position: relative;
+  margin: 8px;
+}
+
+.image-preview {
+  width: 100px; /* Ajustez la taille selon vos besoins */
+  height: 100px; /* Ajustez la taille selon vos besoins */
+  object-fit: cover;
+}
+
+.up, .del {
+  cursor: pointer;
+}
+
+.icones{
+  display: flex;
+  justify-content: space-between;
+}
+
+.up, .del {
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  color: white;
+}
+//radio btn
+.mat-mdc-radio-button ~ .mat-mdc-radio-button {
+  margin-left: 16px;
+}
+
+
+
+.scrollable-dialog-content {
+  max-height: 60vh; /* 60% of the viewport height or adjust as needed */
+  overflow-y: auto;
+}

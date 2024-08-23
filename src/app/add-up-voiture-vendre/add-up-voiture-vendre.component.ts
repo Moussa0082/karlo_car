@@ -32,6 +32,8 @@ export class AddUpVoitureVendreComponent implements OnInit{
   images: File[]  = [];
   imagePreviews: string[] = [];
   isEditMode: boolean;
+  imageUrls: string[] = [];  // Stocker les URLs des images de la voiture
+
 
   constructor(private fb: FormBuilder, private voitureService: VoitureVendreService,
     public dialogRef: MatDialogRef<AddUpVoitureVendreComponent>,
@@ -61,7 +63,7 @@ export class AddUpVoitureVendreComponent implements OnInit{
 
   ngOnInit(): void {
     this.isEditMode =  !!this.data.voitureVendre;
-    this.isEditMode ? this.loadExistingImages(this.data.voitureVendre?.images) : null;
+    // this.isEditMode ? this.loadExistingImages(this.data.voitureVendre?.images) : null;
     
     this.voitureVendreForm = this.fb.group({
       idVoiture: [ this.isEditMode ? this.data.voitureVendre?.idVoiture : '', this.isEditMode ? Validators.required : null],
@@ -117,6 +119,7 @@ export class AddUpVoitureVendreComponent implements OnInit{
       console.error('Erreur lors du chargement de la liste des marques:', error);
     });
    this.isEditMode ? this.loadSelectOptions() : null ;
+   this.isEditMode ? this.loadImages() : null ;
   }
 
   private loadSelectOptions(): void {
@@ -190,12 +193,22 @@ export class AddUpVoitureVendreComponent implements OnInit{
     );
   }
 
-   // Méthode pour charger les images existantes
-   private loadExistingImages(logoPaths: string[]): void {
-    if (logoPaths && logoPaths.length > 0) {
-      this.imagePreviews = logoPaths.map(path => `http://localhost/${path}`);
+  private loadImages(): void {
+    if (this.data.voitureVendre && this.data.voitureVendre.images && this.data.voitureVendre.images.length > 0) {
+      this.data.voitureVendre.images.forEach((imageName: string) => {
+        const imageUrl = this.voitureService.getImageUrl(this.data.voitureVendre.idVoiture, imageName);
+        this.imageUrls.push(imageUrl);  // Ajouter l'URL complète de l'image au tableau
+        console.log("Image URL chargée", this.imageUrls);
+      });
     }
   }
+
+   // Méthode pour charger les images existantes
+  //  private loadExistingImages(logoPaths: string[]): void {
+  //   if (logoPaths && logoPaths.length > 0) {
+  //     this.imagePreviews = logoPaths.map(path => `http://localhost/${path}`);
+  //   }
+  // }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -260,7 +273,7 @@ export class AddUpVoitureVendreComponent implements OnInit{
         const reader = new FileReader();
         reader.onload = () => {
           const imageUrl = reader.result as string;
-          this.imagePreviews.push(imageUrl); // Ajouter l'aperçu au tableau
+          this.imageUrls.push(imageUrl); // Ajouter l'aperçu au tableau
         };
         reader.readAsDataURL(file);
   

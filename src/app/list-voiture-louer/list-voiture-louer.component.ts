@@ -8,6 +8,7 @@ import { UserService } from '../services/user.service';
 import { VoitureLouerService } from '../services/voiture-louer.service';
 import { AddUpVoitureLouerComponent } from '../add-up-voiture-louer/add-up-voiture-louer.component';
 import Swal from 'sweetalert2';
+import { DetailVoitureLouerComponent } from '../detail-voiture-louer/detail-voiture-louer.component';
 
 @Component({
   selector: 'app-list-voiture-louer',
@@ -16,7 +17,7 @@ import Swal from 'sweetalert2';
 })
 export class ListVoitureLouerComponent implements OnInit{
   
-  displayedColumns: string[] = ['matricule', 'statut' , 'modele', 'annee', 'typeBoite' , 'dateAjout' , 'dateModif' , 'nbreView' ,  'nbPortiere',  'prixProprietaire', 'prixAugmente' , 'isChauffeur' , 'images' , 'marque',   'typeVoiture', 'typeReservoir', 'user', 'actions'];
+  displayedColumns: string[] = ['matricule', 'statut' , 'modele', 'annee', 'typeBoite' , 'dateAjout' , 'dateModif' , 'nbreView' ,  'nbPortiere',  'prixProprietaire', 'prixAugmente' , 'isChauffeur' ,'marque',   'typeVoiture', 'typeReservoir', 'user', 'actions'];
   voituresLouer: VoitureLouer[] = [];
   tempStatus!: boolean; // Variable temporaire pour stocker l'état
   dataSource = new MatTableDataSource<VoitureLouer>();
@@ -181,6 +182,29 @@ export class ListVoitureLouerComponent implements OnInit{
   
       }
     });
+  }
+
+  openDialogView(voitureLouer?: VoitureLouer): void {
+    const dialogRef = this.dialog.open(DetailVoitureLouerComponent, {
+      width: '700px',
+      data: { voitureLouer }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Dialog closed with result:', result);
+        this.chargerDonner();
+      } else {
+        console.log('Dialog closed without result');
+      }
+    });
+  }
+
+  
+  voirElement(voitureLouer: VoitureLouer): void {
+    
+    this.openDialogView(voitureLouer);
+    console.log("voiture Louer open dialog: ", voitureLouer);
   }
   
 
