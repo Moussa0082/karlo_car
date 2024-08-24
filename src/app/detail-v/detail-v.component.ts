@@ -57,10 +57,8 @@ export class DetailVComponent implements OnInit{
       images:this.fb.array([]),
       voitureVendre: [this.data.vente?.voitureVendre ||  '', Validators.required],
     });
-    this.loadSelectOptions();
-    this.loadImages();
     
-     this.voitureService.getAllVoituresVendre().subscribe(
+    this.voitureService.getAllVoituresVendre().subscribe(
       data => {
         console.log('Données reçues :', data);
     
@@ -83,6 +81,8 @@ export class DetailVComponent implements OnInit{
         console.error('Erreur lors du chargement de la liste des voitures à vendre :', error);
       }
     );
+    this.loadSelectOptions();
+    this.loadImages();
 
   }
 
@@ -119,7 +119,7 @@ export class DetailVComponent implements OnInit{
     this.dialogRef.close();
   }
 
-  private loadImages(): any {
+  private loadImages(): void {
     if (this.data.vente && this.data.vente.images && this.data.vente.images.length > 0) {
       this.data.vente.images.forEach((imageName: string) => {
         const imageUrl = this.venteService.getImageUrl(this.data.vente.idVente, imageName);
