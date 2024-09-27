@@ -43,7 +43,7 @@ export class AddUpRoleComponent  implements OnInit{
 
     this.roleService.getAllRole().subscribe(data =>{
       this.roles = data;
-      console.log("Liste role:", this.roles);
+      // console.log("Liste role:", this.roles);
     },
     (error) =>{
       console.error('Erreur lors du chargement de la liste des roles:', error);
@@ -55,7 +55,7 @@ export class AddUpRoleComponent  implements OnInit{
   chargerDonner():void{
     this.roleService.getAllRole().subscribe(data =>{
       this.roles = data;
-      console.log("Liste role:", this.roles);
+      // console.log("Liste role:", this.roles);
     },
     (error) =>{
       console.error('Erreur lors du chargement de la liste des roles:', error);
@@ -76,7 +76,7 @@ export class AddUpRoleComponent  implements OnInit{
         this.roleService.updateRole(role).subscribe(
           response => {
             Swal.fire('Succès !', 'Role modifié avec succès', 'success');
-            console.log("role modifier : " , response);
+            // console.log("role modifier : " , response);
             this.dialogRef.close(response);
           },
           error => {
@@ -88,7 +88,7 @@ export class AddUpRoleComponent  implements OnInit{
         const newRole: Role = this.roleForm.value;
         this.roleService.createRole(newRole).subscribe(
           (response) => {
-            console.log('Rôle ajouté avec succès :', response);
+            // console.log('Rôle ajouté avec succès :', response);
             this.roleForm.reset();
             Swal.fire('Succès !', 'Rôle crée avec succès', 'success');
             this.dialogRef.close(response);

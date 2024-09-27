@@ -49,10 +49,10 @@ implements OnInit{
       this.dataSource = new MatTableDataSource(this.voituresVendre);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste voitures à vendre: ", this.voituresVendre);
+      // console.log("liste voitures à vendre: ", this.voituresVendre);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des voitures à vendre:', error);
+      // console.error('Erreur lors du chargement de la liste des voitures à vendre:', error);
     });  
    }
 
@@ -63,10 +63,10 @@ implements OnInit{
       this.dataSource = new MatTableDataSource(this.voituresVendre);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste voitures à vendre: ", this.voituresVendre);
+      // console.log("liste voitures à vendre: ", this.voituresVendre);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des voitures à vendre:', error);
+      // console.error('Erreur lors du chargement de la liste des voitures à vendre:', error);
     });  
    }
   
@@ -86,10 +86,10 @@ implements OnInit{
         this.voitureVendreService.deleteVoiture(element.idVoiture).subscribe(
           (result) => {
             this.chargerDonner(); // Recharger la liste après la suppression réussie
-            console.log( "result delete : ", result);
+            // console.log( "result delete : ", result);
           }
         );
-        console.log("id VoitureLouer", element.idVoiture);
+        // console.log("id VoitureLouer", element.idVoiture);
         Swal.fire({
           title: "Supprimer!",
           text: "Suppression réussi.",
@@ -130,7 +130,7 @@ implements OnInit{
             this.chargerDonner(); // Recharger les données si nécessaire
           },
           (error) => {
-            console.error('Erreur lors de la désactivation : ', error);
+            // console.error('Erreur lors de la désactivation : ', error);
             element.isVendu = this.tempStatus; // Réinitialiser l'état en cas d'erreur
             Swal.fire(
               'Erreur!',
@@ -176,7 +176,7 @@ implements OnInit{
             this.chargerDonner(); // Recharger les données si nécessaire
           },
           (error) => {
-            console.error('Erreur lors de l\'activation : ', error);
+            // console.error('Erreur lors de l\'activation : ', error);
             element.isVendu = this.tempStatus; // Réinitialiser l'état en cas d'erreur
             Swal.fire(
               'Erreur!',
@@ -208,10 +208,10 @@ implements OnInit{
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialog closed with result:', result);
+        // console.log('Dialog closed with result:', result);
         this.chargerDonner();
       } else {
-        console.log('Dialog closed without result');
+        // console.log('Dialog closed without result');
       }
     });
   }
@@ -224,10 +224,10 @@ implements OnInit{
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialog closed with result:', result);
+        // console.log('Dialog closed with result:', result);
         this.chargerDonner();
       } else {
-        console.log('Dialog closed without result');
+        // console.log('Dialog closed without result');
       }
     });
   }
@@ -235,7 +235,7 @@ implements OnInit{
   voirElement(voitureVendre: VoitureVendre): void {
 
     this.openDialogView(voitureVendre);
-    console.log("voiture Vendre open dialog: ", voitureVendre);
+    // console.log("voiture Vendre open dialog: ", voitureVendre);
   }
 
   getToggleLabel(enabled: boolean): string {
@@ -246,7 +246,7 @@ implements OnInit{
   editElement(voitureVendre: VoitureVendre): void {
 
     this.openDialog(voitureVendre);
-    console.log("voiture Vendre open dialog: ", voitureVendre);
+    // console.log("voiture Vendre open dialog: ", voitureVendre);
   }
 
 

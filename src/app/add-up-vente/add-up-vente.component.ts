@@ -24,6 +24,8 @@ export class AddUpVenteComponent implements OnInit{
   images: File[]  = [];
   imagePreviews: string[] = [];
   isEditMode: boolean;
+  selectedVoiture!:VoitureVendre;
+
 
   constructor(private fb: FormBuilder, private voitureService: VoitureVendreService,
     private venteService:VenteService,
@@ -60,7 +62,7 @@ export class AddUpVenteComponent implements OnInit{
     
      this.voitureService.getAllVoituresVendre().subscribe(
       data => {
-        console.log('Données reçues :', data);
+        // console.log('Données reçues :', data);
     
         // Vérifiez la structure des données reçues
         if (Array.isArray(data)) {
@@ -69,16 +71,16 @@ export class AddUpVenteComponent implements OnInit{
     
           // Vérifiez les données filtrées
           this.voituresVendre.forEach(v => {
-            console.log("Statut voiture vendre :", v.isVendu);
+            // console.log("Statut voiture vendre :", v.isVendu);
           });
     
-          console.log("Liste des voitures à vendre chargée :", this.voituresVendre);
+          // console.log("Liste des voitures à vendre chargée :", this.voituresVendre);
         } else {
-          console.error('Les données reçues ne sont pas au format attendu.');
+          // console.error('Les données reçues ne sont pas au format attendu.');
         }
       },
       error => {
-        console.error('Erreur lors du chargement de la liste des voitures à vendre :', error);
+        // console.error('Erreur lors du chargement de la liste des voitures à vendre :', error);
       }
     );
 
@@ -97,21 +99,51 @@ export class AddUpVenteComponent implements OnInit{
           const voitureVendre = this.voituresVendre.find(r => r.idVoiture === this.data.vente.voitureVendre.idVoiture);
           if (voitureVendre) {
             this.venteForm.patchValue({ voitureVendre: voitureVendre });
-            console.log("voiture vendre  mcll:", voitureVendre.matricule + " model " + voitureVendre.modele);
+            // console.log("voiture vendre  mcll:", voitureVendre.matricule + " model " + voitureVendre.modele);
           }
         }
       },
       error => {
-        console.error('Erreur lors du chargement de la voitures à louer pour la livraison :', error);
+        // console.error('Erreur lors du chargement de la voitures à louer pour la livraison :', error);
       }
     );
 
   }
 
    // Méthode pour charger les images existantes
-   private loadExistingImages(logoPaths: string[]): void {
-    if (logoPaths && logoPaths.length > 0) {
-      this.imagePreviews = logoPaths.map(path => `http://localhost/${path}`);
+  //  private loadExistingImages(logoPaths: string[]): void {
+  //   if (logoPaths && logoPaths.length > 0) {
+  //     this.imagePreviews = logoPaths.map(path => `http://localhost/${path}`);
+  //   }
+  // }
+
+  onVoitureSelectionChange(voiture: VoitureVendre) {
+    this.selectedVoiture = voiture; // Mise à jour de la voiture sélectionnée
+    const montantControl = this.venteForm.get('montant');
+    if (this.selectedVoiture && montantControl) {
+      montantControl.setValue(this.selectedVoiture.prixAugmente);
+      // console.log("mt" , montantControl)
+      montantControl.setValidators([Validators.required, Validators.min(this.selectedVoiture.prixAugmente)]);
+     
+    }
+  }
+
+  onMontantChange(event:Event): void {
+
+    const inputElement = event.target as HTMLInputElement;
+    const montant = parseFloat(inputElement.value);    
+    const prixAugmentation = this.selectedVoiture.prixAugmente;
+    
+    if (montant && montant < prixAugmentation) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Montant insuffisant',
+        text: `Le montant ne peut pas être inférieur à ${prixAugmentation} pour la voiture sélectionnée.`,
+      });
+    
+      // Réinitialiser le montant à la valeur minimale (prixAugmentation)
+      inputElement.value = prixAugmentation.toString();
+      this.venteForm.get('montant')?.setValue(prixAugmentation);
     }
   }
 
@@ -123,9 +155,9 @@ export class AddUpVenteComponent implements OnInit{
   private loadImages(): any {
     if (this.data.vente && this.data.vente.images && this.data.vente.images.length > 0) {
       this.data.vente.images.forEach((imageName: string) => {
-        const imageUrl = this.venteService.getImageUrl(this.data.vente.idVente, imageName);
+        const imageUrl  : any= this.venteService.getImageUrl(this.data.vente.idVente, imageName);
         this.imagePreviews.push(imageUrl);  // Ajouter l'URL complète de l'image au tableau
-        console.log("Image URL chargée", this.imagePreviews);
+        // console.log("Image URL chargée", this.imagePreviews);
       }
     );
     }
@@ -134,14 +166,14 @@ export class AddUpVenteComponent implements OnInit{
   onSaves(): void {
     if (this.venteForm.valid) {
       const vente = this.venteForm.value;
-      console.log('Form Data:', vente);
+      // console.log('Form Data:', vente);
   
       if (this.isEditMode) {
-        console.log('Edit Mode');
+        // console.log('Edit Mode');
         this.venteService.updateVente(vente, this.images).subscribe(
           response => {
             Swal.fire('Succès !', 'Vente modifié avec succès', 'success');
-            console.log("Vente modifié : ", response);
+            // console.log("Vente modifié : ", response);
             this.dialogRef.close(response);
           },
           error => {
@@ -150,10 +182,10 @@ export class AddUpVenteComponent implements OnInit{
           }
         );
       } else {
-        console.log('Add Mode');
+        // console.log('Add Mode');
         this.venteService.addVente(vente, this.images).subscribe(
           response => {
-            console.log('Vente ajoutée avec succès :', response);
+            // console.log('Vente ajoutée avec succès :', response);
             this.venteForm.reset();
             this.images = [];
             this.imagePreviews = [];
@@ -170,8 +202,13 @@ export class AddUpVenteComponent implements OnInit{
           }
         );
       }
-    } else {
-      this.showValidationErrors();
+    } 
+    else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Veuillez remplir tous les champs requis.',
+      });
     }
   }
 

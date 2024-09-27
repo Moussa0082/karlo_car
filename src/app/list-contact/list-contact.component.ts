@@ -34,10 +34,10 @@ export class ListContactComponent implements OnInit{
         this.dataSource = new MatTableDataSource(this.contacts);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        console.log("liste contacts: ", this.contacts);
+        // console.log("liste contacts: ", this.contacts);
       },
       (error) => {
-        console.error('Erreur lors du chargement de la liste des contacts:', error);
+        // console.error('Erreur lors du chargement de la liste des contacts:', error);
       });
  
   }
@@ -48,10 +48,10 @@ export class ListContactComponent implements OnInit{
       this.dataSource = new MatTableDataSource(this.contacts);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste contacts: ", this.contacts);
+      // console.log("liste contacts: ", this.contacts);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des contacts:', error);
+      // console.error('Erreur lors du chargement de la liste des contacts:', error);
     });
   }
   
@@ -74,10 +74,10 @@ export class ListContactComponent implements OnInit{
         this.contactService.deleteContact(element.idContact).subscribe(
           (result) => {
             this.chargerDonner(); // Recharger la liste après la suppression réussie
-            console.log( "result delete : ", result);
+            // console.log( "result delete : ", result);
           }
         );
-        console.log("id contact", element.idContact);
+        // console.log("id contact", element.idContact);
         Swal.fire({
           title: "Supprimer!",
           text: "Suppression réussi.",

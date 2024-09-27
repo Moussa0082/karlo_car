@@ -3,19 +3,21 @@
   <form [formGroup]="reservationForm">
     <div class="row">
       <div class="col">
-        <mat-form-field appearance="fill">
-            <mat-label>Date et Heure début</mat-label>
-            <input matInput [matDatepicker]="startDatePicker" formControlName="dateDebut" placeholder="Date et Heure Début" readonly>
-            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #startDatePicker></mat-datepicker>
-          </mat-form-field>
+  
+        <mat-label>Date et Heure début</mat-label>
+        <ejs-datetimepicker
+          formControlName="dateDebut"
+          [locale]="'fr'"
+          format="dd-MM-yyyy HH:mm">  <!-- Format 24 heures -->
+        </ejs-datetimepicker>
         
-          <mat-form-field appearance="fill">
-            <mat-label>Date et Heure fin</mat-label>
-            <input matInput [matDatepicker]="endDatePicker" formControlName="dateFin" placeholder="Date et Heure Fin" readonly>
-            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #endDatePicker></mat-datepicker>
-          </mat-form-field>
+        <mat-label>Date et Heure Fin</mat-label>
+        <ejs-datetimepicker
+          formControlName="dateFin"
+          [locale]="'fr'"
+          format="dd-MM-yyyy HH:mm"
+        >
+        </ejs-datetimepicker>
 
         <mat-form-field appearance="fill">
           <mat-label>Nom client</mat-label>

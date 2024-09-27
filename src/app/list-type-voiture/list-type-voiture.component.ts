@@ -35,10 +35,10 @@ export class ListTypeVoitureComponent  implements OnInit{
       this.dataSource = new MatTableDataSource(this.typeVoitures);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste type Voitures: ", this.typeVoitures);
+      // console.log("liste type Voitures: ", this.typeVoitures);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des type Voitures:', error);
+      // console.error('Erreur lors du chargement de la liste des type Voitures:', error);
     });  
   }
 
@@ -48,10 +48,10 @@ export class ListTypeVoitureComponent  implements OnInit{
       this.dataSource.data = this.typeVoitures; // Assurez-vous que MatTableDataSource est mis à jour
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste type voitures: ", this.typeVoitures);
+      // console.log("liste type voitures: ", this.typeVoitures);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des type voiture:', error);
+      // console.error('Erreur lors du chargement de la liste des type voiture:', error);
     });  
   }
 
@@ -71,11 +71,11 @@ export class ListTypeVoitureComponent  implements OnInit{
       if (result.isConfirmed) {
         this.typeVoitureService.deleteTypeVoiture(element.idTypeVoiture).subscribe(
           (result) => {
-            console.log( "result delete : ", result);
+            // console.log( "result delete : ", result);
             this.chargerDonner(); // Recharger la liste après la suppression réussie
           }
         );
-        console.log("id type voiture", element.idTypeVoiture);
+        // console.log("id type voiture", element.idTypeVoiture);
         Swal.fire({
           title: "Supprimer!",
           text: "Suppression réussi.",
@@ -100,10 +100,10 @@ export class ListTypeVoitureComponent  implements OnInit{
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialog closed with result:', result);
+        // console.log('Dialog closed with result:', result);
         this.chargerDonner();
       } else {
-        console.log('Dialog closed without result');
+        // console.log('Dialog closed without result');
       }
     });
   }
@@ -111,7 +111,7 @@ export class ListTypeVoitureComponent  implements OnInit{
   //Editer 
   editElement(typeVoiture: TypeVoiture): void {
     this.openDialog(typeVoiture);
-    console.log("type voiture open dialog: ", typeVoiture);
+    // console.log("type voiture open dialog: ", typeVoiture);
   }
 
 

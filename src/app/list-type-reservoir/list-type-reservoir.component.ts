@@ -37,10 +37,10 @@ export class ListTypeReservoirComponent {
         this.loading = false; // Fin du chargement
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        console.log("liste types reservoir: ", this.typeReservoires);
+        // console.log("liste types reservoir: ", this.typeReservoires);
       },
       (error) => {
-        console.error('Erreur lors du chargement de la liste des type reservoirs:', error);
+        // console.error('Erreur lors du chargement de la liste des type reservoirs:', error);
         this.loading = false; // Fin du chargement même en cas d'erreur
       });
   //   }, 1000
@@ -54,10 +54,10 @@ export class ListTypeReservoirComponent {
       this.dataSource.data = this.typeReservoires; // Assurez-vous que MatTableDataSource est mis à jour
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste type reservoir charger: ", this.typeReservoires);
+      // console.log("liste type reservoir charger: ", this.typeReservoires);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des type reservoirs:', error);
+      // console.error('Erreur lors du chargement de la liste des type reservoirs:', error);
     });
   }
   
@@ -80,10 +80,10 @@ export class ListTypeReservoirComponent {
         this.typeReservoireService.deleteTypeReservoire(element.idTypeReservoir).subscribe(
           (result) => {
             this.chargerDonner(); // Recharger la liste après la suppression réussie
-            console.log( "result delete : ", result);
+            // console.log( "result delete : ", result);
           }
         );
-        console.log("id typeReservoire", element.idTypeReservoir);
+        // console.log("id typeReservoire", element.idTypeReservoir);
         Swal.fire({
           title: "Supprimer!",
           text: "Suppression réussi.",
@@ -108,17 +108,17 @@ export class ListTypeReservoirComponent {
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialog closed with result:', result);
+        // console.log('Dialog closed with result:', result);
         this.chargerDonner();
       } else {
-        console.log('Dialog closed without result');
+        // console.log('Dialog closed without result');
       }
     });
   }
 
   editElement(typeReservoire: TypeReservoir): void {
     this.openDialog(typeReservoire);
-    console.log("type reservoir open dialog: ", typeReservoire);
+    // console.log("type reservoir open dialog: ", typeReservoire);
   }
 
 

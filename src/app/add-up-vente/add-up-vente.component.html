@@ -16,8 +16,13 @@
 
         <mat-form-field appearance="fill">
           <mat-label>Montant</mat-label>
-          <input matInput placeholder="Montant" formControlName="montant" required>
-        </mat-form-field>
+          <input matInput 
+          placeholder="Montant"  
+          formControlName="montant" 
+          required  
+          (input)="onMontantChange($event)" 
+          #montantInput>
+           </mat-form-field>
 
        
         <mat-form-field appearance="fill">
@@ -30,7 +35,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Voiture à vendre</mat-label>
           <mat-select formControlName="voitureVendre" required>
-            <mat-option *ngFor="let voitureVendre of voituresVendre" [value]="voitureVendre"> <!-- Utilisez l'objet complet -->
+            <mat-option *ngFor="let voitureVendre of voituresVendre" (blur)="onVoitureSelectionChange(voitureVendre)" [value]="voitureVendre"> <!-- Utilisez l'objet complet -->
               {{voitureVendre.matricule}}  {{voitureVendre.modele}}
             </mat-option>
           </mat-select>

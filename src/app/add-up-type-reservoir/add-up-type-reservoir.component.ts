@@ -42,7 +42,7 @@ export class AddUpTypeReservoirComponent implements OnInit {
 
     this.typeReservoireService.getAllTypeReservoir().subscribe(data =>{
       this.typeReservoires = data;
-      console.log("Liste type reservoir :", this.typeReservoires);
+      // console.log("Liste type reservoir :", this.typeReservoires);
     },
     (error) =>{
       console.error('Erreur lors du chargement de la liste des type reservoirs:', error);
@@ -54,10 +54,10 @@ export class AddUpTypeReservoirComponent implements OnInit {
   chargerDonner():void{
     this.typeReservoireService.getAllTypeReservoir().subscribe(data =>{
       this.typeReservoires = data;
-      console.log("Liste type reservoirs:", this.typeReservoires);
+      // console.log("Liste type reservoirs:", this.typeReservoires);
     },
     (error) =>{
-      console.error('Erreur lors du chargement de la liste des type reservoirs:', error);
+      // console.error('Erreur lors du chargement de la liste des type reservoirs:', error);
     }
   );
   }
@@ -75,7 +75,7 @@ export class AddUpTypeReservoirComponent implements OnInit {
         this.typeReservoireService.updateTypeReservoire(typeReservoir).subscribe(
           response => {
             Swal.fire('Succès !', 'Type Reservoir modifié avec succès', 'success');
-            console.log("typeReservoir modifier : " , response);
+            // console.log("typeReservoir modifier : " , response);
             this.dialogRef.close(response);
           },
           error => {
@@ -87,9 +87,9 @@ export class AddUpTypeReservoirComponent implements OnInit {
         const newTypeReservoir: TypeReservoir = this.typeReservoirForm.value;
         this.typeReservoireService.createTypeReservoire(newTypeReservoir).subscribe(
           (response) => {
-            console.log('Type Reservoir ajouté avec succès :', response);
+            // console.log('Type Reservoir ajouté avec succès :', response);
             this.typeReservoirForm.reset();
-            Swal.fire('Succès !', 'Rôle crée avec succès', 'success');
+            Swal.fire('Succès !', 'Type Reservoir crée avec succès', 'success');
             this.dialogRef.close(response);
           },
           (error) => {
@@ -102,6 +102,13 @@ export class AddUpTypeReservoirComponent implements OnInit {
           }
         );
       }
+    }
+    else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Veuillez remplir tous les champs requis.',
+      });
     }
   }
 

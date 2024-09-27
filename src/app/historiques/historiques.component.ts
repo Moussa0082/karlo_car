@@ -35,10 +35,10 @@ export class HistoriquesComponent implements OnInit{
         this.dataSource = new MatTableDataSource(this.historiques);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        console.log("liste historiques: ", this.historiques);
+        // console.log("liste historiques: ", this.historiques);
       },
       (error) => {
-        console.error('Erreur lors du chargement de la liste des marques:', error);
+        // console.error('Erreur lors du chargement de la liste des marques:', error);
       });
 
  
@@ -54,7 +54,7 @@ export class HistoriquesComponent implements OnInit{
       this.dataSource = new MatTableDataSource(this.historiques);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste historiques: ", this.historiques);
+      // console.log("liste historiques: ", this.historiques);
     },
     (error) => {
       console.error('Erreur lors du chargement de la liste des marques:', error);
@@ -81,10 +81,10 @@ export class HistoriquesComponent implements OnInit{
         this.historiqueService.deleteHistorique(element.idHistorique).subscribe(
           (result) => {
             this.chargerDonner(); // Recharger la liste après la suppression réussie
-            console.log( "result delete : ", result);
+            // console.log( "result delete : ", result);
           }
         );
-        console.log("id Historique", element.idHistorique);
+        // console.log("id Historique", element.idHistorique);
         Swal.fire({
           title: "Supprimer!",
           text: "Suppression réussi.",

@@ -23,9 +23,9 @@ export class VoitureLouerService {
       for (let i = 0; i < images.length; i++) {
         formData.append('images', images[i], images[i].name);
       }
-      console.log("service formData : " , images);
+      // console.log("service formData : " , images);
     }else{
-      console.log("image non pris comme tableau ou vide");
+      // console.log("image non pris comme tableau ou vide");
 
     }
   
@@ -88,6 +88,7 @@ export class VoitureLouerService {
   //   const url = `${apiUrl}/${this.baseUrl}/${idVoiture}/images/${imageName}`;
   //   return this.http.get(url, { responseType: 'blob' });  // Spécifiez que la réponse est un Blob (binaire)
   // }
+  
   getImageUrl(idVoiture: string, imageName: string): string {
     return `${apiUrl}/${this.baseUrl}/${idVoiture}/images/${imageName}`;
   }
@@ -101,9 +102,9 @@ export class VoitureLouerService {
         .pipe(
           tap((response: HttpResponse<void>) => {
             if (response.status === 200 || response.status === 201 || response.status === 202) {
-              console.log('Voiture à  louer supprimé avec succès.');
+              // console.log('Voiture à  louer supprimé avec succès.');
             } else {
-              console.log('Statut de la réponse:', response.status);
+              // console.log('Statut de la réponse:', response.status);
             }
           }),
           catchError(this.handleError)
@@ -111,11 +112,11 @@ export class VoitureLouerService {
     }
   
       private handleError(error: HttpErrorResponse) {
-        console.error('Une erreur s\'est produite:', error);
+        // console.error('Une erreur s\'est produite:', error);
         if (error.error instanceof ErrorEvent) {
-          console.error('Erreur côté client:', error.error.message);
+          // console.error('Erreur côté client:', error.error.message);
         } else {
-          console.error(`Code d'erreur du backend: ${error.status}, Message: ${error.message}`);
+          // console.error(`Code d'erreur du backend: ${error.status}, Message: ${error.message}`);
         }
         return throwError('Une erreur est survenue, veuillez réessayer plus tard.');
       }

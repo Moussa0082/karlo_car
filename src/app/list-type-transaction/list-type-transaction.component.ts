@@ -34,10 +34,10 @@ export class ListTypeTransactionComponent {
       this.dataSource = new MatTableDataSource(this.typeTransactions);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste typeTransaction: ", this.typeTransactions);
+      // console.log("liste typeTransaction: ", this.typeTransactions);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des typeTransactions:', error);
+      // console.error('Erreur lors du chargement de la liste des typeTransactions:', error);
     });  
   }
 
@@ -47,10 +47,10 @@ export class ListTypeTransactionComponent {
       this.dataSource.data = this.typeTransactions; // Assurez-vous que MatTableDataSource est mis à jour
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste typeTransaction: ", this.typeTransactions);
+      // console.log("liste typeTransaction: ", this.typeTransactions);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des typeTransactions:', error);
+      // console.error('Erreur lors du chargement de la liste des typeTransactions:', error);
     });  
   }
 
@@ -70,11 +70,11 @@ export class ListTypeTransactionComponent {
       if (result.isConfirmed) {
         this.typeTransactionService.deleteTypeTransaction(element.idTypeTransaction).subscribe(
           (result) => {
-            console.log( "result delete : ", result);
+            // console.log( "result delete : ", result);
             this.chargerDonner(); // Recharger la liste après la suppression réussie
           }
         );
-        console.log("id typeTransaction", element.idTypeTransaction);
+        // console.log("id typeTransaction", element.idTypeTransaction);
         Swal.fire({
           title: "Supprimer!",
           text: "Suppression réussi.",
@@ -99,10 +99,10 @@ export class ListTypeTransactionComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialog closed with result:', result);
+        // console.log('Dialog closed with result:', result);
         this.chargerDonner();
       } else {
-        console.log('Dialog closed without result');
+        // console.log('Dialog closed without result');
       }
     });
   }
@@ -110,7 +110,7 @@ export class ListTypeTransactionComponent {
   //Editer 
   editElement(typeTransaction: TypeTransaction): void {
     this.openDialog(typeTransaction);
-    console.log("typeTransaction open dialog: ", typeTransaction);
+    // console.log("typeTransaction open dialog: ", typeTransaction);
   }
 
   applyFilter(event: Event) {

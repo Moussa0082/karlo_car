@@ -67,7 +67,7 @@ export class DetailReservationComponent implements OnInit{
      });
      this.voitureService.getAllVoituresLouer().subscribe(
       data => {
-        console.log('Données reçues :', data);
+        // console.log('Données reçues :', data);
     
         // Vérifiez la structure des données reçues
         if (Array.isArray(data)) {
@@ -76,12 +76,12 @@ export class DetailReservationComponent implements OnInit{
     
           // Vérifiez les données filtrées
           this.voituresLouer.forEach(v => {
-            console.log("Statut voiture louée :", v.isDisponible);
+            // console.log("Statut voiture louée :", v.isDisponible);
           });
     
-          console.log("Liste des voitures à louer chargée :", this.voituresLouer);
+          // console.log("Liste des voitures à louer chargée :", this.voituresLouer);
         } else {
-          console.error('Les données reçues ne sont pas au format attendu.');
+          // console.error('Les données reçues ne sont pas au format attendu.');
         }
       },
       error => {
@@ -99,7 +99,7 @@ export class DetailReservationComponent implements OnInit{
       this.data.reservation.images.forEach((imageName: string) => {
         const imageUrl = this.reservationService.getImageUrl(this.data.reservation.idReservation, imageName);
         this.imagePreviews.push(imageUrl);  // Ajouter l'URL complète de l'image au tableau
-        console.log("Image URL chargée", this.imagePreviews);
+        // console.log("Image URL chargée", this.imagePreviews);
       }
     );
     }
@@ -115,12 +115,12 @@ export class DetailReservationComponent implements OnInit{
           const voitureLouer = this.voituresLouer.find(r => r.idVoiture === this.data.reservation.voitureLouer.idVoiture);
           if (voitureLouer) {
             this.reservationForm.patchValue({ voitureLouer: voitureLouer });
-            console.log("voiture louer pour la livrason  mcll:", voitureLouer.matricule + " model " + voitureLouer.modele);
+            // console.log("voiture louer pour la livrason  mcll:", voitureLouer.matricule + " model " + voitureLouer.modele);
           }
         }
       },
       error => {
-        console.error('Erreur lors du chargement de la voitures à louer pour la livraison :', error);
+        // console.error('Erreur lors du chargement de la voitures à louer pour la livraison :', error);
       }
     );
 

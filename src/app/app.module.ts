@@ -8,7 +8,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FullComponent } from './layouts/full/full.component';
-import { DemoFlexyModule } from './demo-flexy-module'
+import { DemoFlexyModule } from './demo-flexy-module';
+import { DateTimePickerModule } from '@syncfusion/ej2-angular-calendars'
+
 
 // Modules
 import { DashboardModule } from './dashboard/dashboard.module';
@@ -52,8 +54,16 @@ import { DetailVoitureLouerComponent } from './detail-voiture-louer/detail-voitu
 import { DetailReservationComponent } from './detail-reservation/detail-reservation.component';
 import { DetailVenteComponent } from './detail-vente/detail-vente.component';
 import { DetailVComponent } from './detail-v/detail-v.component';
+import { ListDemandeReservationComponent } from './list-demande-reservation/list-demande-reservation.component';
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+
+registerLocaleData(localeFr, 'fr');
+
 
 @NgModule({
+  
   declarations: [
     AppComponent,
     FullComponent,
@@ -92,9 +102,11 @@ import { DetailVComponent } from './detail-v/detail-v.component';
     DetailVoitureLouerComponent,
     DetailReservationComponent,
     DetailVenteComponent,
-    DetailVComponent
+    DetailVComponent,
+    ListDemandeReservationComponent
   ],
   imports: [
+    DateTimePickerModule,
     MatDatepickerModule,
     MatRadioModule,
     BrowserModule,
@@ -108,7 +120,7 @@ import { DetailVComponent } from './detail-v/detail-v.component';
     ComponentsModule,
     FormsModule
   ],
-  providers: [],
+  providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

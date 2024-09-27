@@ -50,7 +50,7 @@ export class AddUpMarqueComponent implements OnInit{
     this.isEditMode ? this.loadExistingImage(this.data.marque?.idMarque+"/image") : null;
     this.marqueService.getAllMarque().subscribe(data =>{
       this.marques = data;
-      console.log("Liste marques:", this.marques);
+      // console.log("Liste marques:", this.marques);
     },
     (error) =>{
       console.error('Erreur lors du chargement de la liste des marques:', error);
@@ -108,13 +108,13 @@ export class AddUpMarqueComponent implements OnInit{
   //Afficher le lien de l'image
   ImageChange(event:any){
     this.logo = event.target.files[0];
-    console.log("Image uploiarder ", this.logo);
+    // console.log("Image uploiarder ", this.logo);
   }
 
   chargerDonner():void{
     this.marqueService.getAllMarque().subscribe(data =>{
       this.marques = data;
-      console.log("Liste marque:", this.marques);
+      // console.log("Liste marque:", this.marques);
     },
     (error) =>{
       console.error('Erreur lors du chargement de la liste des marques:', error);
@@ -141,12 +141,12 @@ export class AddUpMarqueComponent implements OnInit{
     if (this.marqueForm.valid && this.logo) {
       const marque = this.marqueForm.value;
       if (this.isEditMode) {
-        console.log("marque value :" ,marque);
+        // console.log("marque value :" ,marque);
         // Modifier marque
         this.marqueService.updateMarque(this.data.marque.idMarque, marque, this.logo).subscribe(
           response => {
             Swal.fire('Succès !', 'Marque modifié avec succès', 'success');
-            console.log("marque modifier : " , response);
+            // console.log("marque modifier : " , response);
             this.dialogRef.close(response);
           },
           error => {
@@ -156,17 +156,17 @@ export class AddUpMarqueComponent implements OnInit{
       } else {
         // Ajouter une marque
         const newMarque: Marque = this.marqueForm.value;
-        console.log("marque value :" ,newMarque);
+        // console.log("marque value :" ,newMarque);
 
         this.marqueService.createMarque(newMarque, this.logo).subscribe(
           (response) => {
-            console.log('Marque ajouté avec succès :', response);
+            // console.log('Marque ajouté avec succès :', response);
             this.marqueForm.reset();
             Swal.fire('Succès !', 'Marque crée avec succès', 'success');
             this.dialogRef.close(response);
           },
           (error) => {
-            console.error("Erreur lors de l'ajout du role :", error);
+            console.error("Erreur lors de l'ajout de la marque :", error);
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
@@ -175,9 +175,12 @@ export class AddUpMarqueComponent implements OnInit{
           }
         );
       }
-    }else{
-      console.log("logo null");
-      this.showValidationErrors();
+    }else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Veuillez remplir tous les champs requis.',
+      });
     }
   }
 
@@ -188,7 +191,7 @@ export class AddUpMarqueComponent implements OnInit{
         const controlErrors = control.errors as ValidationErrors | null; // Assertion de type
         if (controlErrors) {
           Object.keys(controlErrors).forEach(keyError => {
-            console.log(`Control ${key} has error: ${keyError}`);
+            // console.log(`Control ${key} has error: ${keyError}`);
           });
         }
       }

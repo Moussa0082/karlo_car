@@ -44,7 +44,7 @@ export class AddUpTypeVoitureComponent implements OnInit{
 
     this.typeVoitureService.getAllTypeVoiture().subscribe(data =>{
       this.typesVoitures = data;
-      console.log("Liste type voiture:", this.typesVoitures);
+      // console.log("Liste type voiture:", this.typesVoitures);
     },
     (error) =>{
       console.error('Erreur lors du chargement de la liste des type voiture:', error);
@@ -56,10 +56,10 @@ export class AddUpTypeVoitureComponent implements OnInit{
   chargerDonner():void{
     this.typeVoitureService.getAllTypeVoiture().subscribe(data =>{
       this.typesVoitures = data;
-      console.log("Liste type voiture:", this.typesVoitures);
+      // console.log("Liste type voiture:", this.typesVoitures);
     },
     (error) =>{
-      console.error('Erreur lors du chargement de la liste des type voiture:', error);
+      // console.error('Erreur lors du chargement de la liste des type voiture:', error);
     }
   );
   }
@@ -77,7 +77,7 @@ export class AddUpTypeVoitureComponent implements OnInit{
         this.typeVoitureService.updateTypeVoiture(typeVoiture).subscribe(
           response => {
             Swal.fire('Succès !', 'Type voiture modifié avec succès', 'success');
-            console.log("type voiture modifier : " , response);
+            // console.log("type voiture modifier : " , response);
             this.dialogRef.close(response);
           },
           error => {
@@ -89,7 +89,7 @@ export class AddUpTypeVoitureComponent implements OnInit{
         const newTypeVoiture: TypeVoiture = this.typeVoitureForm.value;
         this.typeVoitureService.createTypeVoiture(newTypeVoiture).subscribe(
           (response) => {
-            console.log('Type Voiture ajouté avec succès :', response);
+            // console.log('Type Voiture ajouté avec succès :', response);
             this.typeVoitureForm.reset();
             Swal.fire('Succès !', 'Type Voiture crée avec succès', 'success');
             this.dialogRef.close(response);

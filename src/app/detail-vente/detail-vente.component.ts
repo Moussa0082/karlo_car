@@ -62,7 +62,7 @@ export class DetailVenteComponent implements OnInit{
     
      this.voitureService.getAllVoituresVendre().subscribe(
       data => {
-        console.log('Données reçues :', data);
+        // console.log('Données reçues :', data);
     
         // Vérifiez la structure des données reçues
         if (Array.isArray(data)) {
@@ -71,12 +71,12 @@ export class DetailVenteComponent implements OnInit{
     
           // Vérifiez les données filtrées
           this.voituresVendre.forEach(v => {
-            console.log("Statut voiture vendre :", v.isVendu);
+            // console.log("Statut voiture vendre :", v.isVendu);
           });
     
-          console.log("Liste des voitures à vendre chargée :", this.voituresVendre);
+          // console.log("Liste des voitures à vendre chargée :", this.voituresVendre);
         } else {
-          console.error('Les données reçues ne sont pas au format attendu.');
+          // console.error('Les données reçues ne sont pas au format attendu.');
         }
       },
       error => {
@@ -96,12 +96,12 @@ export class DetailVenteComponent implements OnInit{
           const voitureVendre = this.voituresVendre.find(r => r.idVoiture === this.data.vente.voitureVendre.idVoiture);
           if (voitureVendre) {
             this.venteForm.patchValue({ voitureVendre: voitureVendre });
-            console.log("voiture vendre  mcll:", voitureVendre.matricule + " model " + voitureVendre.modele);
+            // console.log("voiture vendre  mcll:", voitureVendre.matricule + " model " + voitureVendre.modele);
           }
         }
       },
       error => {
-        console.error('Erreur lors du chargement de la voitures à louer pour la livraison :', error);
+        // console.error('Erreur lors du chargement de la voitures à louer pour la livraison :', error);
       }
     );
 
@@ -122,7 +122,7 @@ export class DetailVenteComponent implements OnInit{
   private loadImages(): any {
     if (this.data.vente && this.data.vente.images && this.data.vente.images.length > 0) {
       this.data.vente.images.forEach((imageName: string) => {
-        const imageUrl = this.venteService.getImageUrl(this.data.vente.idVente, imageName);
+        const imageUrl : any = this.venteService.getImageUrl(this.data.vente.idVente, imageName);
         this.imageUrls.push(imageUrl);
         console.log("Image URL chargée", imageUrl);
       });

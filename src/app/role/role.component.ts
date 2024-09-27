@@ -34,10 +34,10 @@ export class RoleComponent implements OnInit{
       this.dataSource = new MatTableDataSource(this.roles);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste role: ", this.roles);
+      // console.log("liste role: ", this.roles);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des roles:', error);
+      // console.error('Erreur lors du chargement de la liste des roles:', error);
     });  
   }
 
@@ -47,10 +47,10 @@ export class RoleComponent implements OnInit{
       this.dataSource.data = this.roles; // Assurez-vous que MatTableDataSource est mis à jour
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste role: ", this.roles);
+      // console.log("liste role: ", this.roles);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des roles:', error);
+      // console.error('Erreur lors du chargement de la liste des roles:', error);
     });  
   }
 
@@ -70,11 +70,11 @@ export class RoleComponent implements OnInit{
       if (result.isConfirmed) {
         this.roleService.deleteRole(element.idRole).subscribe(
           (result) => {
-            console.log( "result delete : ", result);
+            // console.log( "result delete : ", result);
             this.chargerDonner(); // Recharger la liste après la suppression réussie
           }
         );
-        console.log("id Role", element.idRole);
+        // console.log("id Role", element.idRole);
         Swal.fire({
           title: "Supprimer!",
           text: "Suppression réussi.",
@@ -99,10 +99,10 @@ export class RoleComponent implements OnInit{
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialog closed with result:', result);
+        // console.log('Dialog closed with result:', result);
         this.chargerDonner();
       } else {
-        console.log('Dialog closed without result');
+        // console.log('Dialog closed without result');
       }
     });
   }
@@ -110,7 +110,7 @@ export class RoleComponent implements OnInit{
   //Editer 
   editElement(role: Role): void {
     this.openDialog(role);
-    console.log("role open dialog: ", role);
+    // console.log("role open dialog: ", role);
   }
 
 

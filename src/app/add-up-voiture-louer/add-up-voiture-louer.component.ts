@@ -14,6 +14,8 @@ import Swal from 'sweetalert2';
 import { UserService } from '../services/user.service';
 import { User } from '../models/User';
 import {MatRadioModule} from '@angular/material/radio';
+import { VoitureLouer } from '../models/VoitureLouer';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-add-up-voiture-louer',
@@ -33,8 +35,11 @@ export class AddUpVoitureLouerComponent implements OnInit{
   typeReservoirs: TypeReservoir[]  = [];
   images: File[]  = [];
   imagePreviews: string[] = [];
+
   isEditMode: boolean;
   imageUrls: string[] = [];  // Stocker les URLs des images de la voiture
+  selectedVoiture!:VoitureLouer;
+  mtR!:number;
 
 
   constructor(private fb: FormBuilder, private voitureService: VoitureLouerService,
@@ -90,10 +95,10 @@ export class AddUpVoitureLouerComponent implements OnInit{
     });
     this.typeReservoirService.getAllTypeReservoir().subscribe(data => {
       this.typeReservoirs = data;
-      console.log("liste type reservoir charger: ", this.typeReservoirs);
+      // console.log("liste type reservoir charger: ", this.typeReservoirs);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des type reservoirs:', error);
+      // console.error('Erreur lors du chargement de la liste des type reservoirs:', error);
     });
     this.userService.getAllUsers().subscribe(
       (data) => {
@@ -112,20 +117,26 @@ export class AddUpVoitureLouerComponent implements OnInit{
     );
     this.typeVoitureService.getAllTypeVoiture().subscribe(data => {
       this.typeVoitures = data;
-      console.log("liste type voiture charger: ", this.typeVoitures);
+      // console.log("liste type voiture charger: ", this.typeVoitures);
     },
     (error) => {
       console.error('Erreur lors du chargement de la liste des type voiture:', error);
     });
     this.marqueservice.getAllMarque().subscribe(data => {
       this.marques = data;
-      console.log("liste marque charger: ", this.marques);
+      // console.log("liste marque charger: ", this.marques);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des marques:', error);
+      // console.error('Erreur lors du chargement de la liste des marques:', error);
     });
     this.isEditMode ? this.loadSelectOptions() : null ;
     this.loadImages();
+      // Ajout de l'abonnement à la saisie du montant
+      // this.voitureLouerForm.get('prixAugmente')?.valueChanges.pipe(
+      //   debounceTime(7000) // Attente de 500ms après que l'utilisateur ait fini de saisir
+      // ).subscribe(() => {
+      //   this.onVoitureSelectionChange();
+      // });
   }
 
    // Méthode pour charger les images existantes
@@ -134,6 +145,37 @@ export class AddUpVoitureLouerComponent implements OnInit{
   //     this.imagePreviews = logoPaths.map(path => `http://localhost/${path}`);
   //   }
   // }
+
+  onChange() {
+    const montantProprio = this.voitureLouerForm.get('prixProprietaire')?.value; // Récupère la valeur
+    const montantAugmente = this.voitureLouerForm.get('prixAugmente')?.value; // Récupère la valeur
+    let montantProprioControl = this.voitureLouerForm.get('prixProprietaire');
+
+if (montantProprioControl) {
+  let montantProprio = montantProprioControl.value; // Obtenir la valeur du contrôle
+  
+   // Convertir la valeur en nombre
+   montantProprio = Number(montantProprio);
+
+   if (!isNaN(montantProprio)) {  // Vérifier si la conversion est réussie
+     this.mtR = montantProprio + 5000;
+    //  console.log('Montant après ajout:', this.mtR);
+   } else {
+    // console.error('La valeur de montantProprio n\'est pas un nombre.');
+  }
+}
+    if (montantProprio && montantAugmente && montantAugmente <= montantProprio) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Montant incorrect',
+        text: `Le montant augmenté ne peut pas être inférieur à ${montantProprio}, qui est le montant du propriétaire pour la voiture sélectionnée , il doit y avoir au moins 5000 F de plus .`,
+      });
+  
+      // Optionnel : Vous pouvez aussi réinitialiser ou ajuster le montant ici
+      // this.voitureLouerForm.get('prixAugmente')?.setValue(this.mtR); // Par exemple, ajouter une valeur minimale
+    }
+  }
+  
 
 
   private loadSelectOptions(): void {
@@ -146,7 +188,7 @@ export class AddUpVoitureLouerComponent implements OnInit{
           const marque = this.marques.find(r => r.idMarque === this.data.voitureLouer.marque.idMarque);
           if (marque) {
             this.voitureLouerForm.patchValue({ marque: marque });
-            console.log("marque de la voiture :", marque.nomMarque);
+            // console.log("marque de la voiture :", marque.nomMarque);
           }
         }
       },
@@ -163,7 +205,7 @@ export class AddUpVoitureLouerComponent implements OnInit{
           const typeReservoir = this.typeReservoirs.find(r => r.idTypeReservoir === this.data.voitureLouer.typeReservoir.idTypeReservoir);
           if (typeReservoir) {
             this.voitureLouerForm.patchValue({ typeReservoir: typeReservoir });
-            console.log("typeReservoir de la voiture :", typeReservoir.nomTypeReservoir);
+            // console.log("typeReservoir de la voiture :", typeReservoir.nomTypeReservoir);
           }
         }
       },
@@ -180,12 +222,12 @@ export class AddUpVoitureLouerComponent implements OnInit{
           const typeVoiture = this.typeVoitures.find(r => r.idTypeVoiture === this.data.voitureLouer.typeVoiture.idTypeVoiture);
           if (typeVoiture) {
             this.voitureLouerForm.patchValue({ typeVoiture: typeVoiture });
-            console.log("type de la voiture :", typeVoiture?.nomTypeVoiture);
+            // console.log("type de la voiture :", typeVoiture?.nomTypeVoiture);
           }
         }
       },
       error => {
-        console.error('Erreur lors du chargement des typeVoitures:', error);
+        // console.error('Erreur lors du chargement des typeVoitures:', error);
       }
     );
     this.userService.getAllUsers().subscribe(
@@ -197,12 +239,12 @@ export class AddUpVoitureLouerComponent implements OnInit{
           const user = this.users.find(r => r.idUser === this.data.voitureLouer.user.idUser);
           if (user) {
             this.voitureLouerForm.patchValue({ user: user });
-            console.log("utilisateur :", user?.nomUser);
+            // console.log("utilisateur :", user?.nomUser);
           }
         }
       },
       error => {
-        console.error('Erreur lors du chargement des utilisateurs de la voiture à louer:', error);
+        // console.error('Erreur lors du chargement des utilisateurs de la voiture à louer:', error);
       }
     );
   }
@@ -212,7 +254,7 @@ export class AddUpVoitureLouerComponent implements OnInit{
       this.data.voitureLouer.images.forEach((imageName: string) => {
         const imageUrl = this.voitureService.getImageUrl(this.data.voitureLouer.idVoiture, imageName);
         this.imageUrls.push(imageUrl);  // Ajouter l'URL complète de l'image au tableau
-        console.log("Image URL chargée", this.imageUrls);
+        // console.log("Image URL chargée", this.imageUrls);
       }
     );
     }
@@ -225,7 +267,7 @@ export class AddUpVoitureLouerComponent implements OnInit{
 
   onIsChauffeurChange(value: boolean) {
     value   === !value;
-    console.log('Valeur booléenne:', value);
+    // console.log('Valeur booléenne:', value);
     // Faites ce que vous voulez avec la valeur booléenne
   }
 
@@ -233,26 +275,26 @@ export class AddUpVoitureLouerComponent implements OnInit{
   onSaves(): void {
     if (this.voitureLouerForm.valid) {
       const voitureLouer = this.voitureLouerForm.value;
-      console.log('Form Data:', voitureLouer);
+      // console.log('Form Data:', voitureLouer);
   
       if (this.isEditMode) {
-        console.log('Edit Mode');
+        // console.log('Edit Mode');
         this.voitureService.updateVoitureLouer(voitureLouer, this.images).subscribe(
           response => {
             Swal.fire('Succès !', 'Voiture à louer modifié avec succès', 'success');
-            console.log("Voiture à louer modifié : ", response);
+            // console.log("Voiture à louer modifié : ", response);
             this.dialogRef.close(response);
           },
           error => {
-            console.error('Erreur lors de la modification:', error);
+            // console.error('Erreur lors de la modification:', error);
             Swal.fire('Erreur !', 'Erreur lors de la modification', 'error');
           }
         );
       } else {
-        console.log('Add Mode');
+        // console.log('Add Mode');
         this.voitureService.addVoitureLouer(voitureLouer, this.images).subscribe(
           response => {
-            console.log('Voiture à louer ajoutée avec succès :', response);
+            // console.log('Voiture à louer ajoutée avec succès :', response);
             this.voitureLouerForm.reset();
             this.images = [];
             this.imagePreviews = [];
@@ -270,7 +312,11 @@ export class AddUpVoitureLouerComponent implements OnInit{
         );
       }
     } else {
-      this.showValidationErrors();
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Veuillez remplir tous les champs requis.',
+      });
     }
   }
   

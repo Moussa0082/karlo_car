@@ -57,7 +57,7 @@ export class AddUpUserComponent implements OnInit{
       // console.log("Liste role:", this.roles);
     },
     (error) =>{
-      console.error('Erreur lors du chargement de la liste des roles:', error);
+      // console.error('Erreur lors du chargement de la liste des roles:', error);
     }
   );
   // Chargez les rôles après l'initialisation du formulaire
@@ -81,7 +81,7 @@ export class AddUpUserComponent implements OnInit{
         }
       },
       error => {
-        console.error('Erreur lors du chargement des rôles:', error);
+        // console.error('Erreur lors du chargement des rôles:', error);
       }
     );
   }
@@ -94,7 +94,7 @@ export class AddUpUserComponent implements OnInit{
       // console.log("liste user: ", this.users);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des utilisateurs:', error);
+      // console.error('Erreur lors du chargement de la liste des utilisateurs:', error);
     });
   }
 
@@ -106,32 +106,32 @@ export class AddUpUserComponent implements OnInit{
   onSaves(): void {
     if (this.userForm.valid) {
       const user = this.userForm.value;
-      console.log('Form Data:', user);
+      // console.log('Form Data:', user);
   
       if (this.isEditMode) {
-        console.log('Edit Mode');
+        // console.log('Edit Mode');
         this.userService.updateUser(user).subscribe(
           response => {
             Swal.fire('Succès !', 'Utilisateur modifié avec succès', 'success');
-            console.log("Utilisateur modifié : ", response);
+            // console.log("Utilisateur modifié : ", response);
             this.dialogRef.close(response);
           },
           error => {
-            console.error('Erreur lors de la modification:', error);
+            // console.error('Erreur lors de la modification:', error);
             Swal.fire('Erreur !', 'Erreur lors de la modification', error);
           }
         );
       } else {
-        console.log('Add Mode');
+        // console.log('Add Mode');
         this.userService.addUser(user).subscribe(
           response => {
-            console.log('Utilisateur ajoutée avec succès :', response);
+            // console.log('Utilisateur ajoutée avec succès :', response);
             this.userForm.reset();
             Swal.fire('Succès !', 'Utilisateur créé avec succès', 'success');
             this.dialogRef.close(response);
           },
           error => {
-            console.error("Erreur lors de l'ajout de l'utilisateur :", error);
+            // console.error("Erreur lors de l'ajout de l'utilisateur :", error);
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
@@ -141,7 +141,11 @@ export class AddUpUserComponent implements OnInit{
         );
       }
     } else {
-      this.showValidationErrors();
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Veuillez remplir tous les champs requis.',
+      });
     }
   }
   

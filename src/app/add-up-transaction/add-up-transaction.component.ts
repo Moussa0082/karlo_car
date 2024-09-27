@@ -54,7 +54,7 @@ export class AddUpTransactionComponent implements OnInit{
       this.adminRecup = user;
       // Si nécessaire, actualiser la vue ou effectuer des actions spécifiques ici
     });
-    console.log("Admin recup  ", this.adminRecup);
+    // console.log("Admin recup  ", this.adminRecup);
     this.isEditMode = !!this.data.transaction; // Si une transaction est passé, alors c'est le mode édition
     this.transactionForm = this.fb.group({
       idTransaction: [this.isEditMode ? this.data.transaction?.idTransaction : '', this.isEditMode ? Validators.required : null],
@@ -65,7 +65,7 @@ export class AddUpTransactionComponent implements OnInit{
     });
     this.typeTransactionService.getAllTypeTransaction().subscribe(data => {
       this.typeTransactions = data;
-      console.log("liste type transactions charger: ", this.typeTransactions);
+      // console.log("liste type transactions charger: ", this.typeTransactions);
     },
     (error) => {
       console.error('Erreur lors du chargement de la liste des type transaction:', error);
@@ -85,13 +85,13 @@ export class AddUpTransactionComponent implements OnInit{
     // }
     if (this.transactionForm.valid) {
       const transaction = this.transactionForm.value;
-      console.log("form", transaction);
+      // console.log("form", transaction);
       if (this.isEditMode) {
         // Modifier une transaction
         this.transactionService.updateTransaction(transaction).subscribe(
           response => {
             Swal.fire('Succès !', 'Transaction modifié avec succès', 'success');
-            console.log("Transaction modifier : " , response);
+            // console.log("Transaction modifier : " , response);
             this.dialogRef.close(response);
           },
           error => {
@@ -103,7 +103,7 @@ export class AddUpTransactionComponent implements OnInit{
         const newTransaction: Transaction = this.transactionForm.value;
         this.transactionService.addTransaction(newTransaction).subscribe(
           (response) => {
-            console.log('Transaction ajouté avec succès :', response);
+            // console.log('Transaction ajouté avec succès :', response);
             this.transactionForm.reset();
             Swal.fire('Succès !', 'Transaction ajoutée avec succès', 'success');
             this.dialogRef.close(response);
@@ -118,8 +118,12 @@ export class AddUpTransactionComponent implements OnInit{
           }
         );
       }
-    }else{
-      this.showValidationErrors();
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Veuillez remplir tous les champs requis.',
+      });
     }
   }
 
@@ -131,7 +135,7 @@ export class AddUpTransactionComponent implements OnInit{
         const controlErrors = control.errors as ValidationErrors | null; // Assertion de type
         if (controlErrors) {
           Object.keys(controlErrors).forEach(keyError => {
-            console.log(`Control ${key} has error: ${keyError}`);
+            // console.log(`Control ${key} has error: ${keyError}`);
           });
         }
       }
@@ -149,7 +153,7 @@ export class AddUpTransactionComponent implements OnInit{
           const typeTransaction = this.typeTransactions.find(r => r.idTypeTransaction === this.data.transaction.typeTransaction.idTypeTransaction);
           if (typeTransaction) {
             this.transactionForm.patchValue({ typeTransaction: typeTransaction });
-            console.log("Type de la transaction :", typeTransaction.libelle);
+            // console.log("Type de la transaction :", typeTransaction.libelle);
           }
         }
       },

@@ -102,10 +102,10 @@ export class AddUpVLPartComponent  implements OnInit{
     });
     this.typeReservoirService.getAllTypeReservoir().subscribe(data => {
       this.typeReservoirs = data;
-      console.log("liste type reservoir charger: ", this.typeReservoirs);
+      // console.log("liste type reservoir charger: ", this.typeReservoirs);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des type reservoirs:', error);
+      // console.error('Erreur lors du chargement de la liste des type reservoirs:', error);
     });
     this.userService.getAllUsers().subscribe(
       (data) => {
@@ -119,19 +119,19 @@ export class AddUpVLPartComponent  implements OnInit{
       },
       
       (error) => {
-        console.error('Erreur lors du chargement de la liste des users:', error);
+        // console.error('Erreur lors du chargement de la liste des users:', error);
       }
     );
     this.typeVoitureService.getAllTypeVoiture().subscribe(data => {
       this.typeVoitures = data;
-      console.log("liste type voiture charger: ", this.typeVoitures);
+      // console.log("liste type voiture charger: ", this.typeVoitures);
     },
     (error) => {
       console.error('Erreur lors du chargement de la liste des type voiture:', error);
     });
     this.marqueservice.getAllMarque().subscribe(data => {
       this.marques = data;
-      console.log("liste marque charger: ", this.marques);
+      // console.log("liste marque charger: ", this.marques);
     },
     (error) => {
       console.error('Erreur lors du chargement de la liste des marques:', error);
@@ -158,7 +158,7 @@ export class AddUpVLPartComponent  implements OnInit{
           const marque = this.marques.find(r => r.idMarque === this.data.voitureLouer.marque.idMarque);
           if (marque) {
             this.voitureLouerForm.patchValue({ marque: marque });
-            console.log("marque de la voiture :", marque.nomMarque);
+            // console.log("marque de la voiture :", marque.nomMarque);
           }
         }
       },
@@ -175,7 +175,7 @@ export class AddUpVLPartComponent  implements OnInit{
           const typeReservoir = this.typeReservoirs.find(r => r.idTypeReservoir === this.data.voitureLouer.typeReservoir.idTypeReservoir);
           if (typeReservoir) {
             this.voitureLouerForm.patchValue({ typeReservoir: typeReservoir });
-            console.log("typeReservoir de la voiture :", typeReservoir.nomTypeReservoir);
+            // console.log("typeReservoir de la voiture :", typeReservoir.nomTypeReservoir);
           }
         }
       },
@@ -192,7 +192,7 @@ export class AddUpVLPartComponent  implements OnInit{
           const typeVoiture = this.typeVoitures.find(r => r.idTypeVoiture === this.data.voitureLouer.typeVoiture.idTypeVoiture);
           if (typeVoiture) {
             this.voitureLouerForm.patchValue({ typeVoiture: typeVoiture });
-            console.log("type de la voiture :", typeVoiture?.nomTypeVoiture);
+            // console.log("type de la voiture :", typeVoiture?.nomTypeVoiture);
           }
         }
       },
@@ -209,7 +209,7 @@ export class AddUpVLPartComponent  implements OnInit{
           const user = this.users.find(r => r.idUser === this.data.voitureLouer.user.idUser);
           if (user) {
             this.voitureLouerForm.patchValue({ user: user });
-            console.log("utilisateur :", user?.nomUser);
+            // console.log("utilisateur :", user?.nomUser);
           }
         }
       },
@@ -224,7 +224,7 @@ export class AddUpVLPartComponent  implements OnInit{
       this.data.voitureLouer.images.forEach((imageName: string) => {
         const imageUrl = this.voitureService.getImageUrl(this.data.voitureLouer.idVoiture, imageName);
         this.imageUrls.push(imageUrl);  // Ajouter l'URL complète de l'image au tableau
-        console.log("Image URL chargée", this.imageUrls);
+        // console.log("Image URL chargée", this.imageUrls);
       }
     );
     }
@@ -237,7 +237,7 @@ export class AddUpVLPartComponent  implements OnInit{
 
   onIsChauffeurChange(value: boolean) {
     value   === !value;
-    console.log('Valeur booléenne:', value);
+    // console.log('Valeur booléenne:', value);
     // Faites ce que vous voulez avec la valeur booléenne
   }
 
@@ -245,14 +245,14 @@ export class AddUpVLPartComponent  implements OnInit{
   onSaves(): void {
     if (this.voitureLouerForm.valid) {
       const voitureLouer = this.voitureLouerForm.value;
-      console.log('Form Data:', voitureLouer);
+      // console.log('Form Data:', voitureLouer);
   
       if (this.isEditMode) {
-        console.log('Edit Mode');
+        // console.log('Edit Mode');
         this.voitureService.updateVoitureLouer(voitureLouer, this.images).subscribe(
           response => {
             Swal.fire('Succès !', 'Voiture à louer modifié avec succès', 'success');
-            console.log("Voiture à louer modifié : ", response);
+            // console.log("Voiture à louer modifié : ", response);
             this.dialogRef.close(response);
           },
           error => {
@@ -261,10 +261,10 @@ export class AddUpVLPartComponent  implements OnInit{
           }
         );
       } else {
-        console.log('Add Mode');
+        // console.log('Add Mode');
         this.voitureService.addVoitureLouer(voitureLouer, this.images).subscribe(
           response => {
-            console.log('Voiture à louer ajoutée avec succès :', response);
+            // console.log('Voiture à louer ajoutée avec succès :', response);
             this.voitureLouerForm.reset();
             this.images = [];
             this.imagePreviews = [];

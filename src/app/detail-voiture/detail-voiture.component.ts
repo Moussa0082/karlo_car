@@ -95,10 +95,10 @@ export class DetailVoitureComponent   implements OnInit{
     
     this.typeReservoirService.getAllTypeReservoir().subscribe(data => {
       this.typeReservoirs = data;
-      console.log("liste type reservoir charger: ", this.typeReservoirs);
+      // console.log("liste type reservoir charger: ", this.typeReservoirs);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des type reservoirs:', error);
+      // console.error('Erreur lors du chargement de la liste des type reservoirs:', error);
     });
     this.userService.getAllUsers().subscribe(
       (data) => {
@@ -112,22 +112,22 @@ export class DetailVoitureComponent   implements OnInit{
       },
       
       (error) => {
-        console.error('Erreur lors du chargement de la liste des users:', error);
+        // console.error('Erreur lors du chargement de la liste des users:', error);
       }
     );
     this.typeVoitureService.getAllTypeVoiture().subscribe(data => {
       this.typeVoitures = data;
-      console.log("liste type voiture charger: ", this.typeVoitures);
+      // console.log("liste type voiture charger: ", this.typeVoitures);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des type voiture:', error);
+      // console.error('Erreur lors du chargement de la liste des type voiture:', error);
     });
     this.marqueservice.getAllMarque().subscribe(data => {
       this.marques = data;
-      console.log("liste marque charger: ", this.marques);
+      // console.log("liste marque charger: ", this.marques);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des marques:', error);
+      // console.error('Erreur lors du chargement de la liste des marques:', error);
     });
     this.loadSelectOptions();
     this.loadImages();
@@ -144,12 +144,12 @@ export class DetailVoitureComponent   implements OnInit{
           const marque = this.marques.find(r => r.idMarque === this.data.voitureVendre.marque.idMarque);
           if (marque) {
             this.voitureVendreForm.patchValue({ marque: marque });
-            console.log("marque de la voiture :", marque.nomMarque);
+            // console.log("marque de la voiture :", marque.nomMarque);
           }
         }
       },
       error => {
-        console.error('Erreur lors du chargement des marques:', error);
+        // console.error('Erreur lors du chargement des marques:', error);
       }
     );
     this.typeReservoirService.getAllTypeReservoir().subscribe(
@@ -161,12 +161,12 @@ export class DetailVoitureComponent   implements OnInit{
           const typeReservoir = this.typeReservoirs.find(r => r.idTypeReservoir === this.data.voitureVendre.typeReservoir.idTypeReservoir);
           if (typeReservoir) {
             this.voitureVendreForm.patchValue({ typeReservoir: typeReservoir });
-            console.log("typeReservoir de la voiture :", typeReservoir.nomTypeReservoir);
+            // console.log("typeReservoir de la voiture :", typeReservoir.nomTypeReservoir);
           }
         }
       },
       error => {
-        console.error('Erreur lors du chargement des typeReservoirs:', error);
+        // console.error('Erreur lors du chargement des typeReservoirs:', error);
       }
     );
     this.typeVoitureService.getAllTypeVoiture().subscribe(
@@ -178,12 +178,12 @@ export class DetailVoitureComponent   implements OnInit{
           const typeVoiture = this.typeVoitures.find(r => r.idTypeVoiture === this.data.voitureVendre.typeVoiture.idTypeVoiture);
           if (typeVoiture) {
             this.voitureVendreForm.patchValue({ typeVoiture: typeVoiture });
-            console.log("type de la voiture :", typeVoiture?.nomTypeVoiture);
+            // console.log("type de la voiture :", typeVoiture?.nomTypeVoiture);
           }
         }
       },
       error => {
-        console.error('Erreur lors du chargement des typeVoitures:', error);
+        // console.error('Erreur lors du chargement des typeVoitures:', error);
       }
     );
     this.userService.getAllUsers().subscribe(
@@ -195,12 +195,12 @@ export class DetailVoitureComponent   implements OnInit{
           const user = this.users.find(r => r.idUser === this.data.voitureVendre.user.idUser);
           if (user) {
             this.voitureVendreForm.patchValue({ user: user });
-            console.log("utilisateur :", user?.nomUser);
+            // console.log("utilisateur :", user?.nomUser);
           }
         }
       },
       error => {
-        console.error('Erreur lors du chargement des utilisateurs de la voiture à louer:', error);
+        // console.error('Erreur lors du chargement des utilisateurs de la voiture à louer:', error);
       }
     );
   }
@@ -217,7 +217,7 @@ export class DetailVoitureComponent   implements OnInit{
       this.data.voitureVendre.images.forEach((imageName: string) => {
         const imageUrl = this.voitureService.getImageUrl(this.data.voitureVendre.idVoiture, imageName);
         this.imageUrls.push(imageUrl);  // Ajouter l'URL complète de l'image au tableau
-        console.log("Image URL chargée", this.imageUrls);
+        // console.log("Image URL chargée", this.imageUrls);
       });
     }
   }

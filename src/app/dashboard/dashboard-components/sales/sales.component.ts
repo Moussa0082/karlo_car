@@ -113,13 +113,13 @@ export class SalesComponent implements OnInit{
     loadChartData() {
     this.venteservice.getTotalSalesByMonth().subscribe(data => {
       this.totalVenduParMoi = this.extractDataFromMap(data);
-      console.log("ventes ,", this.totalVenduParMoi);
+      // console.log("ventes ,", this.totalVenduParMoi);
       this.updateChart();
     });
 
     this.reservationService.getTotalReservationByMonth().subscribe(data => {
       this.totalLocationParMoi = this.extractDataFromMap(data);
-      console.log("locations ,", this.totalLocationParMoi);
+      // console.log("locations ,", this.totalLocationParMoi);
       this.updateChart();
     });
   }

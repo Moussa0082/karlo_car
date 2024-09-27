@@ -34,10 +34,10 @@ export class ListReservationComponent implements OnInit{
       this.dataSource = new MatTableDataSource(this.reservations);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste des reservations charger: ", this.reservations);
+      // console.log("liste des reservations charger: ", this.reservations);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des reservations:', error);
+      // console.error('Erreur lors du chargement de la liste des reservations:', error);
     }); 
    }
    
@@ -47,10 +47,10 @@ export class ListReservationComponent implements OnInit{
       this.dataSource = new MatTableDataSource(this.reservations);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste des reservations charger: ", this.reservations);
+      // console.log("liste des reservations charger: ", this.reservations);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des reservations:', error);
+      // console.error('Erreur lors du chargement de la liste des reservations:', error);
     }); 
    }
 
@@ -71,10 +71,10 @@ export class ListReservationComponent implements OnInit{
         this.reservationService.deleteReservation(element.idReservation).subscribe(
           (result) => {
             this.chargerDonner(); // Recharger la liste après la suppression réussie
-            console.log( "result delete : ", result);
+            // console.log( "result delete : ", result);
           }
         );
-        console.log("id Reservation", element.idReservation);
+        // console.log("id Reservation", element.idReservation);
         Swal.fire({
           title: "Supprimer!",
           text: "Suppression réussi.",
@@ -99,10 +99,10 @@ export class ListReservationComponent implements OnInit{
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialog closed with result:', result);
+        // console.log('Dialog closed with result:', result);
         this.chargerDonner();
       } else {
-        console.log('Dialog closed without result');
+        // console.log('Dialog closed without result');
       }
     });
   }
@@ -115,10 +115,10 @@ export class ListReservationComponent implements OnInit{
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialog closed with result:', result);
+        // console.log('Dialog closed with result:', result);
         this.chargerDonner();
       } else {
-        console.log('Dialog closed without result');
+        // console.log('Dialog closed without result');
       }
     });
   }
@@ -126,13 +126,13 @@ export class ListReservationComponent implements OnInit{
   editElement(reservation: Reservation): void {
 
     this.openDialog(reservation);
-    console.log("reservation open dialog: ", reservation);
+    // console.log("reservation open dialog: ", reservation);
   }
 
   voirElement(reservation: Reservation): void {
 
     this.openDialogView(reservation);
-    console.log("reservation open dialog: ", reservation);
+    // console.log("reservation open dialog: ", reservation);
   }
 
 

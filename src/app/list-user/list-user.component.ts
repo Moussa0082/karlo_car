@@ -45,10 +45,10 @@ export class ListUserComponent  implements OnInit{
         this.loading = false; // Fin du chargement
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        console.log("liste user: ", this.users);
+        // console.log("liste user: ", this.users);
       },
       (error) => {
-        console.error('Erreur lors du chargement de la liste des utilisateurs:', error);
+        // console.error('Erreur lors du chargement de la liste des utilisateurs:', error);
         this.loading = false; // Fin du chargement même en cas d'erreur
       });
   //   }, 1000
@@ -62,10 +62,10 @@ export class ListUserComponent  implements OnInit{
       this.dataSource.data = this.users; // Assurez-vous que MatTableDataSource est mis à jour
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste user charger: ", this.users);
+      // console.log("liste user charger: ", this.users);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des utilisateurs:', error);
+      // console.error('Erreur lors du chargement de la liste des utilisateurs:', error);
     });
   }
   
@@ -183,10 +183,10 @@ onActivate(element: User) {
         this.userService.deleteUser(element.idUser).subscribe(
           (result) => {
             this.chargerDonner(); // Recharger la liste après la suppression réussie
-            console.log( "result delete : ", result);
+            // console.log( "result delete : ", result);
           }
         );
-        console.log("id User", element.idUser);
+        // console.log("id User", element.idUser);
         Swal.fire({
           title: "Supprimer!",
           text: "Suppression réussi.",
@@ -211,10 +211,10 @@ onActivate(element: User) {
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialog closed with result:', result);
+        // console.log('Dialog closed with result:', result);
         this.chargerDonner();
       } else {
-        console.log('Dialog closed without result');
+        // console.log('Dialog closed without result');
       }
     });
   }
@@ -222,7 +222,7 @@ onActivate(element: User) {
   editElement(user: User): void {
 
     this.openDialog(user);
-    console.log("user open dialog: ", user);
+    // console.log("user open dialog: ", user);
   }
 
 

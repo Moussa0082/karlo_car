@@ -42,10 +42,10 @@ export class AddUpTypeTransactionComponent {
 
     this.typeTransactionService.getAllTypeTransaction().subscribe(data =>{
       this.typeTransactions = data;
-      console.log("Liste typeTransaction:", this.typeTransactions);
+      // console.log("Liste typeTransaction:", this.typeTransactions);
     },
     (error) =>{
-      console.error('Erreur lors du chargement de la liste des typeTransactions:', error);
+      // console.error('Erreur lors du chargement de la liste des typeTransactions:', error);
     }
   );
 
@@ -54,10 +54,10 @@ export class AddUpTypeTransactionComponent {
   chargerDonner():void{
     this.typeTransactionService.getAllTypeTransaction().subscribe(data =>{
       this.typeTransactions = data;
-      console.log("Liste typeTransaction:", this.typeTransactions);
+      // console.log("Liste typeTransaction:", this.typeTransactions);
     },
     (error) =>{
-      console.error('Erreur lors du chargement de la liste des typeTransactions:', error);
+      // console.error('Erreur lors du chargement de la liste des typeTransactions:', error);
     }
   );
   }
@@ -75,7 +75,7 @@ export class AddUpTypeTransactionComponent {
         this.typeTransactionService.updateTypeTransaction(typeTransaction).subscribe(
           response => {
             Swal.fire('Succès !', 'TypeTransaction modifié avec succès', 'success');
-            console.log("TypeTransaction modifier : " , response);
+            // console.log("TypeTransaction modifier : " , response);
             this.dialogRef.close(response);
           },
           error => {
@@ -87,7 +87,7 @@ export class AddUpTypeTransactionComponent {
         const newTypeTransaction: TypeTransaction = this.typeTransactionForm.value;
         this.typeTransactionService.createTypeTransaction(newTypeTransaction).subscribe(
           (response) => {
-            console.log('Type ajouté avec succès :', response);
+            // console.log('Type ajouté avec succès :', response);
             this.typeTransactionForm.reset();
             Swal.fire('Succès !', 'Type transaction crée avec succès', 'success');
             this.dialogRef.close(response);
@@ -102,6 +102,12 @@ export class AddUpTypeTransactionComponent {
           }
         );
       }
+    }else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Veuillez remplir tous les champs requis.',
+      });
     }
   }
 

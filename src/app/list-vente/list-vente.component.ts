@@ -35,10 +35,10 @@ export class ListVenteComponent implements OnInit{
       this.dataSource = new MatTableDataSource(this.ventes);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste des ventes charger: ", this.ventes);
+      // console.log("liste des ventes charger: ", this.ventes);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des ventes:', error);
+      // console.error('Erreur lors du chargement de la liste des ventes:', error);
     }); 
    }
 
@@ -48,10 +48,10 @@ export class ListVenteComponent implements OnInit{
       this.dataSource = new MatTableDataSource(this.ventes);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste des ventes charger: ", this.ventes);
+      // console.log("liste des ventes charger: ", this.ventes);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des ventes:', error);
+      // console.error('Erreur lors du chargement de la liste des ventes:', error);
     }); 
    }
 
@@ -71,10 +71,10 @@ export class ListVenteComponent implements OnInit{
         this.venteService.deleteVente(element.idVente).subscribe(
           (result) => {
             this.chargerDonner(); // Recharger la liste après la suppression réussie
-            console.log( "result delete : ", result);
+            // console.log( "result delete : ", result);
           }
         );
-        console.log("id Vente", element.idVente);
+        // console.log("id Vente", element.idVente);
         Swal.fire({
           title: "Supprimer!",
           text: "Suppression réussi.",
@@ -99,10 +99,10 @@ export class ListVenteComponent implements OnInit{
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialog closed with result:', result);
+        // console.log('Dialog closed with result:', result);
         this.chargerDonner();
       } else {
-        console.log('Dialog closed without result');
+        // console.log('Dialog closed without result');
       }
     });
   }
@@ -115,10 +115,10 @@ export class ListVenteComponent implements OnInit{
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialog closed with result:', result);
+        // console.log('Dialog closed with result:', result);
         this.chargerDonner();
       } else {
-        console.log('Dialog closed without result');
+        // console.log('Dialog closed without result');
       }
     });
   }
@@ -126,13 +126,13 @@ export class ListVenteComponent implements OnInit{
   editElement(vente: Vente): void {
 
     this.openDialog(vente);
-    console.log("vente open dialog: ", vente);
+    // console.log("vente open dialog: ", vente);
   }
 
   voirElement(vente: Vente): void {
 
     this.openDialogView(vente);
-    console.log("vente open dialog: ", vente);
+    // console.log("vente open dialog: ", vente);
   }
 
 

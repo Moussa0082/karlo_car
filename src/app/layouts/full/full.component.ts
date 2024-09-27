@@ -40,7 +40,7 @@ export class FullComponent implements OnInit{
     this.userSubscription = this.userService.getUtilisateurConnect().subscribe(user => {
       this.adminRecup = user;
       this.libelle = this.adminRecup?.role.libelle;
-      console.log("libelle ", this.libelle);
+      // console.log("libelle ", this.libelle);
       // Si nécessaire, actualiser la vue ou effectuer des actions spécifiques ici
     }); 
        this.router.events.subscribe((event) => {
@@ -60,7 +60,7 @@ export class FullComponent implements OnInit{
     this.userSubscription = this.userService.getUtilisateurConnect().subscribe(user => {
       this.adminRecup = user;
       // Si nécessaire, actualiser la vue ou effectuer des actions spécifiques ici
-      console.log("user recup :" , this.adminRecup)
+      // console.log("user recup :" , this.adminRecup)
     });
     
     this.router.events.subscribe((event) => {
@@ -115,11 +115,11 @@ export class FullComponent implements OnInit{
           (response:any) => {
             // Handle success
             this.userService.logout();
-          console.log( "user deconnecter", response);
+          // console.log( "user deconnecter", response);
           // Réinitialiser adminRecup
           this.adminRecup = null;
           this.router.navigate(['/login']);
-            console.log('User disabled successfully');
+            // console.log('User disabled successfully');
           },
           (error:any) => {
             // Handle error
@@ -127,7 +127,7 @@ export class FullComponent implements OnInit{
           }
         );
       }else{
-        console.log( "deconnection annuler");
+        // console.log( "deconnection annuler");
 
       }
     });
@@ -166,6 +166,11 @@ export class FullComponent implements OnInit{
       link: "/reservations",
       icon: "calendar",
       menu: "Liste des reservations",
+    },
+    {
+      link: "/demandeReservation",
+      icon: "calendar",
+      menu: "Liste des demandes de reservation",
     },
     {
       link: "/ventes",
@@ -222,16 +227,7 @@ export class FullComponent implements OnInit{
       icon: "car",
       menu: "Liste voitures à vendre",
     },
-    // {
-    //   link: "/reservations",
-    //   icon: "calendar",
-    //   menu: "Liste des reservations",
-    // },
-    // {
-    //   link: "/ventes",
-    //   icon: "attach_money",
-    //   menu: "Liste des ventes",
-    // }
+   
   ]
   
 

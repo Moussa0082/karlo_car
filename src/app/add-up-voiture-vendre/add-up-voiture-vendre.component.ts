@@ -33,6 +33,7 @@ export class AddUpVoitureVendreComponent implements OnInit{
   imagePreviews: string[] = [];
   isEditMode: boolean;
   imageUrls: string[] = [];  // Stocker les URLs des images de la voiture
+  mtR!:number;
 
 
   constructor(private fb: FormBuilder, private voitureService: VoitureVendreService,
@@ -84,7 +85,7 @@ export class AddUpVoitureVendreComponent implements OnInit{
     
     this.typeReservoirService.getAllTypeReservoir().subscribe(data => {
       this.typeReservoirs = data;
-      console.log("liste type reservoir charger: ", this.typeReservoirs);
+      // console.log("liste type reservoir charger: ", this.typeReservoirs);
     },
     (error) => {
       console.error('Erreur lors du chargement de la liste des type reservoirs:', error);
@@ -106,17 +107,17 @@ export class AddUpVoitureVendreComponent implements OnInit{
     );
     this.typeVoitureService.getAllTypeVoiture().subscribe(data => {
       this.typeVoitures = data;
-      console.log("liste type voiture charger: ", this.typeVoitures);
+      // console.log("liste type voiture charger: ", this.typeVoitures);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des type voiture:', error);
+      // console.error('Erreur lors du chargement de la liste des type voiture:', error);
     });
     this.marqueservice.getAllMarque().subscribe(data => {
       this.marques = data;
-      console.log("liste marque charger: ", this.marques);
+      // console.log("liste marque charger: ", this.marques);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des marques:', error);
+      // console.error('Erreur lors du chargement de la liste des marques:', error);
     });
    this.isEditMode ? this.loadSelectOptions() : null ;
    this.isEditMode ? this.loadImages() : null ;
@@ -132,12 +133,12 @@ export class AddUpVoitureVendreComponent implements OnInit{
           const marque = this.marques.find(r => r.idMarque === this.data.voitureVendre.marque.idMarque);
           if (marque) {
             this.voitureVendreForm.patchValue({ marque: marque });
-            console.log("marque de la voiture :", marque.nomMarque);
+            // console.log("marque de la voiture :", marque.nomMarque);
           }
         }
       },
       error => {
-        console.error('Erreur lors du chargement des marques:', error);
+        // console.error('Erreur lors du chargement des marques:', error);
       }
     );
     this.typeReservoirService.getAllTypeReservoir().subscribe(
@@ -149,12 +150,12 @@ export class AddUpVoitureVendreComponent implements OnInit{
           const typeReservoir = this.typeReservoirs.find(r => r.idTypeReservoir === this.data.voitureVendre.typeReservoir.idTypeReservoir);
           if (typeReservoir) {
             this.voitureVendreForm.patchValue({ typeReservoir: typeReservoir });
-            console.log("typeReservoir de la voiture :", typeReservoir.nomTypeReservoir);
+            // console.log("typeReservoir de la voiture :", typeReservoir.nomTypeReservoir);
           }
         }
       },
       error => {
-        console.error('Erreur lors du chargement des typeReservoirs:', error);
+        // console.error('Erreur lors du chargement des typeReservoirs:', error);
       }
     );
     this.typeVoitureService.getAllTypeVoiture().subscribe(
@@ -166,12 +167,12 @@ export class AddUpVoitureVendreComponent implements OnInit{
           const typeVoiture = this.typeVoitures.find(r => r.idTypeVoiture === this.data.voitureVendre.typeVoiture.idTypeVoiture);
           if (typeVoiture) {
             this.voitureVendreForm.patchValue({ typeVoiture: typeVoiture });
-            console.log("type de la voiture :", typeVoiture?.nomTypeVoiture);
+            // console.log("type de la voiture :", typeVoiture?.nomTypeVoiture);
           }
         }
       },
       error => {
-        console.error('Erreur lors du chargement des typeVoitures:', error);
+        // console.error('Erreur lors du chargement des typeVoitures:', error);
       }
     );
     this.userService.getAllUsers().subscribe(
@@ -183,12 +184,12 @@ export class AddUpVoitureVendreComponent implements OnInit{
           const user = this.users.find(r => r.idUser === this.data.voitureVendre.user.idUser);
           if (user) {
             this.voitureVendreForm.patchValue({ user: user });
-            console.log("utilisateur :", user?.nomUser);
+            // console.log("utilisateur :", user?.nomUser);
           }
         }
       },
       error => {
-        console.error('Erreur lors du chargement des utilisateurs de la voiture à louer:', error);
+        // console.error('Erreur lors du chargement des utilisateurs de la voiture à louer:', error);
       }
     );
   }
@@ -198,10 +199,42 @@ export class AddUpVoitureVendreComponent implements OnInit{
       this.data.voitureVendre.images.forEach((imageName: string) => {
         const imageUrl = this.voitureService.getImageUrl(this.data.voitureVendre.idVoiture, imageName);
         this.imageUrls.push(imageUrl);  // Ajouter l'URL complète de l'image au tableau
-        console.log("Image URL chargée", this.imageUrls);
+        // console.log("Image URL chargée", this.imageUrls);
       });
     }
   }
+
+
+  onChange() {
+    const montantProprio = this.voitureVendreForm.get('prixProprietaire')?.value; // Récupère la valeur
+    const montantAugmente = this.voitureVendreForm.get('prixAugmente')?.value; // Récupère la valeur
+    let montantProprioControl = this.voitureVendreForm.get('prixProprietaire');
+
+if (montantProprioControl) {
+  let montantProprio = montantProprioControl.value; // Obtenir la valeur du contrôle
+  
+   // Convertir la valeur en nombre
+   montantProprio = Number(montantProprio);
+
+   if (!isNaN(montantProprio)) {  // Vérifier si la conversion est réussie
+     this.mtR = montantProprio + 100000;
+    //  console.log('Montant après ajout:', this.mtR);
+   } else {
+    // console.error('La valeur de montantProprio n\'est pas un nombre.');
+  }
+}
+    if (montantProprio && montantAugmente && montantAugmente <= montantProprio) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Montant incorrect',
+        text: `Le montant augmenté ne peut pas être inférieur à ${montantProprio}, qui est le montant du propriétaire pour la voiture sélectionnée , il doit y avoir au moins 100.000 F de plus .`,
+      });
+  
+      // Optionnel : Vous pouvez aussi réinitialiser ou ajuster le montant ici
+      // this.voitureLouerForm.get('prixAugmente')?.setValue(this.mtR); // Par exemple, ajouter une valeur minimale
+    }
+  }
+    
 
    // Méthode pour charger les images existantes
   //  private loadExistingImages(logoPaths: string[]): void {
@@ -217,26 +250,26 @@ export class AddUpVoitureVendreComponent implements OnInit{
   onSaves(): void {
     if (this.voitureVendreForm.valid) {
       const voitureVendre = this.voitureVendreForm.value;
-      console.log('Form Data:', voitureVendre);
+      // console.log('Form Data:', voitureVendre);
   
       if (this.isEditMode) {
-        console.log('Edit Mode');
+        // console.log('Edit Mode');
         this.voitureService.updateVoitureVendre(voitureVendre, this.images).subscribe(
           response => {
             Swal.fire('Succès !', 'Voiture à louer modifié avec succès', 'success');
-            console.log("Voiture à louer modifié : ", response);
+            // console.log("Voiture à louer modifié : ", response);
             this.dialogRef.close(response);
           },
           error => {
-            console.error('Erreur lors de la modification:', error);
+            // console.error('Erreur lors de la modification:', error);
             Swal.fire('Erreur !', 'Erreur lors de la modification', 'error');
           }
         );
       } else {
-        console.log('Add Mode');
+        // console.log('Add Mode');
         this.voitureService.addVoitureVendre(voitureVendre, this.images).subscribe(
           response => {
-            console.log('Voiture à vendre ajoutée avec succès :', response);
+            // console.log('Voiture à vendre ajoutée avec succès :', response);
             this.voitureVendreForm.reset();
             this.images = [];
             this.imagePreviews = [];
@@ -254,7 +287,11 @@ export class AddUpVoitureVendreComponent implements OnInit{
         );
       }
     } else {
-      this.showValidationErrors();
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Veuillez remplir tous les champs requis.',
+      });
     }
   }
 

@@ -21,6 +21,7 @@
     "@angular/platform-browser": "^16.0.0",
     "@angular/platform-browser-dynamic": "^16.0.0",
     "@angular/router": "^16.0.0",
+    "@syncfusion/ej2-angular-calendars": "^27.1.50",
     "angular-feather": "^6.5.0",
     "apexcharts": "^3.40.0",
     "hammerjs": "^2.0.8",

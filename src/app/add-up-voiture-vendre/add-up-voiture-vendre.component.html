@@ -29,7 +29,7 @@
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Prix augmentation</mat-label>
-          <input matInput placeholder="Prix augmentation" formControlName="prixAugmente" required>
+          <input matInput placeholder="Prix augmentation" formControlName="prixAugmente" (blur)="onChange()" required>
         </mat-form-field>
         
       

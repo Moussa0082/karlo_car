@@ -34,10 +34,10 @@ export class ListTransactionComponent implements OnInit{
         this.dataSource = new MatTableDataSource(this.transactions);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        console.log("liste transactions: ", this.transactions);
+        // console.log("liste transactions: ", this.transactions);
       },
       (error) => {
-        console.error('Erreur lors du chargement de la liste des transactions:', error);
+        // console.error('Erreur lors du chargement de la liste des transactions:', error);
       });
  
   }
@@ -48,10 +48,10 @@ export class ListTransactionComponent implements OnInit{
       this.dataSource = new MatTableDataSource(this.transactions);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste transactions: ", this.transactions);
+      // console.log("liste transactions: ", this.transactions);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des transactions:', error);
+      // console.error('Erreur lors du chargement de la liste des transactions:', error);
     });
   }
   
@@ -74,10 +74,10 @@ export class ListTransactionComponent implements OnInit{
         this.transactionService.deleteTransaction(element.idTransaction).subscribe(
           (result) => {
             this.chargerDonner(); // Recharger la liste après la suppression réussie
-            console.log( "result delete : ", result);
+            // console.log( "result delete : ", result);
           }
         );
-        console.log("id transaction", element.idTransaction);
+        // console.log("id transaction", element.idTransaction);
         Swal.fire({
           title: "Supprimer!",
           text: "Suppression réussi.",
@@ -102,17 +102,17 @@ export class ListTransactionComponent implements OnInit{
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialog closed with result:', result);
+        // console.log('Dialog closed with result:', result);
         this.chargerDonner();
       } else {
-        console.log('Dialog closed without result');
+        // console.log('Dialog closed without result');
       }
     });
   }
 
   editElement(transaction: Transaction): void {
     this.openDialog(transaction);
-    console.log("Transaction open dialog: ", transaction);
+    // console.log("Transaction open dialog: ", transaction);
   }
 
 

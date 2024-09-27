@@ -37,6 +37,7 @@ import { ListReservationComponent } from './list-reservation/list-reservation.co
 import { ListVenteComponent } from './list-vente/list-vente.component';
 import { ListVoitureLPartComponent } from './list-voiture-lpart/list-voiture-lpart.component';
 import { ListVoiturePartComponent } from './list-voiture-part/list-voiture-part.component';
+import { ListDemandeReservationComponent } from './list-demande-reservation/list-demande-reservation.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,7 @@ const routes: Routes = [
       {path:"", redirectTo:"/login", pathMatch:"full"},
       {path:"login", component:LoginComponent},
       {path:"home", component:DashboardComponent,  canActivate: [AuthGuard]},
+      {path:"demandeReservation", component:ListDemandeReservationComponent,  canActivate: [AuthGuard]},
       {path:"users", component:ListUserComponent , canActivate: [AuthGuard]},
       {path:"roles", component:RoleComponent , canActivate: [AuthGuard]},
       {path:"reservoires", component:ListTypeReservoirComponent , canActivate: [AuthGuard]},

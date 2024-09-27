@@ -46,9 +46,9 @@ export class TypeVoitureService {
       .pipe(
         tap((response: HttpResponse<void>) => {
           if (response.status === 200 || response.status === 201 || response.status === 202) {
-            console.log('typeVoiture supprimé avec succès.');
+            // console.log('typeVoiture supprimé avec succès.');
           } else {
-            console.log('Statut de la réponse:', response.status);
+            // console.log('Statut de la réponse:', response.status);
           }
         }),
         catchError(this.handleError)
@@ -56,11 +56,11 @@ export class TypeVoitureService {
   }
 
     private handleError(error: HttpErrorResponse) {
-      console.error('Une erreur s\'est produite:', error);
+      // console.error('Une erreur s\'est produite:', error);
       if (error.error instanceof ErrorEvent) {
-        console.error('Erreur côté client:', error.error.message);
+        // console.error('Erreur côté client:', error.error.message);
       } else {
-        console.error(`Code d'erreur du backend: ${error.status}, Message: ${error.message}`);
+        // console.error(`Code d'erreur du backend: ${error.status}, Message: ${error.message}`);
       }
       return throwError('Une erreur est survenue; veuillez réessayer plus tard.');
     }

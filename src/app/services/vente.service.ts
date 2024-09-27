@@ -23,9 +23,9 @@ export class VenteService {
       for (let i = 0; i < images.length; i++) {
         formData.append('images', images[i], images[i].name);
       }
-      console.log("service formData : " , images);
+      // console.log("service formData : " , images);
     }else{
-      console.log("image non pris comme tableau ou vide");
+      // console.log("image non pris comme tableau ou vide");
 
     }
   
@@ -67,9 +67,23 @@ export class VenteService {
     return this.http.get(`${apiUrl}/${this.baseUrl}/getAllVente`);
   }
 
+  // getImageUrl(idVente: string, imageName: string): string {
+  //   return `${apiUrl}/${this.baseUrl}/${idVente}/images/${imageName}`;
+  // }
   getImageUrl(idVente: string, imageName: string): string {
-    return `${apiUrl}/${this.baseUrl}/${idVente}/images/${imageName}`;
-  }
+    try {
+        // Vérifiez si les paramètres sont valides
+        if (!idVente || !imageName) {
+            throw new Error("Les paramètres idVente ou imageName sont invalides.");
+        }
+        
+        return `${apiUrl}/${this.baseUrl}/${idVente}/images/${imageName}`;
+    } catch (error) {
+        // console.error("Erreur lors de la génération de l'URL de l'image :", error);
+        return ''; // Retourner une valeur par défaut ou un message d'erreur
+    }
+}
+
 
      // Méthode pour supprimer une vente
      deleteVente(id: string): Observable<HttpResponse<void>> {
@@ -77,9 +91,9 @@ export class VenteService {
         .pipe(
           tap((response: HttpResponse<void>) => {
             if (response.status === 200 || response.status === 201 || response.status === 202) {
-              console.log('Vente supprimé avec succès.');
+              // console.log('Vente supprimé avec succès.');
             } else {
-              console.log('Statut de la réponse:', response.status);
+              // console.log('Statut de la réponse:', response.status);
             }
           }),
           catchError(this.handleError)
@@ -87,11 +101,11 @@ export class VenteService {
     }
   
       private handleError(error: HttpErrorResponse) {
-        console.error('Une erreur s\'est produite:', error);
+        // console.error('Une erreur s\'est produite:', error);
         if (error.error instanceof ErrorEvent) {
-          console.error('Erreur côté client:', error.error.message);
+          // console.error('Erreur côté client:', error.error.message);
         } else {
-          console.error(`Code d'erreur du backend: ${error.status}, Message: ${error.message}`);
+          // console.error(`Code d'erreur du backend: ${error.status}, Message: ${error.message}`);
         }
         return throwError('Une erreur est survenue, veuillez réessayer plus tard.');
       }

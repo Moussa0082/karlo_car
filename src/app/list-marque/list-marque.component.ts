@@ -37,10 +37,10 @@ export class ListMarqueComponent implements OnInit{
         this.loading = false; // Fin du chargement
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        console.log("liste marques: ", this.marques);
+        // console.log("liste marques: ", this.marques);
       },
       (error) => {
-        console.error('Erreur lors du chargement de la liste des marques:', error);
+        // console.error('Erreur lors du chargement de la liste des marques:', error);
         this.loading = false; // Fin du chargement même en cas d'erreur
       });
   //   }, 1000
@@ -54,10 +54,10 @@ export class ListMarqueComponent implements OnInit{
       this.dataSource.data = this.marques; // Assurez-vous que MatTableDataSource est mis à jour
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste marques charger: ", this.marques);
+      // console.log("liste marques charger: ", this.marques);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des marques:', error);
+      // console.error('Erreur lors du chargement de la liste des marques:', error);
     });
   }
   
@@ -80,10 +80,10 @@ export class ListMarqueComponent implements OnInit{
         this.marqueService.deleteMarque(element.idMarque).subscribe(
           (result) => {
             this.chargerDonner(); // Recharger la liste après la suppression réussie
-            console.log( "result delete : ", result);
+            // console.log( "result delete : ", result);
           }
         );
-        console.log("id marque", element.idMarque);
+        // console.log("id marque", element.idMarque);
         Swal.fire({
           title: "Supprimer!",
           text: "Suppression réussi.",
@@ -108,17 +108,17 @@ export class ListMarqueComponent implements OnInit{
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialog closed with result:', result);
+        // console.log('Dialog closed with result:', result);
         this.chargerDonner();
       } else {
-        console.log('Dialog closed without result');
+        // console.log('Dialog closed without result');
       }
     });
   }
 
   editElement(marque: Marque): void {
     this.openDialog(marque);
-    console.log("Marque open dialog: ", marque);
+    // console.log("Marque open dialog: ", marque);
   }
 
 

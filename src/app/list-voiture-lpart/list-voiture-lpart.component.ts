@@ -55,10 +55,10 @@ implements OnInit{
       this.dataSource = new MatTableDataSource(this.voituresLouer);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste voitures à louer: ", this.voituresLouer);
+      // console.log("liste voitures à louer: ", this.voituresLouer);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des voitures à louer:', error);
+      // console.error('Erreur lors du chargement de la liste des voitures à louer:', error);
     }); 
     // Démarrer le slider automatique au chargement du composant
     this.startAutoSlider();
@@ -87,10 +87,10 @@ implements OnInit{
       this.dataSource = new MatTableDataSource(this.voituresLouer);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("liste voitures à louer: ", this.voituresLouer);
+      // console.log("liste voitures à louer: ", this.voituresLouer);
     },
     (error) => {
-      console.error('Erreur lors du chargement de la liste des voitures à louer:', error);
+      // console.error('Erreur lors du chargement de la liste des voitures à louer:', error);
     }); 
    }
 
@@ -128,10 +128,10 @@ implements OnInit{
         this.voitureLouerService.deleteVoiture(element.idVoiture).subscribe(
           (result) => {
             this.chargerDonner(); // Recharger la liste après la suppression réussie
-            console.log( "result delete : ", result);
+            // console.log( "result delete : ", result);
           }
         );
-        console.log("id VoitureLouer", element.idVoiture);
+        // console.log("id VoitureLouer", element.idVoiture);
         Swal.fire({
           title: "Supprimer!",
           text: "Suppression réussi.",
@@ -251,10 +251,10 @@ implements OnInit{
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialog closed with result:', result);
+        // console.log('Dialog closed with result:', result);
         this.chargerDonner();
       } else {
-        console.log('Dialog closed without result');
+        // console.log('Dialog closed without result');
       }
     });
   }
@@ -267,10 +267,10 @@ implements OnInit{
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialog closed with result:', result);
+        // console.log('Dialog closed with result:', result);
         this.chargerDonner();
       } else {
-        console.log('Dialog closed without result');
+        // console.log('Dialog closed without result');
       }
     });
   }
@@ -279,13 +279,13 @@ implements OnInit{
   voirElement(voitureLouer: VoitureLouer): void {
     
     this.openDialogView(voitureLouer);
-    console.log("voiture Louer open dialog: ", voitureLouer);
+    // console.log("voiture Louer open dialog: ", voitureLouer);
   }
   
   editElement(voitureLouer: VoitureLouer): void {
 
     this.openDialog(voitureLouer);
-    console.log("voiture Louer open dialog: ", voitureLouer);
+    // console.log("voiture Louer open dialog: ", voitureLouer);
   }
 
   getToggleLabel(enabled: boolean): string {

@@ -62,14 +62,14 @@ export class LoginComponent implements AfterViewInit{
         this.userService.login(email, password).subscribe(
           (response) => {
             // Gérer la connexion réussie ici
-            console.log(response);
+            // console.log(response);
             // Stocker les informations de l'utilisateur dans localStorage
             localStorage.setItem('userData', JSON.stringify({
               userData: response,
             }));
             this.userService.setutilisateurConnect(response);
     
-            console.log("userType", localStorage.getItem('userData'));
+            // console.log("userType", localStorage.getItem('userData'));
             // Rediriger vers la page appropriée
             if(response.role.libelle.toLocaleLowerCase()=== 'admin'){
               this.router.navigate(['/home']);
@@ -79,7 +79,7 @@ export class LoginComponent implements AfterViewInit{
             this.loginForm.reset();
           },
           error => {
-            console.error("Erreur lors de la connexion :", error);
+            // console.error("Erreur lors de la connexion :", error);
             
             // Vérifier si `error.error` et `error.error.message` existent avant de les utiliser
             const errorMessage = error.error?.message || 'Une erreur est survenue';
@@ -91,7 +91,11 @@ export class LoginComponent implements AfterViewInit{
           }
         );
       } else {
-        console.log("non valid");
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Veuillez remplir tous les champs requis.',
+        });
       }
     }
     
